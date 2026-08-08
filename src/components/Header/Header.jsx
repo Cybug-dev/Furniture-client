@@ -98,6 +98,7 @@ function MenuIcon({ open }) {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartItemCount = 0;
 
   return (
     <header className={styles.header}>
@@ -113,29 +114,50 @@ export default function Header() {
           aria-label="Main navigation"
           data-open={isMenuOpen}
         >
+          <div className={styles.drawerTop}>
+            <div className={styles.avatar}>
+              <UserIcon />
+            </div>
+            <span>Sign In</span>
+            <button
+              type="button"
+              className={styles.drawerClose}
+              aria-label="Close navigation menu"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <MenuIcon open />
+            </button>
+          </div>
           <ul className={styles.navList}>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className={styles.navLink}>
+                <a href={link.href} className={styles.navLink} onClick={() => setIsMenuOpen(false)}>
                   {link.label}
                 </a>
               </li>
             ))}
+            <li className={styles.favouriteItem}>
+              <a href="/wishlist" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>
+                <HeartIcon />
+                <span>Favourites</span>
+              </a>
+            </li>
           </ul>
         </nav>
 
         <div className={styles.actions}>
-          <button type="button" className={styles.iconButton} aria-label="Account">
+          <button type="button" className={`${styles.iconButton} ${styles.desktopOnly}`} aria-label="Account">
             <UserIcon />
           </button>
-          <button type="button" className={styles.iconButton} aria-label="Search">
+          <button type="button" className={`${styles.iconButton} ${styles.mobileAction}`} aria-label="Search">
             <SearchIcon />
           </button>
-          <button type="button" className={styles.iconButton} aria-label="Wishlist">
+          <button type="button" className={`${styles.iconButton} ${styles.desktopOnly}`} aria-label="Wishlist">
             <HeartIcon />
           </button>
-          <button type="button" className={styles.iconButton} aria-label="Cart">
+          <button type="button" className={`${styles.iconButton} ${styles.mobileAction} ${styles.cartButton}`} aria-label="Cart">
             <CartIcon />
+            {cartItemCount > 0 && <span className={styles.cartBadge}>{cartItemCount}</span>}
           </button>
           <button
             type="button"
@@ -149,6 +171,15 @@ export default function Header() {
           </button>
         </div>
       </div>
+      <button
+        type="button"
+        className={styles.overlay}
+        aria-label="Close navigation menu"
+        aria-hidden={!isMenuOpen}
+        data-open={isMenuOpen}
+        tabIndex={isMenuOpen ? 0 : -1}
+        onClick={() => setIsMenuOpen(false)}
+      />
     </header>
   );
 }

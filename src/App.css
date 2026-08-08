@@ -1,10 +1,8 @@
 .app-shell {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8f5ef 0%, #f2ebde 100%);
+  background: #f5f5f5;
 }
 
 .main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.25rem 4rem;
+  width: 100%;
 }

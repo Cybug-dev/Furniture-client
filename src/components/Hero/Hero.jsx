@@ -1,11 +1,6 @@
 import styles from './Hero.module.scss';
 
-const HERO_IMAGE_BASE = 'https://picsum.photos/seed/furniture-hero';
-const HERO_WIDTHS = [640, 960, 1280, 1600, 1920];
-
-const heroSrcSet = HERO_WIDTHS.map(
-  (w) => `${HERO_IMAGE_BASE}/${w}/${Math.round(w * 0.72)} ${w}w`
-).join(', ');
+const HERO_IMAGE = '/hero-room.jpg';
 
 export default function Hero() {
   return (
@@ -13,10 +8,8 @@ export default function Hero() {
       <div className={styles.media}>
         <img
           className={styles.image}
-          src={`${HERO_IMAGE_BASE}/1600/1152`}
-          srcSet={heroSrcSet}
-          sizes="100vw"
-          width={1600}
+          src={HERO_IMAGE}
+          width={2048}
           height={1152}
           alt="Minimalist living room with a rattan lounge chair, a potted palm, and a white storage cabinet"
           loading="eager"
