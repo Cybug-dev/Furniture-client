@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import styles from './Header.module.scss';
+import { useState, useEffect, useRef } from 'react';
+import './Header.scss';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -8,26 +8,12 @@ const NAV_LINKS = [
   { label: 'Contact', href: '/contact' },
 ];
 
-function LogoIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
-      <path
-        fill="currentColor"
-        d="M4 10a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3.5a1.5 1.5 0 0 1-1 1.415V17a1 1 0 1 1-2 0v-2h-10v2a1 1 0 1 1-2 0v-2.085A1.5 1.5 0 0 1 4 13.5V10Zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-11Z"
-      />
-    </svg>
-  );
-}
-
+/* ── Inline SVG icons — no external icon library needed ─────── */
 function UserIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8c0-3.314 3.134-6 7-6s7 2.686 7 6"
-      />
+      <path fill="none" stroke="currentColor" strokeWidth="1.8"
+        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8c0-3.314 3.134-6 7-6s7 2.686 7 6" />
     </svg>
   );
 }
@@ -37,6 +23,16 @@ function SearchIcon() {
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
       <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" strokeWidth="1.8" />
       <line x1="20" y1="20" x2="15.5" y2="15.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/* Separate close icon — used in search bar and drawer */
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+        d="M5 5l14 14M19 5 5 19" />
     </svg>
   );
 }
@@ -72,6 +68,7 @@ function CartIcon() {
   );
 }
 
+/* Hamburger/close toggle — swaps lines ↔ X based on open prop */
 function MenuIcon({ open }) {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
@@ -98,46 +95,83 @@ function MenuIcon({ open }) {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const cartItemCount = 0;
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Ref so we can imperatively focus the input when the search bar opens
+  const searchInputRef = useRef(null);
+
+  const cartItemCount = 0; // wire to real cart state later
+
+  // Auto-focus search input whenever the search bar slides open
+  useEffect(() => {
+    if (isSearchOpen) searchInputRef.current?.focus();
+  }, [isSearchOpen]);
+
+  // Close both drawer and search bar on Escape key
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <a href="/" className={styles.logo} aria-label="Furniture, go to homepage">
-          <LogoIcon />
-          <span className={styles.logoText}>Furniture</span>
+    <header className="header">
+
+      {/* ── Top bar: logo | nav | action icons ───────────────── */}
+      <div className="header-container">
+
+        {/* Brand logo */}
+        <a href="/" className="header-logo" aria-label="Furniture, go to homepage">
+          <img src="../../assets/images/armchair-fill.png" alt="" className='logo-img' />
+          <span className="header-logo-text">Furniture</span>
         </a>
 
+        {/* Nav — horizontal on desktop, side drawer on mobile
+            data-open drives the CSS transform via attribute selector */}
         <nav
           id="primary-navigation"
-          className={styles.nav}
+          className="header-nav"
           aria-label="Main navigation"
           data-open={isMenuOpen}
         >
-          <div className={styles.drawerTop}>
-            <div className={styles.avatar}>
+          {/* Drawer header — avatar + sign in + close button (mobile only) */}
+          <div className="header-drawer-top">
+            <div className="header-avatar">
               <UserIcon />
             </div>
             <span>Sign In</span>
             <button
               type="button"
-              className={styles.drawerClose}
+              className="header-drawer-close"
               aria-label="Close navigation menu"
               onClick={() => setIsMenuOpen(false)}
             >
-              <MenuIcon open />
+              <CloseIcon />
             </button>
           </div>
-          <ul className={styles.navList}>
+
+          {/* Nav links */}
+          <ul className="header-nav-list">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className={styles.navLink} onClick={() => setIsMenuOpen(false)}>
+                <a
+                  href={link.href}
+                  className="header-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   {link.label}
                 </a>
               </li>
             ))}
-            <li className={styles.favouriteItem}>
-              <a href="/wishlist" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>
+
+            {/* Favourites — only visible inside the mobile drawer */}
+            <li className="header-fav-item">
+              <a href="/wishlist" className="header-nav-link" onClick={() => setIsMenuOpen(false)}>
                 <HeartIcon />
                 <span>Favourites</span>
               </a>
@@ -145,23 +179,49 @@ export default function Header() {
           </ul>
         </nav>
 
-        <div className={styles.actions}>
-          <button type="button" className={`${styles.iconButton} ${styles.desktopOnly}`} aria-label="Account">
+        {/* ── Right-side action icons ───────────────────────── */}
+        <div className="header-actions">
+
+          {/* User — desktop only */}
+          <button type="button" className="header-icon-btn header-desktop-only" aria-label="Account">
             <UserIcon />
           </button>
-          <button type="button" className={`${styles.iconButton} ${styles.mobileAction}`} aria-label="Search">
-            <SearchIcon />
-          </button>
-          <button type="button" className={`${styles.iconButton} ${styles.desktopOnly}`} aria-label="Wishlist">
-            <HeartIcon />
-          </button>
-          <button type="button" className={`${styles.iconButton} ${styles.mobileAction} ${styles.cartButton}`} aria-label="Cart">
-            <CartIcon />
-            {cartItemCount > 0 && <span className={styles.cartBadge}>{cartItemCount}</span>}
-          </button>
+
+          {/* Search toggle — all screen sizes
+              Icon swaps between magnifier and X depending on state */}
           <button
             type="button"
-            className={styles.menuToggle}
+            className="header-icon-btn"
+            aria-label={'Open search'}
+            aria-expanded={isSearchOpen}
+            onClick={() => setIsSearchOpen((prev) => !prev)}
+          >
+            <SearchIcon />
+          </button>
+
+          {/* Wishlist — desktop only */}
+          <button type="button" className="header-icon-btn header-desktop-only" aria-label="Wishlist">
+            <HeartIcon />
+          </button>
+
+          {/* Cart — always visible, badge shows item count */}
+          <button
+            type="button"
+            className="header-icon-btn header-cart-btn"
+            aria-label={`Cart, ${cartItemCount} items`}
+          >
+            <CartIcon />
+            {cartItemCount > 0 && (
+              <span className="header-cart-badge" aria-hidden="true">
+                {cartItemCount}
+              </span>
+            )}
+          </button>
+
+          {/* Hamburger — mobile only */}
+          <button
+            type="button"
+            className="header-menu-toggle"
             aria-label="Toggle navigation menu"
             aria-expanded={isMenuOpen}
             aria-controls="primary-navigation"
@@ -171,9 +231,39 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {/* ── Search bar — slides below header on toggle ────────
+          max-height transition drives the slide animation
+          data-open="true" expands it, false collapses it     */}
+      <div className="header-search-bar" data-open={isSearchOpen} role="search">
+  <div className="header-search-inner">
+    <span className="header-search-icon" aria-hidden="true">
+      <SearchIcon />
+    </span>
+
+    <input
+      ref={searchInputRef}
+      type="search"
+      className="header-search-input"
+      placeholder="Search furniture..."
+      aria-label="Search furniture"
+    />
+    <button
+      type="button"
+      className="header-search-clear"
+      aria-label="Clear search"
+      onClick={() => setIsSearchOpen(false)}
+    >
+      <CloseIcon />
+    </button>
+  </div>
+</div>
+
+      {/* ── Overlay — dims page behind open drawer
+          Tapping it closes the drawer                         */}
       <button
         type="button"
-        className={styles.overlay}
+        className="header-overlay"
         aria-label="Close navigation menu"
         aria-hidden={!isMenuOpen}
         data-open={isMenuOpen}
