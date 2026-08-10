@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './Header.scss';
+import logoImg from '../../assets/images/armchair-fill.png';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -127,7 +128,7 @@ export default function Header() {
 
         {/* Brand logo */}
         <a href="/" className="header-logo" aria-label="Furniture, go to homepage">
-          <img src="../../assets/images/armchair-fill.png" alt="" className='logo-img' />
+          <img src={logoImg} alt="" className='logo-img' />
           <span className="header-logo-text">Furniture</span>
         </a>
 
