@@ -196,9 +196,12 @@ const dropdownVariants = {
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [openDropdown, setOpenDropdown] = useState(null); // tracks which dropdown is open
    // Ref so we can imperatively focus the input when the search bar opens
   const searchInputRef = useRef(null);
+  const searchBarRef = useRef(null);
+  const searchToggleRef = useRef(null);
 
   const cartItemCount = 0; // replace with real cart state later
 
@@ -227,6 +230,29 @@ export default function Header() {
       document.body.style.overflow = '';
     };
   }, [isMenuOpen]);
+
+  const handleSearchSubmit = () => {
+    // Placeholder for future search API / route integration
+    console.log('Search triggered:', searchQuery);
+  };
+
+  useEffect(() => {
+    if (!isSearchOpen) {
+      return;
+    }
+
+    const handleClickOutsideSearch = (e) => {
+      const clickedInsideSearch = searchBarRef.current?.contains(e.target);
+      const clickedToggleButton = searchToggleRef.current?.contains(e.target);
+
+      if (!clickedInsideSearch && !clickedToggleButton) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutsideSearch);
+    return () => document.removeEventListener('mousedown', handleClickOutsideSearch);
+  }, [isSearchOpen]);
 
   // Close dropdown when clicking outside (desktop)
   useEffect(() => {
@@ -394,9 +420,10 @@ export default function Header() {
           <button
             type="button"
             className="header-icon-btn"
-            aria-label={'Open search'}
+            aria-label="Toggle search"
             aria-expanded={isSearchOpen}
             onClick={() => setIsSearchOpen((prev) => !prev)}
+            ref={searchToggleRef}
           >
             <SearchIcon />
           </button>
@@ -441,34 +468,51 @@ export default function Header() {
         {isSearchOpen && (
           <motion.div
             className="header-search-bar"
+            data-open={isSearchOpen}
             role="search"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            ref={searchBarRef}
           >
             <div className="header-search-inner">
-              <span className="header-search-icon" aria-hidden="true">
+              <button
+                type="button"
+                className="header-search-icon"
+                aria-label="Search"
+                onClick={handleSearchSubmit}
+              >
                 <SearchIcon />
-              </span>
+              </button>
               <input
                 ref={searchInputRef}
                 type="search"
                 className="header-search-input"
                 placeholder="Search furniture..."
                 aria-label="Search furniture"
-              />
-              <button
-                type="button"
-                className="header-search-clear"
-                aria-label="Clear input"
-                onClick={() => {
-                  
-                  searchInputRef.current.value = '';
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearchSubmit();
+                  }
                 }}
-              >
-                <CloseIcon />
-              </button>
+              />
+              {searchQuery.length > 0 && (
+                <button
+                  type="button"
+                  className="header-search-clear"
+                  aria-label="Clear search"
+                  onClick={() => {
+                    setSearchQuery('');
+                    searchInputRef.current?.focus();
+                  }}
+                >
+                  <CloseIcon />
+                </button>
+              )}
             </div>
           </motion.div>
         )}
