@@ -43,7 +43,7 @@
   width: 44.65%;
   min-height: 61.7%;
   padding: 3.75rem 2.6rem 2.25rem;
-  background: $color-card-bg;
+  background: $color-primary-light;
   border-radius: 0.55rem;
   // Soft shadow for depth (matches modern furniture sites)
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
@@ -55,7 +55,7 @@
 /* ---- Typography ---- */
 .hero__eyebrow {
   margin: 0 0 0.5rem;
-  color: $color-text;
+  color: $color-text-primary;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -75,7 +75,7 @@
 .hero__description {
   max-width: 44ch;
   margin: 0 0 2.25rem;
-  color: $color-text;
+  color: $color-text-primary;
   font-size: 0.875rem;
   line-height: 1.45;
 }
@@ -101,7 +101,7 @@
 
   &:hover,
   &:focus-visible {
-    background: $color-primary-dark;
+    background: $color-primary;
     outline: none;
   }
 
@@ -113,7 +113,7 @@
 /* =========================================================
    Responsive – Mobile / Android first priority
    ========================================================= */
-@media (max-width: #{$bp-md - 1px}) {
+@media (max-width: #{$bp-tablet - 1px}) {
   .hero {
     // Full viewport height minus typical mobile header
     height: calc(100dvh - 4.75rem);
