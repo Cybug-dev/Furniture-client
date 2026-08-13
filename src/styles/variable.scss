@@ -1,18 +1,11 @@
 // ============================================================
 // variables.scss
-// Design tokens extracted & normalized from Figma
-// Zero duplicate values • One token per semantic role
-// ============================================================
-
-// ------------------------------------------------------------
+// =======================================================
 // 1. Font Import
-// ------------------------------------------------------------
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700&display=swap');
 
-// ------------------------------------------------------------
 // 2. Colors
-// One token per semantic role — most frequent value wins
-// ------------------------------------------------------------
+// One token per semantic role
 $color-primary:          #2FB854;   // Brand green — CTAs, links, active states
 $color-primary-surface:  #DCF3E2;   // Light green surface — tags, badges, category cards
 $color-primary-light:    rgba(47, 184, 84, 0.17); // Tint for highlights
@@ -41,9 +34,7 @@ $color-black:            #000000;
 // (e.g. $color-primary-dark-mode, $color-background-dark-mode, etc.)
 // Do not invent values — extract from future dark-mode Figma frames.
 
-// ------------------------------------------------------------
 // 3. Typography
-// ------------------------------------------------------------
 $font-primary:   'Poppins', sans-serif;
 $font-secondary: 'Montserrat', sans-serif; // Logo / brand accent only
 
@@ -87,16 +78,14 @@ $font-size-caption-sm-mobile: 11px;
 
 $line-height-mobile:          1.4;  // Slightly tighter than desktop
 
-// ------------------------------------------------------------
 // 4. Spacing (strict 4px base scale)
 // Normalized from irregular values (2px, 5px, 10px, 20px, 25px, 38px…)
-// ------------------------------------------------------------
-$space-1:  4px;   // was 2px / 5px
+$space-1:  4px;
 $space-2:  8px;
-$space-3:  12px;  // was 10px
+$space-3:  12px;
 $space-4:  16px;  // most common base
-$space-5:  24px;  // was 20px / 25px
-$space-6:  32px;  // was 30px / 38px / 40px
+$space-5:  24px;
+$space-6:  32px;
 $space-7:  48px;
 $space-8:  64px;
 
@@ -109,17 +98,15 @@ $space-xl:  $space-6;
 $space-2xl: $space-7;
 $space-3xl: $space-8;
 
-// ------------------------------------------------------------
 // 5. Layout
-// ------------------------------------------------------------
 $container-max-width:   1440px;
 $content-width:         1236px;
 $content-padding:       $space-6;     // horizontal rail padding
 $section-spacing:       $space-6;     // vertical section gaps
-$header-height:         100px;
-$card-width:            252px;        // normalized from 249–254px
+$header-height:         76px;
+$card-width:            252px;
 $card-image-height:     446px;
-$button-height-lg:      96px;
+$button-height-lg:      66px;
 $button-width:          252px;
 
 $icon-size-sm:          16px;
@@ -128,30 +115,22 @@ $icon-size-lg:          24px;
 $icon-size-xl:          28px;
 $icon-size-2xl:         36px;
 
-// ------------------------------------------------------------
 // 6. Border Radius
-// ------------------------------------------------------------
 $radius-xs:   4px;    // normalized from 3px
 $radius-sm:   5px;
 $radius-md:   10px;   // most common
 $radius-lg:   15px;
 $radius-full: 50px;   // pills / chips
 
-// ------------------------------------------------------------
 // 7. Shadows
-// ------------------------------------------------------------
 $shadow-default: 0 4px 14px 1px rgba(0, 0, 0, 0.16);
 
-// ------------------------------------------------------------
 // 8. Transitions
-// ------------------------------------------------------------
 $transition-fast:   150ms ease;
 $transition-base:   250ms ease;
 $transition-slow:   350ms ease;
 
-// ------------------------------------------------------------
 // 9. Z-index (semantic layers)
-// ------------------------------------------------------------
 $z-dropdown:     100;
 $z-sticky:       200;
 $z-header:       300;
@@ -160,9 +139,7 @@ $z-modal:        500;
 $z-toast:        600;
 $z-tooltip:      700;
 
-// ------------------------------------------------------------
 // 10. Breakpoints
-// ------------------------------------------------------------
 $bp-mobile:  480px;
 $bp-tablet:  768px;
 $bp-desktop: 1024px;

@@ -4,7 +4,7 @@ import './Hero.scss';
 /**
  * Hero section – New Collection banner
  */
-const HERO_IMAGE = '/hero-room.jpg';
+const HERO_IMAGE = '/hero-img.png';
 
 // Animation variants – keep them simple and reusable
 const containerVariants = {
