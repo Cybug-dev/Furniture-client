@@ -1,0 +1,468 @@
+@use '../../styles/variable' as *;
+
+// Keep these values in sync with carouselTiming in Usecarousel.js.
+$carousel-transition-duration: 620ms;
+$carousel-caption-delay: 90ms;
+$carousel-ease: cubic-bezier(0.22, 1, 0.36, 1);
+$carousel-sonar-duration: 1500ms;
+
+.inspiration {
+  background: $color-primary-surface;
+  color: $color-text-primary;
+  font-family: $font-primary;
+  overflow: hidden;
+}
+
+.inspiration__inner {
+  align-items: center;
+  display: grid;
+  gap: $space-7;
+  grid-template-columns: minmax($space-8, 0.78fr) minmax(0, 1.42fr);
+  margin: 0 auto;
+  max-width: $content-width;
+  min-height: calc($card-image-height + $space-8);
+  padding: $space-8 $content-padding;
+}
+
+.inspiration__content {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.inspiration__title {
+  color: $color-text-primary;
+  font-size: $font-size-h2;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  margin: 0;
+  max-width: calc($button-width * 2);
+}
+
+.inspiration__copy {
+  color: $color-text-muted;
+  font-size: $font-size-body;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-normal;
+  margin: 0;
+  max-width: calc($button-width * 2);
+}
+
+.inspiration__button {
+  align-items: center;
+  background: $color-primary;
+  color: $color-white;
+  display: inline-flex;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  height: $button-height-lg;
+  justify-content: center;
+  line-height: $line-height-normal;
+  margin-top: $space-2;
+  min-width: $button-width;
+  padding: 0 $space-6;
+  text-decoration: none;
+  transition: background $transition-base, color $transition-base;
+}
+
+.inspiration__button:hover,
+.inspiration__button:focus-visible {
+  background: $color-text-heading;
+  color: $color-white;
+}
+
+.inspiration-carousel {
+  outline: none;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.inspiration-carousel:focus-visible {
+  outline: $space-1 solid $color-primary;
+  outline-offset: $space-2;
+}
+
+.inspiration-carousel__announcement {
+  height: $space-1;
+  margin: calc($space-1 * -1);
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: $space-1;
+}
+
+.inspiration-carousel__stage {
+  aspect-ratio: 680 / 582;
+  min-height: $card-image-height;
+  position: relative;
+}
+
+.inspiration-carousel__slide {
+  height: 100%;
+  left: 50%;
+  max-height: 582px;
+  max-width: 404px;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transform: translate3d(86%, 0, 0) scale(0.86);
+  transition:
+    transform $carousel-transition-duration $carousel-ease,
+    opacity $carousel-transition-duration $carousel-ease;
+  width: 56%;
+  will-change: transform, opacity;
+  z-index: 1;
+}
+
+.inspiration-carousel__slide--active {
+  opacity: 1;
+  transform: translate3d(-58%, 0, 0) scale(1);
+  z-index: 4;
+}
+
+.inspiration-carousel__slide--prev {
+  opacity: 0.82;
+  transform: translate3d(-118%, $space-5, 0) scale(0.88);
+  z-index: 2;
+}
+
+.inspiration-carousel__slide--next {
+  opacity: 0.9;
+  transform: translate3d(18%, $space-5, 0) scale(0.9);
+  z-index: 3;
+}
+
+.inspiration-carousel__slide--far-prev {
+  opacity: 0.52;
+  transform: translate3d(-164%, $space-7, 0) scale(0.78);
+}
+
+.inspiration-carousel__slide--far-next {
+  opacity: 0.58;
+  transform: translate3d(78%, $space-7, 0) scale(0.78);
+}
+
+.inspiration-carousel__slide--exiting-left {
+  opacity: 0;
+  transform: translate3d(-154%, $space-4, 0) scale(0.82);
+  z-index: 2;
+}
+
+.inspiration-carousel__slide--exiting-right {
+  opacity: 0;
+  transform: translate3d(54%, $space-4, 0) scale(0.82);
+  z-index: 2;
+}
+
+.inspiration-carousel__link {
+  background: $color-border;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+.inspiration-carousel__link:focus-visible {
+  outline: $space-1 solid $color-primary;
+  outline-offset: $space-2;
+}
+
+.inspiration-carousel__link--side:disabled {
+  cursor: default;
+}
+
+.inspiration-carousel__link img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity $transition-base;
+  width: 100%;
+}
+
+.inspiration-carousel__image--missing {
+  opacity: 0;
+}
+
+.inspiration-carousel__caption {
+  background: rgba($color-white, 0.82);
+  bottom: $space-5;
+  color: $color-text-primary;
+  display: grid;
+  gap: $space-2;
+  left: $space-5;
+  max-width: calc(100% - $space-7);
+  opacity: 0;
+  padding: $space-6;
+  pointer-events: none;
+  position: absolute;
+  transform: translate3d(0, $space-3, 0);
+  transition:
+    opacity $transition-slow $carousel-ease $carousel-caption-delay,
+    transform $transition-slow $carousel-ease $carousel-caption-delay;
+}
+
+.inspiration-carousel__caption--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.inspiration-carousel__meta {
+  align-items: center;
+  color: $color-text-muted;
+  display: flex;
+  font-size: $font-size-body;
+  gap: $space-2;
+  line-height: $line-height-normal;
+}
+
+.inspiration-carousel__meta span {
+  background: $color-text-muted;
+  display: inline-block;
+  height: $space-1;
+  width: $space-5;
+}
+
+.inspiration-carousel__caption strong {
+  color: $color-text-primary;
+  font-size: $font-size-h4;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+}
+
+.inspiration-carousel__controls {
+  inset: 50% 0 auto;
+  pointer-events: none;
+  position: absolute;
+  z-index: 6;
+}
+
+.inspiration-carousel__nav {
+  align-items: center;
+  background: $color-surface;
+  border: 0;
+  border-radius: $radius-full;
+  box-shadow: $shadow-default;
+  color: $color-primary;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: $font-size-h4;
+  height: $space-7;
+  justify-content: center;
+  line-height: $line-height-tight;
+  pointer-events: auto;
+  position: absolute;
+  transform: translateY(-50%);
+  transition: color $transition-base, opacity $transition-base;
+  width: $space-7;
+}
+
+.inspiration-carousel__nav:hover,
+.inspiration-carousel__nav:focus-visible {
+  color: $color-text-heading;
+}
+
+.inspiration-carousel__nav:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.inspiration-carousel__nav--prev {
+  left: $space-3;
+}
+
+.inspiration-carousel__nav--next {
+  right: $space-3;
+}
+
+.inspiration-carousel__dots {
+  align-items: center;
+  display: flex;
+  gap: $space-5;
+  justify-content: center;
+  margin-top: $space-5;
+}
+
+.inspiration-carousel__dot {
+  background: $color-border;
+  border: 0;
+  border-radius: $radius-full;
+  cursor: pointer;
+  height: $space-3;
+  padding: 0;
+  position: relative;
+  transition: background $transition-base;
+  width: $space-3;
+}
+
+.inspiration-carousel__dot::before,
+.inspiration-carousel__dot::after {
+  border: $space-1 solid $color-primary;
+  border-radius: $radius-full;
+  content: '';
+  inset: calc($space-2 * -1);
+  opacity: 0;
+  position: absolute;
+}
+
+.inspiration-carousel__dot--active {
+  background: $color-primary;
+}
+
+.inspiration-carousel__dot--active::before,
+.inspiration-carousel__dot--active::after {
+  animation: inspiration-sonar $carousel-sonar-duration $carousel-ease infinite;
+}
+
+.inspiration-carousel__dot--active::after {
+  animation-delay: calc($carousel-sonar-duration / 2);
+}
+
+.inspiration-carousel__dot:focus-visible {
+  outline: $space-1 solid $color-primary;
+  outline-offset: $space-2;
+}
+
+.inspiration-carousel__dot:disabled {
+  cursor: default;
+}
+
+@keyframes inspiration-sonar {
+  0% {
+    opacity: 0.38;
+    transform: scale(0.72);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.3);
+  }
+}
+
+@media (max-width: $bp-desktop) {
+  .inspiration__inner {
+    gap: $space-6;
+    grid-template-columns: 1fr;
+    padding-bottom: $space-7;
+    padding-top: $space-7;
+  }
+
+  .inspiration__content {
+    max-width: calc($button-width * 2);
+  }
+
+  .inspiration-carousel__stage {
+    min-height: calc($card-image-height - $space-8);
+  }
+
+  .inspiration-carousel__controls {
+    display: none;
+  }
+}
+
+@media (max-width: $bp-tablet) {
+  .inspiration__inner {
+    gap: $space-5;
+    min-height: 0;
+    padding: $space-6 $space-4;
+  }
+
+  .inspiration__title {
+    font-size: $font-size-h2-mobile;
+  }
+
+  .inspiration__copy,
+  .inspiration__button {
+    font-size: $font-size-body-mobile;
+  }
+
+  .inspiration__button {
+    height: calc($button-height-lg - $space-4);
+    min-width: calc($button-width - $space-7);
+  }
+
+  .inspiration-carousel__stage {
+    aspect-ratio: 1 / 1.12;
+    min-height: 0;
+  }
+
+  .inspiration-carousel__slide {
+    max-width: none;
+    width: 68%;
+  }
+
+  .inspiration-carousel__slide--active {
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+
+  .inspiration-carousel__slide--prev {
+    opacity: 0.58;
+    transform: translate3d(-104%, $space-5, 0) scale(0.88);
+  }
+
+  .inspiration-carousel__slide--next {
+    opacity: 0.58;
+    transform: translate3d(4%, $space-5, 0) scale(0.88);
+  }
+
+  .inspiration-carousel__slide--far-prev,
+  .inspiration-carousel__slide--far-next {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .inspiration-carousel__slide--far-prev {
+    transform: translate3d(-132%, $space-6, 0) scale(0.82);
+  }
+
+  .inspiration-carousel__slide--far-next {
+    transform: translate3d(32%, $space-6, 0) scale(0.82);
+  }
+
+  .inspiration-carousel__caption {
+    bottom: $space-4;
+    left: $space-4;
+    max-width: calc(100% - $space-6);
+    padding: $space-4;
+  }
+
+  .inspiration-carousel__meta {
+    font-size: $font-size-caption-mobile;
+  }
+
+  .inspiration-carousel__caption strong {
+    font-size: $font-size-h5-mobile;
+  }
+
+  .inspiration-carousel__dots {
+    gap: $space-4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inspiration-carousel__slide,
+  .inspiration-carousel__caption,
+  .inspiration-carousel__link img,
+  .inspiration-carousel__nav,
+  .inspiration-carousel__dot {
+    transition-duration: $transition-fast;
+  }
+
+  .inspiration-carousel__slide--exiting-left,
+  .inspiration-carousel__slide--exiting-right {
+    transform: translate3d(-58%, 0, 0) scale(1);
+  }
+
+  .inspiration-carousel__dot--active::before,
+  .inspiration-carousel__dot--active::after {
+    animation: none;
+  }
+}
