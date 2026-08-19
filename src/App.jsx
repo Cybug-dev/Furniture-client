@@ -1,6 +1,7 @@
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import Browse from './components/Browse/Browse'
+import ShareSetup from './textcomponents/ShareSetup/ShareSetup'
 import './App.css'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <main className="main-content">
         <Hero />
         <Browse />
+        <ShareSetup />
       </main>
     </div>
   )
