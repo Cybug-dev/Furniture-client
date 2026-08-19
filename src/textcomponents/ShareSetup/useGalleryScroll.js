@@ -34,9 +34,9 @@ export function useGalleryImageInView(rootRef) {
 }
 
 /**
- * Provides a user-driven, native horizontal gallery. Three identical cycles
- * allow scrollLeft to be reset invisibly at either end, creating an endless
- * loop without a carousel library or scripted auto-scroll.
+ * Provides an endlessly looping horizontal gallery. Repeated identical cycles
+ * allow scrollLeft to be reset invisibly at either end. The rail advances
+ * continuously from left to right.
  */
 export function useGalleryScroll() {
   const sectionRef = useRef(null);
@@ -84,6 +84,10 @@ export function useGalleryScroll() {
     const gallery = galleryRef.current;
     if (!gallery) return undefined;
 
+    const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let animationFrame;
+    let lastFrameTime;
+
     const getCycleWidth = () => {
       const firstColumn = gallery.querySelector('.share-setup__desktop-column');
       const firstRepeatedColumn = gallery.querySelectorAll('.share-setup__desktop-column')[4];
@@ -92,17 +96,41 @@ export function useGalleryScroll() {
         : 0;
     };
 
-    const keepLooping = () => {
+    const getWrappedScrollLeft = (scrollLeft) => {
       const cycleWidth = getCycleWidth();
-      if (!cycleWidth) return;
+      if (!cycleWidth) return scrollLeft;
 
-      if (gallery.scrollLeft >= cycleWidth * 2) gallery.scrollLeft -= cycleWidth;
-      if (gallery.scrollLeft <= 0) gallery.scrollLeft += cycleWidth;
+      const offset = ((scrollLeft - cycleWidth) % cycleWidth + cycleWidth) % cycleWidth;
+      return cycleWidth + offset;
+    };
+
+    const setLoopingScrollLeft = (scrollLeft) => {
+      gallery.scrollLeft = getWrappedScrollLeft(scrollLeft);
+    };
+
+    const keepLooping = () => {
+      const wrappedScrollLeft = getWrappedScrollLeft(gallery.scrollLeft);
+      if (gallery.scrollLeft !== wrappedScrollLeft) gallery.scrollLeft = wrappedScrollLeft;
     };
 
     const positionInitialCycle = () => {
       const cycleWidth = getCycleWidth();
-      if (cycleWidth) gallery.scrollLeft = cycleWidth;
+      if (cycleWidth) gallery.scrollLeft = cycleWidth * 1.5;
+    };
+
+    const autoScroll = (frameTime) => {
+      if (!reducedMotionMedia.matches && !document.hidden) {
+        if (lastFrameTime) {
+          // A gentle 32px/second motion keeps the gallery readable while
+          // making its endless nature apparent.
+          setLoopingScrollLeft(gallery.scrollLeft - (frameTime - lastFrameTime) * 0.032);
+        }
+        lastFrameTime = frameTime;
+      } else {
+        lastFrameTime = undefined;
+      }
+
+      animationFrame = window.requestAnimationFrame(autoScroll);
     };
 
     const onWheel = (event) => {
@@ -116,8 +144,7 @@ export function useGalleryScroll() {
       if (!horizontalDelta) return;
 
       event.preventDefault();
-      gallery.scrollLeft += horizontalDelta;
-      keepLooping();
+      setLoopingScrollLeft(gallery.scrollLeft + horizontalDelta);
     };
 
     const onPointerDown = (event) => {
@@ -144,8 +171,7 @@ export function useGalleryScroll() {
       }
 
       if (drag.direction !== 'horizontal') return;
-      gallery.scrollLeft = drag.startScrollLeft + distanceX;
-      keepLooping();
+      setLoopingScrollLeft(drag.startScrollLeft + distanceX);
     };
 
     const endPointerDrag = (event) => {
@@ -175,10 +201,14 @@ export function useGalleryScroll() {
     gallery.addEventListener('click', onClickCapture, true);
     gallery.addEventListener('scroll', keepLooping, { passive: true });
 
-    const initialPositionFrame = window.requestAnimationFrame(positionInitialCycle);
+    const initialPositionFrame = window.requestAnimationFrame(() => {
+      positionInitialCycle();
+      animationFrame = window.requestAnimationFrame(autoScroll);
+    });
 
     return () => {
       window.cancelAnimationFrame(initialPositionFrame);
+      window.cancelAnimationFrame(animationFrame);
       gallery.removeEventListener('wheel', onWheel);
       gallery.removeEventListener('pointerdown', onPointerDown);
       gallery.removeEventListener('pointermove', onPointerMove);

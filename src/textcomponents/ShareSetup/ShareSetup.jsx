@@ -64,7 +64,7 @@ function ShareSetup() {
         data-carousel-active={isDesktop}
       >
         <div className="share-setup__desktop-track">
-          {[...desktopColumns, ...desktopColumns, ...desktopColumns].map((column, columnIndex) => (
+          {[...desktopColumns, ...desktopColumns, ...desktopColumns, ...desktopColumns].map((column, columnIndex) => (
             <div className="share-setup__desktop-column" key={`column-${columnIndex}`}>
               {column.map((image) => (
                 <GalleryImage
