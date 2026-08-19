@@ -11,9 +11,20 @@ const entrance = {
   visible: { opacity: 1, y: 0 },
 };
 
-function GalleryImage({ image, index, observerRootRef }) {
+function GalleryImage({
+  image,
+  index,
+  observerRootRef,
+  isSectionVisible,
+  animateOnEnter = true,
+  delay = 0,
+}) {
   const shouldReduceMotion = useReducedMotion();
-  const { imageRef, isInView } = useGalleryImageInView(observerRootRef);
+  const shouldAnimate = animateOnEnter && !shouldReduceMotion;
+  const { imageRef, isInView } = useGalleryImageInView(
+    observerRootRef,
+    isSectionVisible && shouldAnimate,
+  );
 
   return (
     <motion.a
@@ -22,11 +33,12 @@ function GalleryImage({ image, index, observerRootRef }) {
       href={`/category/${image.category}`}
       aria-label={`Explore ${image.category.replace('-', ' ')} inspiration`}
       style={{ '--image-ratio': image.ratio }}
-      initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={isInView || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+      initial={shouldAnimate ? { opacity: 0, y: 14 } : false}
+      animate={isInView || !shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{
-        duration: shouldReduceMotion ? 0 : 0.42,
+        duration: shouldAnimate ? 0.42 : 0,
         ease: 'easeOut',
+        delay: shouldAnimate ? delay : 0,
       }}
     >
       <img src={image.src} alt={image.alt} loading={index < 4 ? 'eager' : 'lazy'} />
@@ -66,12 +78,15 @@ function ShareSetup() {
         <div className="share-setup__desktop-track">
           {[...desktopColumns, ...desktopColumns, ...desktopColumns, ...desktopColumns].map((column, columnIndex) => (
             <div className="share-setup__desktop-column" key={`column-${columnIndex}`}>
-              {column.map((image) => (
+              {column.slice(0, columnIndex % desktopColumns.length % 2 === 0 ? 2 : 3).map((image, imageIndex) => (
                 <GalleryImage
                   image={image}
                   index={image.id - 1}
                   key={`${columnIndex}-${image.id}`}
                   observerRootRef={galleryRef}
+                  isSectionVisible={isVisible}
+                  animateOnEnter={false}
+                  delay={(columnIndex % desktopColumns.length) * 0.08 + imageIndex * 0.055}
                 />
               ))}
             </div>
@@ -87,6 +102,8 @@ function ShareSetup() {
             image={image}
             index={index}
             key={image.id}
+            isSectionVisible={isVisible}
+            delay={(index % 4) * 0.05}
           />
         ))}
       </div>

@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 
 const DESKTOP_QUERY = '(min-width: 768px)';
 
-/** Observes a single card once it enters the page or horizontal gallery view. */
-export function useGalleryImageInView(rootRef) {
+/** Reveals a card once its section and the card itself are both in view. */
+export function useGalleryImageInView(rootRef, isSectionVisible) {
   const imageRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const image = imageRef.current;
-    if (!image || isInView) return undefined;
+    if (!image || isInView || !isSectionVisible) return undefined;
 
     if (!('IntersectionObserver' in window)) {
       setIsInView(true);
@@ -28,7 +28,7 @@ export function useGalleryImageInView(rootRef) {
 
     observer.observe(image);
     return () => observer.disconnect();
-  }, [isInView, rootRef]);
+  }, [isInView, isSectionVisible, rootRef]);
 
   return { imageRef, isInView };
 }
