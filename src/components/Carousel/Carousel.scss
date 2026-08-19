@@ -16,37 +16,37 @@ $carousel-sonar-duration: 1500ms;
 .inspiration__inner {
   align-items: center;
   display: grid;
-  gap: $space-7;
-  grid-template-columns: minmax($space-8, 0.78fr) minmax(0, 1.42fr);
+  gap: $space-6;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.48fr);
   margin: 0 auto;
   max-width: $content-width;
-  min-height: calc($card-image-height + $space-8);
-  padding: $space-8 $content-padding;
+  min-height: 470px;
+  padding: $space-6 $content-padding;
 }
 
 .inspiration__content {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-3;
 }
 
 .inspiration__title {
   color: $color-text-primary;
-  font-size: $font-size-h2;
+  font-size: $font-size-h3;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   margin: 0;
-  max-width: calc($button-width * 2);
+  max-width: 360px;
 }
 
 .inspiration__copy {
   color: $color-text-muted;
-  font-size: $font-size-body;
+  font-size: $font-size-caption;
   font-weight: $font-weight-medium;
   line-height: $line-height-normal;
   margin: 0;
-  max-width: calc($button-width * 2);
+  max-width: 330px;
 }
 
 .inspiration__button {
@@ -54,14 +54,14 @@ $carousel-sonar-duration: 1500ms;
   background: $color-primary;
   color: $color-white;
   display: inline-flex;
-  font-size: $font-size-body;
+  font-size: $font-size-caption-sm;
   font-weight: $font-weight-semibold;
-  height: $button-height-lg;
+  height: 44px;
   justify-content: center;
   line-height: $line-height-normal;
   margin-top: $space-2;
-  min-width: $button-width;
-  padding: 0 $space-6;
+  min-width: 148px;
+  padding: 0 $space-5;
   text-decoration: none;
   transition: background $transition-base, color $transition-base;
 }
@@ -93,16 +93,16 @@ $carousel-sonar-duration: 1500ms;
 }
 
 .inspiration-carousel__stage {
-  aspect-ratio: 680 / 582;
-  min-height: $card-image-height;
+  aspect-ratio: 690 / 430;
+  min-height: 410px;
   position: relative;
 }
 
 .inspiration-carousel__slide {
   height: 100%;
   left: 50%;
-  max-height: 582px;
-  max-width: 404px;
+  max-height: 410px;
+  max-width: 300px;
   opacity: 0;
   position: absolute;
   top: 0;
@@ -110,37 +110,37 @@ $carousel-sonar-duration: 1500ms;
   transition:
     transform $carousel-transition-duration $carousel-ease,
     opacity $carousel-transition-duration $carousel-ease;
-  width: 56%;
+  width: 44%;
   will-change: transform, opacity;
   z-index: 1;
 }
 
 .inspiration-carousel__slide--active {
   opacity: 1;
-  transform: translate3d(-58%, 0, 0) scale(1);
+  transform: translate3d(-68%, 0, 0) scale(1);
   z-index: 4;
 }
 
 .inspiration-carousel__slide--prev {
   opacity: 0.82;
-  transform: translate3d(-118%, $space-5, 0) scale(0.88);
+  transform: translate3d(-128%, $space-4, 0) scale(0.86);
   z-index: 2;
 }
 
 .inspiration-carousel__slide--next {
   opacity: 0.9;
-  transform: translate3d(18%, $space-5, 0) scale(0.9);
+  transform: translate3d(10%, 0, 0) scale(0.84);
   z-index: 3;
 }
 
 .inspiration-carousel__slide--far-prev {
   opacity: 0.52;
-  transform: translate3d(-164%, $space-7, 0) scale(0.78);
+  transform: translate3d(-166%, $space-5, 0) scale(0.72);
 }
 
 .inspiration-carousel__slide--far-next {
   opacity: 0.58;
-  transform: translate3d(78%, $space-7, 0) scale(0.78);
+  transform: translate3d(72%, $space-4, 0) scale(0.72);
 }
 
 .inspiration-carousel__slide--exiting-left {
@@ -194,14 +194,14 @@ $carousel-sonar-duration: 1500ms;
 
 .inspiration-carousel__caption {
   background: rgba($color-white, 0.82);
-  bottom: $space-5;
+  bottom: $space-4;
   color: $color-text-primary;
   display: grid;
   gap: $space-2;
   left: $space-5;
   max-width: calc(100% - $space-7);
   opacity: 0;
-  padding: $space-6;
+  padding: $space-4 $space-5;
   pointer-events: none;
   position: absolute;
   transform: translate3d(0, $space-3, 0);
@@ -219,7 +219,7 @@ $carousel-sonar-duration: 1500ms;
   align-items: center;
   color: $color-text-muted;
   display: flex;
-  font-size: $font-size-body;
+  font-size: $font-size-caption-sm;
   gap: $space-2;
   line-height: $line-height-normal;
 }
@@ -233,7 +233,7 @@ $carousel-sonar-duration: 1500ms;
 
 .inspiration-carousel__caption strong {
   color: $color-text-primary;
-  font-size: $font-size-h4;
+  font-size: $font-size-body-lg;
   font-weight: $font-weight-semibold;
   line-height: $line-height-tight;
 }
@@ -254,15 +254,15 @@ $carousel-sonar-duration: 1500ms;
   color: $color-primary;
   cursor: pointer;
   display: inline-flex;
-  font-size: $font-size-h4;
-  height: $space-7;
+  font-size: $font-size-h5;
+  height: 40px;
   justify-content: center;
   line-height: $line-height-tight;
   pointer-events: auto;
   position: absolute;
   transform: translateY(-50%);
   transition: color $transition-base, opacity $transition-base;
-  width: $space-7;
+  width: 40px;
 }
 
 .inspiration-carousel__nav:hover,
