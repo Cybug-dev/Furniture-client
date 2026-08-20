@@ -122,8 +122,7 @@ $carousel-sonar-duration: 1500ms;
   top: 0;
   transform: translate3d(86%, 0, 0) scale(0.86);
   transition:
-    transform $carousel-transition-duration $carousel-ease,
-    opacity $carousel-transition-duration $carousel-ease;
+    transform $carousel-transition-duration $carousel-ease;
   width: 44%;
   will-change: transform, opacity;
   z-index: 1;
@@ -136,24 +135,24 @@ $carousel-sonar-duration: 1500ms;
 }
 
 .inspiration-carousel__slide--prev {
-  opacity: 0.82;
+  opacity: 1;
   transform: translate3d(-128%, $space-4, 0) scale(0.86);
   z-index: 2;
 }
 
 .inspiration-carousel__slide--next {
-  opacity: 0.9;
+  opacity: 1;
   transform: translate3d(10%, 0, 0) scale(0.84);
   z-index: 3;
 }
 
 .inspiration-carousel__slide--far-prev {
-  opacity: 0.52;
+  opacity: 0;
   transform: translate3d(-166%, $space-5, 0) scale(0.72);
 }
 
 .inspiration-carousel__slide--far-next {
-  opacity: 0.58;
+  opacity: 1;
   transform: translate3d(72%, $space-4, 0) scale(0.72);
 }
 
@@ -198,7 +197,6 @@ $carousel-sonar-duration: 1500ms;
   height: 100%;
   object-fit: cover;
   opacity: 1;
-  transition: opacity $transition-base;
   width: 100%;
 }
 
@@ -416,7 +414,7 @@ $carousel-sonar-duration: 1500ms;
   min-height: 0;
   width: 100%;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 2rem auto;
 }
 
   .inspiration-carousel__slide {
