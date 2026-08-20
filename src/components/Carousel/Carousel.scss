@@ -1,4 +1,4 @@
-@use '../../styles/variable' as *;
+@use "../../styles/variable" as *;
 
 // Keep these values in sync with carouselTiming in Usecarousel.js.
 $carousel-transition-duration: 620ms;
@@ -63,7 +63,9 @@ $carousel-sonar-duration: 1500ms;
   min-width: 148px;
   padding: 0 $space-5;
   text-decoration: none;
-  transition: background $transition-base, color $transition-base;
+  transition:
+    background $transition-base,
+    color $transition-base;
 }
 
 .inspiration__button:hover,
@@ -92,9 +94,21 @@ $carousel-sonar-duration: 1500ms;
   width: $space-1;
 }
 
+// .inspiration-carousel__stage {
+//   aspect-ratio: 690 / 430;
+//   min-height: 410px;
+//   position: relative;
+// }
+
 .inspiration-carousel__stage {
-  aspect-ratio: 690 / 430;
-  min-height: 410px;
+  /* 1. Define your controls here */
+  --carousel-width: 600px;
+  --carousel-height: 410px;
+  /* 2. Fluid width, capped by the control above, centered in the carousel */
+  width: 100%;
+  max-width: var(--carousel-width);
+  height: var(--carousel-height);
+  margin: 0 auto;
   position: relative;
 }
 
@@ -261,7 +275,9 @@ $carousel-sonar-duration: 1500ms;
   pointer-events: auto;
   position: absolute;
   transform: translateY(-50%);
-  transition: color $transition-base, opacity $transition-base;
+  transition:
+    color $transition-base;
+    // opacity $transition-base;
   width: 40px;
 }
 
@@ -288,7 +304,12 @@ $carousel-sonar-duration: 1500ms;
   display: flex;
   gap: $space-5;
   justify-content: center;
+  left: 50%;
   margin-top: $space-5;
+  max-width: 300px;
+  position: relative;
+  transform: translateX(-68%);
+  width: 44%;
 }
 
 .inspiration-carousel__dot {
@@ -296,18 +317,18 @@ $carousel-sonar-duration: 1500ms;
   border: 0;
   border-radius: $radius-full;
   cursor: pointer;
-  height: $space-3;
+  height: $space-2;
   padding: 0;
   position: relative;
   transition: background $transition-base;
-  width: $space-3;
+  width: $space-2;
 }
 
 .inspiration-carousel__dot::before,
 .inspiration-carousel__dot::after {
   border: $space-1 solid $color-primary;
   border-radius: $radius-full;
-  content: '';
+  content: "";
   inset: calc($space-2 * -1);
   opacity: 0;
   position: absolute;
@@ -361,6 +382,7 @@ $carousel-sonar-duration: 1500ms;
 
   .inspiration-carousel__stage {
     min-height: calc($card-image-height - $space-8);
+    max-width: 100%;
   }
 
   .inspiration-carousel__controls {
@@ -389,14 +411,16 @@ $carousel-sonar-duration: 1500ms;
     min-width: calc($button-width - $space-7);
   }
 
-  .inspiration-carousel__stage {
-    aspect-ratio: 1 / 1.12;
-    min-height: 0;
-  }
+.inspiration-carousel__stage {
+  aspect-ratio: 1 / 1.12;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
 
   .inspiration-carousel__slide {
-    max-width: none;
-    width: 68%;
+    max-width: 68%;
   }
 
   .inspiration-carousel__slide--active {
@@ -404,18 +428,18 @@ $carousel-sonar-duration: 1500ms;
   }
 
   .inspiration-carousel__slide--prev {
-    opacity: 0.58;
+    // opacity: 0.58;
     transform: translate3d(-104%, $space-5, 0) scale(0.88);
   }
 
   .inspiration-carousel__slide--next {
-    opacity: 0.58;
+    // opacity: 0.58;
     transform: translate3d(4%, $space-5, 0) scale(0.88);
   }
 
   .inspiration-carousel__slide--far-prev,
   .inspiration-carousel__slide--far-next {
-    opacity: 0;
+    // opacity: 0;
     pointer-events: none;
   }
 
@@ -444,6 +468,10 @@ $carousel-sonar-duration: 1500ms;
 
   .inspiration-carousel__dots {
     gap: $space-4;
+    margin-top: $space-5;
+    max-width: none;
+    transform: translateX(-50%);
+    width: 68%;
   }
 }
 
@@ -465,4 +493,11 @@ $carousel-sonar-duration: 1500ms;
   .inspiration-carousel__dot--active::after {
     animation: none;
   }
+}
+
+@media (max-width: 600px) {
+  .inspiration-carousel__slide {
+    min-width: 70%;
+  }
+
 }
