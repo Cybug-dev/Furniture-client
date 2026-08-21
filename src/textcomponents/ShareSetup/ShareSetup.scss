@@ -1,0 +1,135 @@
+@use '../../styles/variable.scss' as *;
+
+.share-setup {
+  overflow: hidden;
+  padding: 5.5rem 0 6.5rem;
+  background: $color-surface;
+}
+
+.share-setup__heading {
+  margin-bottom: 2rem;
+  padding: 0 $space-4;
+  text-align: center;
+}
+
+.share-setup__heading p,
+.share-setup__heading h2 {
+  margin: 0;
+  font-family: $font-primary;
+  color: $color-text-primary;
+}
+
+.share-setup__heading p {
+  font-size: $font-size-caption-sm;
+  line-height: 1.35;
+}
+
+.share-setup__heading h2 {
+  font-size: $font-size-h5;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+}
+
+.share-setup__desktop-gallery {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+
+.share-setup__desktop-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.share-setup__desktop-gallery:active {
+  cursor: grabbing;
+}
+
+.share-setup__desktop-track {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  width: max-content;
+  min-width: max(100%, 1050px);
+  padding: 0 max(3vw, $space-4);
+}
+
+.share-setup__desktop-column {
+  display: flex;
+  flex: 0 0 clamp(180px, 19vw, 292px);
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.share-setup__desktop-column:nth-child(even) {
+  padding-top: 2.5rem;
+}
+
+.share-setup__card {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--image-ratio);
+  overflow: hidden;
+  background: $color-background;
+  text-decoration: none;
+}
+
+.share-setup__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform $transition-slow;
+}
+
+.share-setup__card:hover img,
+.share-setup__card:focus-visible img {
+  transform: scale(1.04);
+}
+
+.share-setup__card:focus-visible {
+  outline: 3px solid $color-primary;
+  outline-offset: 3px;
+}
+
+.share-setup__mobile-gallery {
+  display: none;
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .share-setup {
+    padding: 4rem $space-4;
+  }
+
+  .share-setup__heading {
+    margin-bottom: $space-5;
+  }
+
+  .share-setup__desktop-gallery {
+    display: none;
+  }
+
+  .share-setup__mobile-gallery {
+    display: block;
+    column-count: 2;
+    column-gap: $space-3;
+  }
+
+  .share-setup__mobile-gallery .share-setup__card {
+    display: inline-block;
+    margin: 0 0 $space-3;
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: #{$bp-mobile}) {
+  .share-setup {
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .share-setup__heading h2 {
+    font-size: $font-size-h5-mobile;
+  }
+}
