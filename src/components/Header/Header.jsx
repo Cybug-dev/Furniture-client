@@ -287,6 +287,7 @@ export default function Header() {
       initial="hidden"
       animate="visible"
     >
+      
       <div className="header-container">
         {/* 
       <div className="header-container">
@@ -529,17 +530,8 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* ── Overlay — dims page behind open drawer
-          Tapping it closes the drawer                         */}
-      <button
-        type="button"
-        className="header-overlay"
-        aria-label="Close navigation menu"
-        aria-hidden={!isMenuOpen}
-        data-open={isMenuOpen}
-        tabIndex={isMenuOpen ? 0 : -1}
-        onClick={() => setIsMenuOpen(false)}
-      />
+     
     </motion.header>
+    
   );
 }
