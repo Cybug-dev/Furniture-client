@@ -6,15 +6,9 @@
    ========================================================= */
 
 .hero {
-  // position: relative;
-  // height: 50vw;
-  // min-height: 34rem;
-  // max-height: 45rem;
-  // overflow: hidden;
-  // isolation: isolate;
     position: relative; 
     width: 100%;
-    min-height: 85vh; 
+    min-height: 95vh; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,7 +36,7 @@
 .hero__content {
   position: absolute;
   z-index: 2;
-  top: 22.2%;
+  top: 25.2%;
   right: 3.9%;
   width: 44.65%;
   min-height: 61.7%;
@@ -119,7 +113,7 @@
 /* =============== Responsive – Mobile / Android first priority ============= */
 @media (max-width: #{$bp-tablet - 1px}) {
   .hero {
-    height: calc(100dvh - 4.75rem);
+    height: 100dvh;
     min-height: 34rem;
     max-height: none;
   }

@@ -6,10 +6,19 @@
    ========================*/
 
 .header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: $z-header;
-  background: $color-surface;
-  box-shadow: $shadow-default;
+  background: transparent;
+  box-shadow: none;
+  transition: background $transition-base, box-shadow $transition-base;
+
+  &--scrolled {
+    background: $color-surface;
+    box-shadow: $shadow-default;
+  }
 }
 
 /* ── Main bar — logo | nav | actions ─────────────────────────── */
@@ -523,4 +532,4 @@
     padding-top: $space-2;
     border-top: 1px solid $color-border;
   }
-} 
+}
