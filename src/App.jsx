@@ -4,6 +4,7 @@ import Browse from './components/Browse/Browse'
 import ShareSetup from './textcomponents/ShareSetup/ShareSetup'
 import Footer from './components/Footer/Footer';
 import './App.css'
+import Carousel from './components/Carousel/Carousel'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <main className="main-content">
         <Hero />
         <Browse />
+        <Carousel/>
         <ShareSetup />
         <Footer />
       </main>
