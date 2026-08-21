@@ -1,5 +1,8 @@
+@use '../../styles/variable.scss' as *;
+
+/* ========= Browse Section ============ */
 .browse {
-  padding: 70px 0 40px;
+  padding: 4.375rem 0 2.5rem; // closest token: $space-8 and $space-6
   text-align: center;
   overflow-x: hidden;
 }
@@ -9,13 +12,16 @@
 }
 
 .browse-heading h2 {
-  font-size: 1.7rem;
-  margin: 0 0 0px;
+  font-family: $font-primary;
+  font-size: $font-size-h4;
+  font-weight: $font-weight-bold;
+  margin: 0 0 0;
 }
 
 .browse-heading p {
-  font-size: 0.9rem;
-  color: #7a7a7a;
+  font-family: $font-primary;
+  font-size: $font-size-label;
+  color: $color-text-muted;
   max-width: 520px;
   margin: 0 auto;
 }
@@ -23,9 +29,9 @@
 .browse-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: $space-5;
   max-width: 1100px;
-  margin: 2rem auto;
+  margin: $space-5 auto;
 }
 
 .browse-item {
@@ -42,38 +48,39 @@
   height: 400px;
   aspect-ratio: auto;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 16px;
+  border-radius: $radius-md;
+  margin-bottom: $space-4;
   box-sizing: border-box;
 }
 
 .browse-label {
   display: block;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-family: $font-primary;
+  font-size: $font-size-body;
+  font-weight: $font-weight-bold;
   text-align: center;
 }
 
-@media (max-width: 700px) and (min-width: 481px) {
+@media (max-width: #{$bp-tablet - 1px}) and (min-width: #{$bp-mobile + 1px}) {
   .browse-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: $space-4;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: #{$bp-mobile}) {
   .browse {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: $space-4;
+    padding-right: $space-4;
   }
 
   .browse-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: $space-5;
   }
 
   .browse-item {
-    margin-bottom: 20px;
+    margin-bottom: $space-5;
   }
 
   .browse-item:last-child {

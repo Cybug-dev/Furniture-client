@@ -1,12 +1,146 @@
-$color-bg: #f5f5f5;
-$color-card-bg: rgba(76, 175, 80, 0.18);
-$color-primary: #4caf50;
-$color-primary-dark: #4caf50;
-$color-text: #2d2d2d;
-$color-text-muted: #888;
-$color-border: #f1f1f1;
+// ============================================================
+// variables.scss
+// =======================================================
+// 1. Font Import
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700&display=swap');
 
-$container-max: 1440px;
+// 2. Colors
+// One token per semantic role
+$color-primary:          #2FB854;   // Brand green — CTAs, links, active states
+$color-primary-surface:  #DCF3E2;   // Light green surface — tags, badges, category cards
+$color-primary-light:    rgba(47, 184, 84, 0.17); // Tint for highlights
 
-$bp-md: 768px;
-$bp-lg: 1024px;
+$color-text-primary:     #3A3A3A;   // Main body text, product names
+$color-text-heading:     #000000;   // Headings, nav links, icons
+$color-text-muted:       #898989;   // Descriptions, secondary labels
+$color-text-subtle:      #9F9F9F;   // Footer links, tertiary text
+$color-text-disabled:    #B0B0B0;   // Strikethrough prices, disabled states
+
+$color-background:       #F4F5F7;   // Section / page light background
+$color-surface:          #FFFFFF;   // Cards, buttons, pure white surfaces
+$color-border:           #D9D9D9;   // Input borders, dividers (consolidated)
+
+$color-error:            #E97171;   // Sale indicators, error states
+$color-success:          #2FB854;   // Success states (same as primary)
+$color-accent-teal:      #2EC1AC;   // Secondary accent
+$color-accent-yellow:    #FFC700;   // Star ratings
+$color-accent-orange:    #E89F71;   // Occasional accent links
+
+$color-white:            #FFFFFF;
+$color-black:            #000000;
+
+// TODO: Dark mode color tokens
+// When implementing dark mode, add a parallel set of tokens here
+// (e.g. $color-primary-dark-mode, $color-background-dark-mode, etc.)
+// Do not invent values — extract from future dark-mode Figma frames.
+
+// 3. Typography
+$font-primary:   'Poppins', sans-serif;
+$font-secondary: 'Montserrat', sans-serif; // Logo / brand accent only
+
+// ——— Desktop scale (primary) ———
+$font-size-display:     52px;
+$font-size-h1:          48px;
+$font-size-h2:          40px;
+$font-size-h3:          32px;
+$font-size-h4:          28px;
+$font-size-h5:          24px;
+$font-size-body-lg:     20px;
+$font-size-body:        16px;   // Base
+$font-size-label:       14px;
+$font-size-caption:     13px;
+$font-size-caption-sm:  12px;
+
+$font-weight-regular:   400;
+$font-weight-medium:    500;
+$font-weight-semibold:  600;
+$font-weight-bold:      700;
+
+$line-height-tight:     1.2;    // 120%
+$line-height-normal:    1.5;    // 150% — preferred default
+$line-height-display:   1.25;   // ~65px on 52px
+
+$letter-spacing-cta:    0.03em; // ~3px on 16px CTA labels
+
+// ——— Mobile / Android scale (compact & dense) ———
+// Smaller sizes, tighter line-heights for small screens
+$font-size-display-mobile:    36px;
+$font-size-h1-mobile:         32px;
+$font-size-h2-mobile:         28px;
+$font-size-h3-mobile:         24px;
+$font-size-h4-mobile:         20px;
+$font-size-h5-mobile:         18px;
+$font-size-body-lg-mobile:    16px;
+$font-size-body-mobile:       14px;
+$font-size-label-mobile:      13px;
+$font-size-caption-mobile:    12px;
+$font-size-caption-sm-mobile: 11px;
+
+$line-height-mobile:          1.4;  // Slightly tighter than desktop
+
+// 4. Spacing (strict 4px base scale)
+// Normalized from irregular values (2px, 5px, 10px, 20px, 25px, 38px…)
+$space-1:  4px;
+$space-2:  8px;
+$space-3:  12px;
+$space-4:  16px;  // most common base
+$space-5:  24px;
+$space-6:  32px;
+$space-7:  48px;
+$space-8:  64px;
+
+// Semantic aliases (optional convenience)
+$space-xs:  $space-1;
+$space-sm:  $space-2;
+$space-md:  $space-4;
+$space-lg:  $space-5;
+$space-xl:  $space-6;
+$space-2xl: $space-7;
+$space-3xl: $space-8;
+
+// 5. Layout
+$container-max-width:   1440px;
+$content-width:         1236px;
+$content-padding:       $space-6;     // horizontal rail padding
+$section-spacing:       $space-6;     // vertical section gaps
+$header-height:         76px;
+$card-width:            252px;
+$card-image-height:     446px;
+$button-height-lg:      66px;
+$button-width:          252px;
+
+$icon-size-sm:          16px;
+$icon-size-md:          20px;
+$icon-size-lg:          24px;
+$icon-size-xl:          28px;
+$icon-size-2xl:         36px;
+
+// 6. Border Radius
+$radius-xs:   4px;    // normalized from 3px
+$radius-sm:   5px;
+$radius-md:   10px;   // most common
+$radius-lg:   15px;
+$radius-full: 50px;   // pills / chips
+
+// 7. Shadows
+$shadow-default: 0 4px 14px 1px rgba(0, 0, 0, 0.16);
+
+// 8. Transitions
+$transition-fast:   150ms ease;
+$transition-base:   250ms ease;
+$transition-slow:   350ms ease;
+
+// 9. Z-index (semantic layers)
+$z-dropdown:     100;
+// $z-sticky:       200;
+$z-header:       300;
+$z-overlay:      400;
+$z-modal:        500;
+$z-toast:        600;
+$z-tooltip:      700;
+
+// 10. Breakpoints
+$bp-mobile:  480px;
+$bp-tablet:  768px;
+$bp-desktop: 1024px;
+$bp-wide:    1440px;

@@ -198,6 +198,7 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [openDropdown, setOpenDropdown] = useState(null); // tracks which dropdown is open
+  const [isScrolled, setIsScrolled] = useState(false);
    // Ref so we can imperatively focus the input when the search bar opens
   const searchInputRef = useRef(null);
   const searchBarRef = useRef(null);
@@ -209,6 +210,16 @@ export default function Header() {
   useEffect(() => {
     if (isSearchOpen) searchInputRef.current?.focus();
   }, [isSearchOpen]);
+
+  // The header overlays the hero at the top of the page, then gains its solid
+  // surface once the visitor starts moving through the content.
+  useEffect(() => {
+    const updateHeaderAppearance = () => setIsScrolled(window.scrollY > 48);
+
+    updateHeaderAppearance();
+    window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
+    return () => window.removeEventListener('scroll', updateHeaderAppearance);
+  }, []);
 
   // Close both drawer and search bar on Escape key
   useEffect(() => {
@@ -271,11 +282,12 @@ export default function Header() {
 
   return (
     <motion.header
-      className="header"
+      className={`header ${isScrolled ? 'header--scrolled' : ''}`}
       variants={headerVariants}
       initial="hidden"
       animate="visible"
     >
+      
       <div className="header-container">
         {/* 
       <div className="header-container">
@@ -518,17 +530,8 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-      {/* ── Overlay — dims page behind open drawer
-          Tapping it closes the drawer                         */}
-      <button
-        type="button"
-        className="header-overlay"
-        aria-label="Close navigation menu"
-        aria-hidden={!isMenuOpen}
-        data-open={isMenuOpen}
-        tabIndex={isMenuOpen ? 0 : -1}
-        onClick={() => setIsMenuOpen(false)}
-      />
+     
     </motion.header>
+    
   );
 }
