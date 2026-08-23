@@ -281,6 +281,7 @@ export default function Header() {
   };
 
   return (
+    <>
     <motion.header
       className={`header ${isScrolled ? 'header--scrolled' : ''}`}
       variants={headerVariants}
@@ -290,7 +291,6 @@ export default function Header() {
       
       <div className="header-container">
         {/* 
-      <div className="header-container">
 
         {/* Brand Logo */}
         <motion.a
@@ -473,7 +473,9 @@ export default function Header() {
             <MenuIcon open={isMenuOpen} />
           </button>
         </motion.div>
-      </div>
+      </div> 
+
+    </motion.header>
 
       {/* Search bar */}
       <AnimatePresence>
@@ -529,9 +531,7 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-
-     
-    </motion.header>
     
+  </>
   );
 }

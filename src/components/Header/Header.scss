@@ -47,9 +47,9 @@
       0 8px 32px rgba(0, 0, 0, 0.18),
       0 2px 8px rgba(0, 0, 0, 0.08);
 
-       @supports (-webkit-backdrop-filter: none) {
-    -webkit-backdrop-filter: var(--blur-effect);
-  }
+    @supports (-webkit-backdrop-filter: none) {
+      -webkit-backdrop-filter: var(--blur-effect);
+    }
   }
 }
 
@@ -295,16 +295,18 @@
 
 /* ── Search Bar ─────────────────────────────────────────── */
 .header-search-bar {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 90px;
   left: 0;
   right: 0;
   z-index: $z-dropdown;
   padding: 0.875rem clamp($space-5, 4.45vw, $space-6);
   background: transparent;
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 12px 40px rgba($color-text-heading, 0.1);
+  @supports (-webkit-backdrop-filter: none) {
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+  }
 
   /* Hidden state */
   opacity: 0;
@@ -480,6 +482,10 @@
     overflow-y: auto;
     // Prevent the floating header from affecting backdrop
     isolation: isolate;
+
+    @supports (-webkit-backdrop-filter: none) {
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+    }
 
     &[data-open="true"] {
       transform: translateX(0);
