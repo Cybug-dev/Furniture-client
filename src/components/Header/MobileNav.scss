@@ -1,0 +1,191 @@
+@use "../../styles/variable.scss" as *;
+
+/* ── MobileNav – independent fixed drawer ─────────────────── */
+
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba($color-text-heading, 0.48);
+  cursor: pointer;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: min(86vw, 22rem);
+  height: 100dvh;
+  padding: $space-5 $space-4 $space-6;
+  overflow-y: auto;
+  background: rgba(235, 245, 240, 0.72);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: -14px 0 48px rgba(0, 0, 0, 0.14);
+  will-change: transform;
+}
+
+/* 1. Top – avatar + sign-in + close */
+.mobile-nav-top {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-height: 3.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.mobile-nav-avatar {
+  display: grid;
+  width: 3.1rem;
+  height: 3.1rem;
+  place-items: center;
+  border-radius: $radius-full;
+  background: rgba($color-primary, 0.12);
+  color: $color-primary;
+  flex-shrink: 0;
+  transition: transform $transition-fast;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.mobile-nav-signin {
+  color: $color-text-primary;
+  font-family: $font-primary;
+  font-size: 1.0625rem;
+  font-weight: $font-weight-semibold;
+}
+
+.mobile-nav-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.045);
+  color: $color-text-primary;
+  cursor: pointer;
+  transition:
+    color $transition-fast,
+    background $transition-fast,
+    transform $transition-fast;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+    background: rgba($color-primary, 0.1);
+    transform: scale(1.06);
+  }
+}
+
+/* 2. Links */
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.5rem 0 0;
+  list-style: none;
+  flex: 1;
+}
+
+.mobile-nav-item {
+  width: 100%;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0 $space-4;
+  border-radius: 12px;
+  color: $color-text-primary;
+  font-family: $font-primary;
+  font-size: 1.05rem;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    color $transition-fast,
+    background $transition-fast,
+    transform $transition-fast;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+    background: rgba($color-primary, 0.09);
+    transform: translateX(3px);
+  }
+
+  &:active {
+    transform: translateX(1px) scale(0.99);
+  }
+
+  &.has-dropdown .desktop-nav-chevron {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &.has-dropdown.is-open .desktop-nav-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+/* Accordion submenu */
+.mobile-nav-submenu {
+  overflow: hidden;
+  margin: 0;
+  padding: 0.1rem 0 0.4rem;
+  list-style: none;
+}
+
+.mobile-nav-sublink {
+  display: flex;
+  align-items: center;
+  min-height: 2.9rem;
+  padding: 0.45rem $space-5 0.45rem 2.5rem;
+  margin: 1px 0;
+  border-radius: 10px;
+  color: $color-text-primary;
+  font-family: $font-primary;
+  font-size: $font-size-body;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  transition:
+    color $transition-fast,
+    background $transition-fast,
+    transform $transition-fast;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+    background: rgba($color-primary, 0.07);
+    transform: translateX(3px);
+  }
+}
+
+/* 3. Favourites footer */
+.mobile-nav-footer {
+  margin-top: auto;
+  padding-top: $space-4;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.mobile-nav-fav {
+  gap: 0.65rem;
+  justify-content: flex-start;
+}
