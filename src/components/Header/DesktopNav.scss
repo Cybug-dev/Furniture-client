@@ -1,0 +1,133 @@
+@use "../../styles/variable.scss" as *;
+
+/* ── DesktopNav – horizontal only ─────────────────────────── */
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* centered via flex parent in Header */
+}
+
+.desktop-nav-list {
+  display: flex;
+  align-items: center;
+  gap: clamp($space-6, 4vw, 4.375rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desktop-nav-item {
+  position: relative;
+  list-style: none;
+}
+
+.desktop-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: $color-text-primary;
+  font-family: $font-primary;
+  font-size: $font-size-body;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  padding: 0.35rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color $transition-fast;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: $color-primary;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  &.has-dropdown .desktop-nav-chevron {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &.has-dropdown.is-open .desktop-nav-chevron,
+  &.has-dropdown:hover .desktop-nav-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.desktop-nav-chevron {
+  flex-shrink: 0;
+}
+
+/* Dropdown */
+.desktop-nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.85rem);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 12rem;
+  padding: 0.55rem 0;
+  margin: 0;
+  list-style: none;
+  background: $color-surface;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-default;
+  border: 1px solid rgba($color-text-heading, 0.05);
+  z-index: 60;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: $color-surface;
+    border-left: 1px solid rgba($color-text-heading, 0.05);
+    border-top: 1px solid rgba($color-text-heading, 0.05);
+    transform: translateX(-50%) rotate(45deg);
+  }
+}
+
+.desktop-nav-dropdown-link {
+  display: block;
+  padding: 0.7rem 1.4rem;
+  color: $color-text-primary;
+  font-family: $font-primary;
+  font-size: 0.9375rem;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  transition:
+    color $transition-fast,
+    background $transition-fast;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+    background: rgba($color-primary, 0.06);
+  }
+}
+
+/* Completely hidden on mobile – CSS only */
+@media (max-width: #{$bp-tablet - 1px}) {
+  .desktop-nav {
+    display: none;
+  }
+}
