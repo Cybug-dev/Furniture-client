@@ -1,30 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useHeader } from './useHeader';
+import DesktopNav from './DesktopNav';
+import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
 
-/* ───────────────────────────────────────────
-   Navigation data
-   ─────────────────────────────────────────── */
-const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-  {
-    label: 'Shop',
-    href: '/shop',
-    hasDropdown: true,
-    submenu: [
-      { label: 'Living Room', href: '/shop/living-room' },
-      { label: 'Bedroom', href: '/shop/bedroom' },
-      { label: 'Dining', href: '/shop/dining' },
-      { label: 'Office', href: '/shop/office' },
-      { label: 'Outdoor', href: '/shop/outdoor' },
-    ],
-  },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-];
-
-/* ── Inline SVG icons — no external icon library needed ─────── */
+/* Icons used only by the header shell / actions */
 function UserIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -55,7 +36,6 @@ function SearchIcon() {
   );
 }
 
-/* Separate close icon — used in search bar and drawer */
 function CloseIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -101,7 +81,6 @@ function CartIcon() {
   );
 }
 
-/* Hamburger/close toggle — swaps lines ↔ X based on open prop */
 function MenuIcon({ open }) {
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
@@ -126,31 +105,6 @@ function MenuIcon({ open }) {
   );
 }
 
-function ChevronIcon() {
-  return (
-    <svg
-      className="header-nav-chevron"
-      viewBox="0 0 24 24"
-      width="14"
-      height="14"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6 9l6 6 6-6"
-      />
-    </svg>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────
-   Animation variants
-   ────────────────────────────────────────────────────────────── */
 const headerVariants = {
   hidden: { opacity: 0, y: -12 },
   visible: {
@@ -174,313 +128,128 @@ const itemVariants = {
   },
 };
 
-const dropdownVariants = {
-  hidden: { opacity: 0, y: 8, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: {
-    opacity: 0,
-    y: 6,
-    scale: 0.98,
-    transition: { duration: 0.2 },
-  },
-};
-
-/* ──────────────────────────────────────────────────────────────
-   Header Component
-   ────────────────────────────────────────────────────────────── */
+/**
+ * Pure composition shell.
+ * All state & side-effects live in useHeader.
+ */
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [openDropdown, setOpenDropdown] = useState(null); // tracks which dropdown is open
-  const [isScrolled, setIsScrolled] = useState(false);
-   // Ref so we can imperatively focus the input when the search bar opens
-  const searchInputRef = useRef(null);
-  const searchBarRef = useRef(null);
-  const searchToggleRef = useRef(null);
-
-  const cartItemCount = 0; // replace with real cart state later
-
-  // Auto-focus search input
-  useEffect(() => {
-    if (isSearchOpen) searchInputRef.current?.focus();
-  }, [isSearchOpen]);
-
-  // The header overlays the hero at the top of the page, then gains its solid
-  // surface once the visitor starts moving through the content.
-  useEffect(() => {
-    const updateHeaderAppearance = () => setIsScrolled(window.scrollY > 48);
-
-    updateHeaderAppearance();
-    window.addEventListener('scroll', updateHeaderAppearance, { passive: true });
-    return () => window.removeEventListener('scroll', updateHeaderAppearance);
-  }, []);
-
-  // Close both drawer and search bar on Escape key
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false);
-        setIsMenuOpen(false);
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, []);
-
-  // Lock body scroll when mobile drawer is open
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isMenuOpen]);
-
-  const handleSearchSubmit = () => {
-    // Placeholder for future search API / route integration
-    console.log('Search triggered:', searchQuery);
-  };
-
-  useEffect(() => {
-    if (!isSearchOpen) {
-      return;
-    }
-
-    const handleClickOutsideSearch = (e) => {
-      const clickedInsideSearch = searchBarRef.current?.contains(e.target);
-      const clickedToggleButton = searchToggleRef.current?.contains(e.target);
-
-      if (!clickedInsideSearch && !clickedToggleButton) {
-        setIsSearchOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutsideSearch);
-    return () => document.removeEventListener('mousedown', handleClickOutsideSearch);
-  }, [isSearchOpen]);
-
-  // Close dropdown when clicking outside (desktop)
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest('.header-nav-item--dropdown')) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
-
-  const toggleDropdown = (label) => {
-    setOpenDropdown((prev) => (prev === label ? null : label));
-  };
+  const {
+    isMenuOpen,
+    toggleMenu,
+    closeMenu,
+    isSearchOpen,
+    toggleSearch,
+    searchQuery,
+    setSearchQuery,
+    searchInputRef,
+    searchBarRef,
+    searchToggleRef,
+    handleSearchSubmit,
+    openDropdown,
+    toggleDropdown,
+    closeDropdown,
+    isScrolled,
+    cartItemCount,
+  } = useHeader();
 
   return (
-    <motion.header
-      className={`header ${isScrolled ? 'header--scrolled' : ''}`}
-      variants={headerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      
-      <div className="header-container">
-        {/* 
-      <div className="header-container">
+    <>
+      <motion.header
+        className={`header ${isScrolled ? 'header--scrolled' : ''}`}
+        variants={headerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="header-container">
+          {/* Logo */}
+          <motion.a
+            href="/"
+            className="header-logo"
+            aria-label="Furniture, go to homepage"
+            variants={itemVariants}
+          >
+            <img src={logoImg} alt="" className="logo-img" />
+            <span className="header-logo-text">Furniture</span>
+          </motion.a>
 
-        {/* Brand Logo */}
-        <motion.a
-          href="/"
-          className="header-logo"
-          aria-label="Furniture, go to homepage"
-          variants={itemVariants}
-        >
-          <img src={logoImg} alt="" className="logo-img" />
-          <span className="header-logo-text">Furniture</span>
-        </motion.a>
+          {/* Desktop navigation – lives inside the bar */}
+          <DesktopNav
+            openDropdown={openDropdown}
+            onToggleDropdown={toggleDropdown}
+            onCloseDropdown={closeDropdown}
+          />
 
-        {/* Nav — horizontal on desktop, side drawer on mobile
-            data-open drives the CSS transform via attribute selector */}
-        <nav
-          id="primary-navigation"
-          className="header-nav"
-          aria-label="Main navigation"
-          data-open={isMenuOpen}
-        >
-          {/* Drawer header — avatar + sign in + close button (mobile only) */}
-          <div className="header-drawer-top">
-            <div className="header-avatar">
-              <UserIcon />
-            </div>
-            <span>Sign In</span>
+          {/* Actions */}
+          <motion.div className="header-actions" variants={itemVariants}>
             <button
               type="button"
-              className="header-drawer-close"
-              aria-label="Close navigation menu"
-              onClick={() => setIsMenuOpen(false)}
+              className="header-icon-btn header-desktop-only"
+              aria-label="Account"
             >
-              <CloseIcon />
+              <UserIcon />
             </button>
-          </div>
 
-          {/* Nav links */}
-          <ul className="header-nav-list">
-            {NAV_LINKS.map((link) => (
-              <motion.li
-                key={link.href}
-                className={`header-nav-item ${link.hasDropdown ? 'header-nav-item--dropdown' : ''}`}
-                variants={itemVariants}
-                onMouseEnter={() => {
-                  // Desktop hover open
-                  if (link.hasDropdown && window.innerWidth >= 768) {
-                    setOpenDropdown(link.label);
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (link.hasDropdown && window.innerWidth >= 768) {
-                    setOpenDropdown(null);
-                  }
-                }}
-              >
-                {link.hasDropdown ? (
-                  <>
-                    {/* Shop trigger */}
-                    <button
-                      type="button"
-                      className={`header-nav-link has-dropdown ${openDropdown === link.label ? 'is-open' : ''}`}
-                      aria-expanded={openDropdown === link.label}
-                      aria-haspopup="true"
-                      onClick={() => toggleDropdown(link.label)}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronIcon />
-                    </button>
+            <button
+              type="button"
+              className="header-icon-btn"
+              aria-label="Toggle search"
+              aria-expanded={isSearchOpen}
+              onClick={toggleSearch}
+              ref={searchToggleRef}
+            >
+              <SearchIcon />
+            </button>
 
-                    {/* Dropdown panel */}
-                    <AnimatePresence>
-                      {openDropdown === link.label && (
-                        <motion.ul
-                          className="header-dropdown"
-                          variants={dropdownVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                          role="menu"
-                        >
-                          {link.submenu.map((item) => (
-                            <li key={item.href} role="none">
-                              <a
-                                href={item.href}
-                                className="header-dropdown-link"
-                                role="menuitem"
-                                onClick={() => {
-                                  setOpenDropdown(null);
-                                  setIsMenuOpen(false);
-                                }}
-                              >
-                                {item.label}
-                              </a>
-                            </li>
-                          ))}
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <a
-                    href={link.href}
-                    className="header-nav-link"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                )}
-              </motion.li>
-            ))}
+            <button
+              type="button"
+              className="header-icon-btn header-desktop-only"
+              aria-label="Wishlist"
+            >
+              <HeartIcon />
+            </button>
 
-            {/* Favourites – mobile only */}
-            <li className="header-fav-item">
-              <a
-                href="/wishlist"
-                className="header-nav-link"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <HeartIcon />
-                <span>Favourites</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+            <button
+              type="button"
+              className="header-icon-btn header-cart-btn"
+              aria-label={`Cart, ${cartItemCount} items`}
+            >
+              <CartIcon />
+              {cartItemCount > 0 && (
+                <span className="header-cart-badge" aria-hidden="true">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
 
-        {/* Action icons */}
-        <motion.div className="header-actions" variants={itemVariants}>
-          {/* User — desktop only */}
-          <button
-            type="button"
-            className="header-icon-btn header-desktop-only"
-            aria-label="Account"
-          >
-            <UserIcon />
-          </button>
+            {/* Hamburger – mobile only */}
+            <button
+              type="button"
+              className="header-menu-toggle"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="primary-navigation"
+              onClick={toggleMenu}
+            >
+              <MenuIcon open={isMenuOpen} />
+            </button>
+          </motion.div>
+        </div>
+      </motion.header>
 
-          {/* Search toggle — all screen sizes
-              Icon swaps between magnifier and X depending on state */}
-          <button
-            type="button"
-            className="header-icon-btn"
-            aria-label="Toggle search"
-            aria-expanded={isSearchOpen}
-            onClick={() => setIsSearchOpen((prev) => !prev)}
-            ref={searchToggleRef}
-          >
-            <SearchIcon />
-          </button>
-
-          <button
-            type="button"
-            className="header-icon-btn header-desktop-only"
-            aria-label="Wishlist"
-          >
-            <HeartIcon />
-          </button>
-
-          <button
-            type="button"
-            className="header-icon-btn header-cart-btn"
-            aria-label={`Cart, ${cartItemCount} items`}
-          >
-            <CartIcon />
-            {cartItemCount > 0 && (
-              <span className="header-cart-badge" aria-hidden="true">
-                {cartItemCount}
-              </span>
-            )}
-          </button>
-
-          {/* Hamburger — mobile only */}
-          <button
-            type="button"
-            className="header-menu-toggle"
-            aria-label="Toggle navigation menu"
-            aria-expanded={isMenuOpen}
-            aria-controls="primary-navigation"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
-            <MenuIcon open={isMenuOpen} />
-          </button>
-        </motion.div>
-      </div>
+      {/* Mobile drawer – completely outside header flow */}
+      <MobileNav
+        isOpen={isMenuOpen}
+        onClose={closeMenu}
+        openDropdown={openDropdown}
+        onToggleDropdown={toggleDropdown}
+        onCloseDropdown={closeDropdown}
+      />
 
       {/* Search bar */}
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
             className="header-search-bar"
-            data-open={isSearchOpen}
             role="search"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -529,9 +298,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-
-     
-    </motion.header>
-    
+    </>
   );
 }
