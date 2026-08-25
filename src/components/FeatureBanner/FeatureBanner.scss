@@ -85,7 +85,9 @@
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity $transition-base, transform $transition-fast;
+  transition:
+    opacity $transition-base,
+    transform $transition-fast;
 }
 
 .feature-banner__nav--prev {
@@ -133,7 +135,9 @@
   border: 0;
   border-radius: $radius-full;
   background: rgba(255, 255, 255, 0.55);
-  transition: width $transition-base, background $transition-fast;
+  transition:
+    width $transition-base,
+    background $transition-fast;
 }
 
 .feature-banner__dot.is-active {
@@ -281,7 +285,9 @@
   font-weight: $font-weight-semibold;
   letter-spacing: $letter-spacing-cta;
   text-decoration: none;
-  transition: background $transition-fast, transform $transition-fast;
+  transition:
+    background $transition-fast,
+    transform $transition-fast;
 }
 
 .default-banner__cta:hover,
@@ -341,8 +347,8 @@
   position: absolute;
   top: $space-3;
   left: $space-3;
-  background: $color-error;
-  color: $color-white;
+  background: $color-primary-surface;
+  color: $color-text-primary;
   font-size: $font-size-caption;
   font-weight: $font-weight-bold;
   padding: $space-1 $space-2;
@@ -399,9 +405,9 @@
 }
 
 .ad-banner__was {
-  color: $color-text-disabled;
+  color: $color-text-primary;
   text-decoration: line-through;
-  font-size: $font-size-label;
+  font-size: $font-size-caption-sm;
 }
 
 .showcase-banner__inner {
@@ -465,7 +471,9 @@
   padding: $space-3;
   min-height: 88px;
   text-decoration: none;
-  transition: transform $transition-fast, box-shadow $transition-fast;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast;
 }
 
 .showcase-banner__card:hover,
@@ -514,10 +522,31 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: $space-5 $space-4 80px;
-  width: 100%;
-  max-width: 640px;
-  color: $color-text-heading;
+  width: 92%;
+  max-width: 620px;
+  margin: 0 auto;
+  box-sizing: border-box; 
+  padding: 32px 20px 36px;
+
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.38) 100%
+  );
+  backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.18),
+    0 8px 20px -6px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.25);
+
+  color: #1a1a1a;
 }
 
 @media (min-width: $bp-desktop) {
@@ -528,12 +557,11 @@
 
 .promo-banner__sparkles {
   position: absolute;
-  top: 8%;
-  left: 50%;
-  width: 220px;
-  height: 80px;
+  top: 0%;
+  left: 10%;
+  width: 240px;
+  height: 70px;
   transform: translateX(-50%);
-  z-index: 2;
   pointer-events: none;
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.5px, transparent 2px),
     radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 2px);
@@ -542,6 +570,7 @@
   opacity: 0.85;
 }
 
+/* ---------- 25% OFF badge ---------- */
 .promo-banner__offer {
   display: inline-flex;
   align-items: center;
@@ -549,68 +578,107 @@
   min-height: 36px;
   padding: 0 $space-4;
   border-radius: $radius-full;
-  background: $color-surface;
-  color: $color-accent-orange;
+  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
+  color: $color-white;
   font-weight: $font-weight-bold;
   font-size: $font-size-label;
-  box-shadow: $shadow-default;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    0 4px 14px rgba(47, 184, 84, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  position: relative;
+  z-index: 4;
 }
 
 .promo-banner__heading {
   font-family: $font-secondary;
-  font-size: $font-size-h4-mobile;
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: 700;
   line-height: $line-height-tight;
-  margin: $space-4 0 $space-2;
-  color: $color-text-heading;
+  letter-spacing: -0.025em;
+  margin: 18px 0 12px; 
   word-break: break-word;
+  background: linear-gradient(
+    125deg,
+    #1f9a45 0%,
+    #2FB854 38%,
+    #5ed07a 68%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__heading {
-    font-size: $font-size-h3-mobile;
+    font-size: clamp(2rem, 3.8vw, 3rem);
   }
 }
 
 @media (min-width: $bp-desktop) {
   .promo-banner__heading {
-    font-size: $font-size-h2;
+    font-size: 3.1rem;
   }
 }
 
+/* ---------- Subtext ---------- */
 .promo-banner__sub {
-  margin: 0 auto $space-3;
-  max-width: 36ch;
-  color: $color-text-muted;
-  font-size: $font-size-label-mobile;
+  margin: 0 auto 14px;
+  max-width: 34ch;
+  color: rgba(26, 26, 26, 0.72);
+  font-size: $font-size-body-mobile;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  letter-spacing: 0.01em;
 }
 
+/* ---------- Countdown ---------- */
 .promo-banner__count {
-  margin: 0 0 $space-4;
-  font-size: $font-size-caption;
+  margin: 0 0 20px; /* FIXED: Lowered bottom gap from 28px */
+  font-size: 13px;
   font-weight: $font-weight-semibold;
-  letter-spacing: 0.08em;
-  color: $color-text-heading;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.55);
 }
 
+/* ---------- Email Form ---------- */
 .promo-banner__form {
   display: flex;
   flex-direction: column;
   gap: $space-2;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  background: $color-surface;
-  border-radius: $radius-lg;
-  padding: $space-2;
-  box-shadow: $shadow-default;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow:
+    0 10px 30px -8px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.25s ease;
+}
+
+.promo-banner__form:focus-within {
+  box-shadow:
+    0 14px 36px -8px rgba(47, 184, 84, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__form {
     flex-direction: row;
     align-items: stretch;
-    border-radius: $radius-full;
-    padding: $space-1;
+    border-radius: 999px;
+    padding: 6px;
+    gap: 0;
   }
 }
 
@@ -619,73 +687,74 @@
   width: 100%;
   border: 0;
   background: transparent;
-  min-height: 48px;
-  padding: 0 $space-4;
+  min-height: 50px;
+  padding: 0 22px;
   font-family: $font-primary;
-  font-size: 16px;
-  color: $color-text-primary;
+  font-size: 15.5px;
+  color: #1a1a1a;
   outline: none;
+  border-radius: 12px;
+}
+
+.promo-banner__form input::placeholder {
+  color: rgba(26, 26, 26, 0.4);
+  font-weight: 400;
 }
 
 .promo-banner__form button {
-  min-height: 48px;
+  min-height: 50px;
   width: 100%;
   border: 0;
-  border-radius: $radius-md;
-  background: $color-accent-orange;
-  color: $color-white;
-  font-weight: $font-weight-semibold;
-  padding: 0 $space-5;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  padding: 0 28px;
   font-family: $font-primary;
-  font-size: $font-size-body-mobile;
-  transition: filter $transition-fast;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 14px rgba(47, 184, 84, 0.3);
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__form button {
     width: auto;
-    border-radius: $radius-full;
+    border-radius: 999px;
+    min-width: 140px;
   }
 }
 
 .promo-banner__form button:hover {
-  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(47, 184, 84, 0.4);
+  filter: brightness(1.05);
 }
 
+.promo-banner__form button:active {
+  transform: translateY(0);
+}
+
+/* ---------- Thank-you state ---------- */
 .promo-banner__thanks {
   margin: 0;
   width: 100%;
-  min-height: 48px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-label;
-  font-weight: $font-weight-medium;
-  color: $color-primary;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2FB854;
+  letter-spacing: 0.01em;
 }
 
-.promo-banner__arrow {
-  display: none;
-  position: absolute;
-  right: 18%;
-  top: 28%;
-  width: 140px;
-  height: 80px;
-  color: $color-text-subtle;
-  z-index: 2;
-  pointer-events: none;
-}
-
-@media (min-width: $bp-desktop) {
-  .promo-banner__arrow {
-    display: block;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .feature-banner__nav,
-  .feature-banner__dot,
-  .feature-skeleton {
+  .promo-banner__form button,
+  .promo-banner__form {
     transition: none;
   }
 }
+

@@ -96,17 +96,7 @@ export default function PromoBanner({ content, isActive }) {
           )}
         </motion.form>
       </motion.div>
-      <svg className="promo-banner__arrow" viewBox="0 0 160 90" aria-hidden="true">
-        <path
-          d="M8 12 C 70 8, 130 28, 148 78"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeDasharray="5 7"
-          strokeLinecap="round"
-        />
-        <path d="M138 68 L148 78 L132 76" fill="none" stroke="currentColor" strokeWidth="2" />
-      </svg>
+    
     </div>
   );
 }
