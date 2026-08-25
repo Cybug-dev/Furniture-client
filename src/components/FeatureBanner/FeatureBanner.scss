@@ -12,14 +12,14 @@
   border: 0;
 }
 
-.hero-banner {
+.feature-banner {
   position: relative;
   width: 100%;
   font-family: $font-primary;
   color: $color-text-heading;
 }
 
-.hero-banner__frame {
+.feature-banner__frame {
   position: relative;
   overflow: hidden;
   border-radius: 0;
@@ -29,11 +29,11 @@
 }
 
 @media (min-width: $bp-desktop) {
-  .hero-banner {
+  .feature-banner {
     padding: $space-4 $space-6 $space-2;
   }
 
-  .hero-banner__frame {
+  .feature-banner__frame {
     height: 60vh;
     min-height: 520px;
     max-height: 760px;
@@ -42,21 +42,21 @@
   }
 }
 
-.hero-banner__swiper,
-.hero-banner__swiper .swiper,
-.hero-banner__swiper .swiper-wrapper,
-.hero-banner__swiper .swiper-slide {
+.feature-banner__swiper,
+.feature-banner__swiper .swiper,
+.feature-banner__swiper .swiper-wrapper,
+.feature-banner__swiper .swiper-slide {
   height: 100%;
   cursor: default;
 }
 
-.hero-banner__slide {
+.feature-banner__slide {
   position: relative;
   height: 100%;
   overflow: hidden;
 }
 
-.hero-banner__bg {
+.feature-banner__bg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -68,7 +68,7 @@
   pointer-events: none;
 }
 
-.hero-banner__nav {
+.feature-banner__nav {
   position: absolute;
   top: 50%;
   z-index: $z-overlay;
@@ -88,27 +88,27 @@
   transition: opacity $transition-base, transform $transition-fast;
 }
 
-.hero-banner__nav--prev {
+.feature-banner__nav--prev {
   left: $space-4;
 }
 
-.hero-banner__nav--next {
+.feature-banner__nav--next {
   right: $space-4;
 }
 
 @media (min-width: $bp-desktop) {
-  .hero-banner__nav {
+  .feature-banner__nav {
     display: flex;
   }
 
-  .hero-banner:hover .hero-banner__nav,
-  .hero-banner:focus-within .hero-banner__nav {
+  .feature-banner:hover .feature-banner__nav,
+  .feature-banner:focus-within .feature-banner__nav {
     opacity: 1;
     pointer-events: auto;
   }
 }
 
-.hero-banner__dots {
+.feature-banner__dots {
   position: absolute;
   z-index: $z-overlay;
   left: 50%;
@@ -119,14 +119,14 @@
 }
 
 @media (min-width: $bp-desktop) {
-  .hero-banner__dots {
+  .feature-banner__dots {
     left: $space-6;
     transform: none;
     bottom: $space-5;
   }
 }
 
-.hero-banner__dot {
+.feature-banner__dot {
   width: 10px;
   height: 10px;
   padding: 0;
@@ -136,12 +136,12 @@
   transition: width $transition-base, background $transition-fast;
 }
 
-.hero-banner__dot.is-active {
+.feature-banner__dot.is-active {
   width: 28px;
   background: $color-surface;
 }
 
-.hero-skeleton {
+.feature-skeleton {
   position: absolute;
   inset: 0;
   z-index: $z-overlay;
@@ -149,12 +149,12 @@
   transition: opacity $transition-slow;
 }
 
-.hero-skeleton.is-leaving {
+.feature-skeleton.is-leaving {
   opacity: 0;
   pointer-events: none;
 }
 
-.hero-skeleton__stage {
+.feature-skeleton__stage {
   height: 100%;
   display: flex;
   align-items: center;
@@ -162,14 +162,14 @@
   padding: $space-6;
 }
 
-.hero-skeleton__copy {
+.feature-skeleton__copy {
   width: min(560px, 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.hero-banner__content {
+.feature-banner__content {
   position: relative;
   z-index: 1;
   height: 100%;
@@ -177,14 +177,14 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.hero-banner a,
-.hero-banner button,
-.hero-banner input {
+.feature-banner a,
+.feature-banner button,
+.feature-banner input {
   pointer-events: auto;
   cursor: pointer;
 }
 
-.hero-banner input {
+.feature-banner input {
   cursor: text;
 }
 
@@ -241,7 +241,7 @@
 }
 
 .default-banner__heading {
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: $font-size-h2-mobile;
   line-height: $line-height-tight;
   margin: 0 0 $space-3;
@@ -683,9 +683,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-banner__nav,
-  .hero-banner__dot,
-  .hero-skeleton {
+  .feature-banner__nav,
+  .feature-banner__dot,
+  .feature-skeleton {
     transition: none;
   }
 }
