@@ -17,7 +17,7 @@ function isTypingTarget(el) {
 /**
  * All carousel logic lives here. Components stay presentational.
  */
-export function useHeroBanner() {
+export function useFeatureBanner() {
   const swiperRef = useRef(null);
   const sectionNodeRef = useRef(null);
   const [hovered, setHovered] = useState(false);
@@ -176,4 +176,4 @@ export function useHeroBanner() {
   };
 }
 
-export default useHeroBanner;
+export default useFeatureBanner;

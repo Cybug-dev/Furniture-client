@@ -2,9 +2,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
-import "./HeroBanner.scss";
-import { useHeroBanner } from "./useHeroBanner.js";
-import HeroSkeleton from "./HeroSkeleton.jsx";
+import "./FeatureBanner.scss";
+import { useFeatureBanner } from "./useFeatureBanner.js";
+import FeatureSkeleton from "./FeatureSkeleton.jsx";
 import DefaultBanner from "./slides/DefaultBanner.jsx";
 import AdBanner from "./slides/AdBanner.jsx";
 import ShowcaseBanner from "./slides/ShowcaseBanner.jsx";
@@ -17,7 +17,7 @@ const SLIDE_COMPONENTS = {
   promo: PromoBanner,
 };
 
-export default function HeroBanner() {
+export default function FeatureBanner() {
   const {
     slides,
     setSectionRef,
@@ -28,34 +28,34 @@ export default function HeroBanner() {
     goNext,
     goTo,
     swiperProps,
-  } = useHeroBanner();
+  } = useFeatureBanner();
 
   return (
     <section
       ref={setSectionRef}
-      className="hero-banner"
+      className="feature-banner"
       aria-roledescription="carousel"
       aria-label="Featured furniture"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="hero-banner__frame">
-        {!contentReady ? <HeroSkeleton /> : null}
+      <div className="feature-banner__frame">
+        {!contentReady ? <FeatureSkeleton /> : null}
         {contentReady ? (
           <>
-            <Swiper className="hero-banner__swiper" {...swiperProps}>
+            <Swiper className="feature-banner__swiper" {...swiperProps}>
               {slides.map((slide, index) => {
                 const Slide = SLIDE_COMPONENTS[slide.type];
                 return (
-                  <SwiperSlide key={slide.id} className="hero-banner__slide">
+                  <SwiperSlide key={slide.id} className="feature-banner__slide">
                     <img
-                      className="hero-banner__bg"
+                      className="feature-banner__bg"
                       src={slide.backgroundUrl}
                       alt=""
                       aria-hidden="true"
                       decoding="async"
                     />
-                    <div className="hero-banner__content">
+                    <div className="feature-banner__content">
                       <Slide content={slide.content} isActive={activeIndex === index} />
                     </div>
                   </SwiperSlide>
@@ -65,7 +65,7 @@ export default function HeroBanner() {
 
             <button
               type="button"
-              className="hero-banner__nav hero-banner__nav--prev"
+              className="feature-banner__nav feature-banner__nav--prev"
               aria-label="Previous slide"
               onClick={goPrev}
             >
@@ -73,14 +73,14 @@ export default function HeroBanner() {
             </button>
             <button
               type="button"
-              className="hero-banner__nav hero-banner__nav--next"
+              className="feature-banner__nav feature-banner__nav--next"
               aria-label="Next slide"
               onClick={goNext}
             >
               <ChevronRight size={22} />
             </button>
 
-            <div className="hero-banner__dots" role="tablist" aria-label="Slide indicators">
+            <div className="feature-banner__dots" role="tablist" aria-label="Slide indicators">
               {slides.map((slide, i) => (
                 <button
                   key={slide.id}
@@ -88,7 +88,7 @@ export default function HeroBanner() {
                   role="tab"
                   aria-label={`Go to slide ${i + 1}`}
                   aria-selected={activeIndex === i}
-                  className={`hero-banner__dot${activeIndex === i ? " is-active" : ""}`}
+                  className={`feature-banner__dot${activeIndex === i ? " is-active" : ""}`}
                   onClick={() => goTo(i)}
                 />
               ))}

@@ -2,7 +2,7 @@ import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import Browse from './components/Browse/Browse'
 import ShareSetup from './textcomponents/ShareSetup/ShareSetup'
-import HeroBanner from "./components/HeroBanner/HeroBanner";
+import FeatureBanner from "./components/FeatureBanner/FeatureBanner";
 import './App.css'
 import Carousel from './components/Carousel/Carousel'
 import Footer from './components/Footer/Footer';
@@ -15,7 +15,7 @@ function App() {
         <Hero />
         <Browse />
         <Carousel/>
-        <HeroBanner />
+        <FeatureBanner />
         <ShareSetup />
         <Footer />
       </main>
