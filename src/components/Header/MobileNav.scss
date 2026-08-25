@@ -6,7 +6,7 @@
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: rgba($color-text-heading, 0.48);
+  background: rgba($color-text-heading, 0.55);
   cursor: pointer;
 }
 
@@ -21,12 +21,19 @@
   height: 100dvh;
   padding: $space-5 $space-4 $space-6;
   overflow-y: auto;
-  background: rgba(235, 245, 240, 0.72);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: -14px 0 48px rgba(0, 0, 0, 0.14);
-  will-change: transform;
+ background: 
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 60%),
+    linear-gradient(to bottom, #ffffff 0%, #f9fbf9 45%, #a6e3b5 75%, #2FB854 100%);
+  background-attachment: fixed;
+
+border: 1px solid rgba(255, 255, 255, 0.6);
+border-color: rgba(255, 255, 255, 0.6) rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.2);
+border-radius: 24px 0 0 24px;
+
+  box-shadow: 
+    -14px 0 48px rgba(0, 0, 0, 0.08),
+    0 16px 32px rgba(0, 0, 0, 0.06);
+    
 }
 
 /* 1. Top – avatar + sign-in + close */
