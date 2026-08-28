@@ -758,3 +758,387 @@
   }
 }
 
+/* ========================================================================== */
+/* Private-sale promo: a restrained editorial composition, not a glass card. */
+/* ========================================================================== */
+.promo-banner {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: clamp($space-4, 3vw, $space-7);
+  isolation: isolate;
+}
+
+.promo-banner__veil {
+  background: linear-gradient(90deg, rgba($color-surface, 0.66) 0%, rgba($color-primary-surface, 0.48) 46%, rgba($color-surface, 0.06) 78%);
+}
+
+.promo-banner__texture {
+  position: absolute;
+  z-index: 1;
+  top: -20%;
+  right: 4%;
+  width: clamp(18rem, 33vw, 32rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba($color-white, 0.38);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-white, 0.055);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.promo-banner__texture::after {
+  position: absolute;
+  top: 22%;
+  right: 22%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $color-primary-surface;
+  box-shadow: 36px 28px 0 rgba($color-primary-surface, 0.7), -24px 52px 0 rgba($color-primary-surface, 0.5);
+  content: '';
+}
+
+.promo-banner__panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(100%, 690px);
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: clamp(1.5rem, 3.4vw, 3.25rem);
+  border: 1px solid rgba($color-primary, 0.2);
+  border-radius: clamp(18px, 2vw, 28px);
+  background: linear-gradient(145deg, rgba($color-surface, 0.88), rgba($color-primary-surface, 0.62));
+  box-shadow: 20px 24px 54px rgba($color-text-primary, 0.14);
+  color: $color-text-primary;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+
+.promo-banner__panel::before,
+.promo-banner__panel::after {
+  position: absolute;
+  z-index: 0;
+  content: '';
+  pointer-events: none;
+}
+
+.promo-banner__panel::before {
+  top: -4rem;
+  right: -4rem;
+  width: 13rem;
+  height: 13rem;
+  border: 1px solid rgba($color-primary, 0.23);
+  border-radius: 50%;
+}
+
+.promo-banner__panel::after {
+  right: 1.35rem;
+  bottom: 1.35rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary-surface 1.4px, transparent 1.7px);
+  background-size: 10px 10px;
+}
+
+.promo-banner__panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-banner__masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid rgba($color-primary, 0.18);
+  color: $color-text-muted;
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.promo-banner__masthead span:last-child {
+  color: $color-primary;
+}
+
+.promo-banner__main {
+  max-width: 34rem;
+  padding: clamp(1.5rem, 4.5vh, 3.75rem) 0;
+}
+
+.promo-banner__offer {
+  width: fit-content;
+  margin: 0 0 $space-4;
+  padding: 6px $space-3;
+  border: 1px solid rgba($color-primary, 0.25);
+  border-radius: $radius-full;
+  background: rgba($color-primary, 0.11);
+  color: $color-primary;
+  font-size: $font-size-caption-sm;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-banner__heading {
+  max-width: 13ch;
+  margin: 0;
+  color: $color-text-heading;
+  font-family: $font-secondary;
+  font-size: clamp(2rem, 4.4vw, 4.25rem);
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.055em;
+  line-height: 1.04;
+  -webkit-text-fill-color: currentColor;
+}
+
+.promo-banner__sub {
+  max-width: 41ch;
+  margin: $space-4 0 0;
+  color: $color-text-muted;
+  font-size: $font-size-body-mobile;
+  line-height: 1.65;
+}
+
+.promo-banner__note {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin: $space-5 0 0;
+  color: $color-text-muted;
+  font-size: $font-size-caption;
+}
+
+.promo-banner__note span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $color-primary;
+  box-shadow: 0 0 0 5px rgba($color-primary, 0.14);
+}
+
+.promo-banner__utility {
+  display: grid;
+  gap: $space-4;
+}
+
+.promo-banner__countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba($color-primary, 0.18);
+  border-bottom: 1px solid rgba($color-primary, 0.18);
+}
+
+.promo-banner__time-unit {
+  display: flex;
+  min-height: 60px;
+  flex-direction: column;
+  justify-content: center;
+  padding: $space-2 $space-3;
+  border-right: 1px solid rgba($color-primary, 0.16);
+}
+
+.promo-banner__time-unit:last-child {
+  border-right: 0;
+}
+
+.promo-banner__time-unit strong {
+  color: $color-text-heading;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.promo-banner__time-unit span {
+  margin-top: 5px;
+  color: $color-text-muted;
+  font-size: 9px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo-banner__form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: none;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid rgba($color-primary, 0.25);
+  border-radius: $radius-full;
+  background: rgba($color-surface, 0.75);
+  box-shadow: none;
+}
+
+.promo-banner__form:focus-within {
+  border-color: rgba($color-primary, 0.75);
+  box-shadow: 0 0 0 3px rgba($color-primary, 0.17);
+}
+
+.promo-banner__form input {
+  min-height: 42px;
+  padding: 0 $space-4;
+  border-radius: $radius-full;
+  color: $color-text-primary;
+  font-size: $font-size-caption;
+}
+
+.promo-banner__form input::placeholder {
+  color: $color-text-subtle;
+}
+
+.promo-banner__form button {
+  display: inline-flex;
+  width: auto;
+  min-height: 42px;
+  align-items: center;
+  gap: $space-2;
+  padding: 0 $space-4;
+  border-radius: $radius-full;
+  background: $color-primary;
+  color: $color-white;
+  font-size: $font-size-caption;
+  font-weight: $font-weight-bold;
+  box-shadow: none;
+}
+
+.promo-banner__form button:hover {
+  background: $color-primary;
+  box-shadow: none;
+  filter: brightness(0.92);
+  transform: none;
+}
+
+.promo-banner__thanks {
+  min-height: 42px;
+  color: $color-primary;
+  font-size: $font-size-caption;
+}
+
+.promo-banner__side-mark {
+  position: absolute;
+  z-index: 2;
+  right: clamp(2rem, 7vw, 8rem);
+  bottom: clamp(4rem, 11vh, 7rem);
+  display: flex;
+  align-items: flex-end;
+  gap: $space-3;
+  color: $color-surface;
+  pointer-events: none;
+}
+
+.promo-banner__side-mark strong {
+  font-family: $font-secondary;
+  font-size: clamp(3rem, 8vw, 8rem);
+  letter-spacing: -0.08em;
+  line-height: 0.75;
+  text-shadow: 0 6px 28px rgba($color-text-primary, 0.16);
+}
+
+.promo-banner__side-mark span {
+  padding-bottom: 3px;
+  color: rgba($color-surface, 0.9);
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.15em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+@media (min-width: $bp-tablet) {
+  .promo-banner__sub {
+    font-size: $font-size-body;
+  }
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .promo-banner {
+    align-items: flex-end;
+    padding: 6rem $space-4 $space-4;
+  }
+
+  .promo-banner__veil {
+    background: linear-gradient(180deg, rgba($color-surface, 0.1) 0%, rgba($color-primary-surface, 0.28) 42%, rgba($color-surface, 0.48) 100%);
+  }
+
+  .promo-banner__panel {
+    min-height: auto;
+    padding: $space-5;
+    background: linear-gradient(145deg, rgba($color-surface, 0.9), rgba($color-primary-surface, 0.7));
+  }
+
+  .promo-banner__side-mark {
+    right: $space-5;
+    bottom: $space-6;
+    opacity: 0.3 !important;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .promo-banner {
+    padding: 7rem $space-3 $space-3;
+  }
+
+  .promo-banner__panel {
+    padding: $space-4;
+    border-radius: 20px;
+  }
+
+  .promo-banner__masthead {
+    font-size: 8px;
+  }
+
+  .promo-banner__main {
+    padding: $space-4 0;
+  }
+
+  .promo-banner__heading {
+    font-size: 2rem;
+  }
+
+  .promo-banner__sub {
+    margin-top: $space-3;
+    font-size: $font-size-body-mobile;
+    line-height: 1.5;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-4;
+  }
+
+  .promo-banner__time-unit {
+    min-height: 53px;
+    padding: $space-2;
+  }
+
+  .promo-banner__form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $space-2;
+    border-radius: $radius-md;
+  }
+
+  .promo-banner__form input,
+  .promo-banner__form button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .promo-banner__form button {
+    justify-content: center;
+  }
+
+  .promo-banner__side-mark,
+  .promo-banner__texture {
+    display: none;
+  }
+}
+
