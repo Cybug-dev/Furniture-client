@@ -1,0 +1,502 @@
+@use 'sass:color';
+@use '../../styles/variable.scss' as *;
+
+.flash-sale {
+  position: relative;
+  overflow: hidden;
+  padding: 5.5rem $space-6;
+  background: $color-surface;
+  isolation: isolate;
+}
+
+.flash-sale::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 53%;
+  content: '';
+  opacity: 0.58;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba($color-primary, 0.14) 1px, transparent 1.2px),
+    linear-gradient(135deg, transparent 49.7%, rgba($color-primary, 0.035) 50%, transparent 50.3%);
+  background-position: 0 0, 0 0;
+  background-size: 16px 16px, 34px 34px;
+  mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.6) 58%, transparent 100%);
+}
+
+.flash-sale__ambient {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flash-sale__orb {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: rgba($color-primary, 0.08);
+}
+
+.flash-sale__orb--one {
+  top: -11rem;
+  left: 17%;
+  width: clamp(15rem, 29vw, 28rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba($color-primary, 0.12);
+  box-shadow: inset 0 0 0 2.2rem rgba($color-primary, 0.025);
+}
+
+.flash-sale__orb--two {
+  left: -5rem;
+  bottom: -8rem;
+  width: clamp(13rem, 21vw, 20rem);
+  aspect-ratio: 1;
+  background: rgba($color-accent-teal, 0.055);
+}
+
+.flash-sale__line-art {
+  position: absolute;
+  top: 54%;
+  left: -3.5rem;
+  width: 14rem;
+  height: 7rem;
+  border: 1px solid rgba($color-primary, 0.18);
+  border-radius: 7rem 7rem 0 0;
+  border-bottom: 0;
+  transform: rotate(-24deg);
+}
+
+.flash-sale__container {
+  display: grid;
+  position: relative;
+  z-index: 1;
+  grid-template-columns: minmax(0, 0.9fr) minmax(430px, 0.85fr);
+  align-items: center;
+  gap: clamp(2.5rem, 7vw, 8rem);
+  width: min(100%, $content-width);
+  margin: 0 auto;
+}
+
+.flash-sale__content {
+  position: relative;
+  overflow: hidden;
+  max-width: 540px;
+  padding: clamp(1.5rem, 3.2vw, 2.5rem);
+  border: 1px solid rgba($color-primary, 0.13);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba($color-primary-surface, 0.7), rgba($color-surface, 0.88) 53%, rgba($color-primary-surface, 0.26));
+  box-shadow: 0 22px 46px rgba(30, 91, 50, 0.07);
+}
+
+.flash-sale__content::before,
+.flash-sale__content::after {
+  position: absolute;
+  z-index: 0;
+  content: '';
+}
+
+.flash-sale__content > * {
+  position: relative;
+  z-index: 1;
+}
+
+.flash-sale__content::before {
+  top: -3.75rem;
+  right: -3.75rem;
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid rgba($color-primary, 0.19);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.25rem rgba($color-primary, 0.035);
+}
+
+.flash-sale__content::after {
+  right: $space-4;
+  bottom: $space-4;
+  width: 3.25rem;
+  height: 3.25rem;
+  opacity: 0.45;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary 1.4px, transparent 1.7px);
+  background-size: 9px 9px;
+}
+
+.flash-sale__eyebrow {
+  margin: 0 0 $space-2;
+  color: $color-primary;
+  font-size: $font-size-label;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.flash-sale h2 {
+  margin: 0;
+  color: $color-text-heading;
+  font-size: clamp(2.75rem, 4.4vw, $font-size-display);
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.flash-sale__subtext {
+  margin: $space-3 0 0;
+  color: $color-text-muted;
+  font-size: $font-size-body-lg;
+  line-height: $line-height-normal;
+}
+
+.flash-sale__countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(70px, 82px));
+  gap: $space-3;
+  margin-top: $space-6;
+}
+
+.flash-sale__time-unit {
+  display: flex;
+  min-height: 96px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3 $space-2;
+  border: 1px solid rgba($color-primary, 0.16);
+  border-radius: $radius-md;
+  background: rgba($color-surface, 0.76);
+  box-shadow: 0 10px 25px rgba(39, 88, 53, 0.055);
+  backdrop-filter: blur(4px);
+}
+
+.flash-sale__digit-wrap {
+  display: grid;
+  height: 2rem;
+  overflow: hidden;
+  place-items: center;
+}
+
+.flash-sale__digit {
+  display: block;
+  color: $color-text-heading;
+  font-size: 1.7rem;
+  font-weight: $font-weight-bold;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.flash-sale__time-label {
+  margin-top: $space-2;
+  color: $color-text-muted;
+  font-size: $font-size-caption-sm;
+  font-weight: $font-weight-medium;
+}
+
+.flash-sale__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  min-height: 52px;
+  margin-top: $space-6;
+  padding: 0 1.6rem;
+  border: 0;
+  border-radius: $radius-full;
+  background: $color-primary;
+  color: $color-white;
+  cursor: pointer;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  text-decoration: none;
+  transition: background-color $transition-base, box-shadow $transition-base, transform $transition-base;
+}
+
+.flash-sale__cta:hover {
+  background: color.adjust($color-primary, $lightness: -7%);
+  box-shadow: 0 10px 22px rgba($color-primary, 0.28);
+  transform: translateY(-2px);
+}
+
+.flash-sale__cta:focus-visible,
+.flash-sale__phone:focus-visible {
+  outline: 3px solid $color-primary;
+  outline-offset: 4px;
+}
+
+.flash-sale__cta.is-ended {
+  background: $color-text-disabled;
+  cursor: not-allowed;
+}
+
+.flash-sale__perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2 $space-4;
+  margin-top: $space-5;
+  padding-top: $space-4;
+  border-top: 1px solid rgba($color-primary, 0.13);
+}
+
+.flash-sale__perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: $color-text-muted;
+  font-size: $font-size-caption-sm;
+  font-weight: $font-weight-medium;
+}
+
+.flash-sale__perk-icon {
+  display: inline-grid;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: rgba($color-primary, 0.16);
+  place-items: center;
+}
+
+.flash-sale__perk-icon::after {
+  width: 5px;
+  height: 8px;
+  border: solid $color-primary;
+  border-width: 0 2px 2px 0;
+  content: '';
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.flash-sale__perk-icon--2 {
+  border-radius: $radius-xs;
+}
+
+.flash-sale__phones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 430px;
+  padding: 0 $space-4;
+}
+
+.flash-sale__phone {
+  position: relative;
+  display: block;
+  width: clamp(175px, 17vw, 235px);
+  aspect-ratio: 0.49;
+  overflow: hidden;
+  border: 7px solid #1d1d1d;
+  border-radius: 29px;
+  background: #1d1d1d;
+  box-shadow: 0 25px 42px rgba(23, 27, 24, 0.22), 0 5px 12px rgba(23, 27, 24, 0.14);
+  transform-origin: center bottom;
+}
+
+.flash-sale__phone::before {
+  position: absolute;
+  z-index: 2;
+  top: 7px;
+  left: 50%;
+  width: 37%;
+  height: 17px;
+  border-radius: 0 0 13px 13px;
+  background: #1d1d1d;
+  content: '';
+  transform: translateX(-50%);
+}
+
+.flash-sale__phone-speaker {
+  position: absolute;
+  z-index: 3;
+  top: 13px;
+  left: 50%;
+  width: 22px;
+  height: 3px;
+  border-radius: $radius-full;
+  background: #575757;
+  transform: translateX(-50%);
+}
+
+.flash-sale__phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform $transition-slow;
+}
+
+.flash-sale__phone--1 {
+  z-index: 1;
+  margin-right: clamp(-1.75rem, -2vw, -0.75rem);
+}
+
+.flash-sale__phone--2 {
+  z-index: 2;
+}
+
+.flash-sale__phone:hover img,
+.flash-sale__phone:focus-visible img {
+  transform: scale(1.05);
+}
+
+.flash-sale__phone-overlay {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  min-height: 32%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem $space-3 $space-3;
+  background: linear-gradient(transparent, rgba($color-black, 0.78));
+  color: $color-white;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity $transition-base, transform $transition-base;
+}
+
+.flash-sale__phone-overlay span {
+  margin-bottom: 2px;
+  font-size: $font-size-caption-sm;
+  opacity: 0.84;
+}
+
+.flash-sale__phone-overlay strong {
+  font-size: $font-size-label;
+  line-height: 1.25;
+}
+
+.flash-sale__phone:hover .flash-sale__phone-overlay,
+.flash-sale__phone:focus-visible .flash-sale__phone-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: #{$bp-desktop - 1px}) {
+  .flash-sale {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .flash-sale__container {
+    grid-template-columns: minmax(0, 1fr) minmax(345px, 0.7fr);
+    gap: $space-6;
+  }
+
+  .flash-sale__phones {
+    min-height: 370px;
+    padding: 0;
+  }
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .flash-sale {
+    padding: 4rem $space-4;
+  }
+
+  .flash-sale::before {
+    width: 100%;
+    opacity: 0.45;
+  }
+
+  .flash-sale__container {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .flash-sale__content {
+    max-width: none;
+    text-align: center;
+  }
+
+  .flash-sale__countdown {
+    justify-content: center;
+  }
+
+  .flash-sale__phones {
+    min-height: 360px;
+  }
+
+}
+
+@media (max-width: #{$bp-mobile}) {
+  .flash-sale {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .flash-sale h2 {
+    font-size: $font-size-display-mobile;
+  }
+
+  .flash-sale__subtext {
+    font-size: $font-size-body-lg-mobile;
+  }
+
+  .flash-sale__countdown {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $space-2;
+    margin-top: $space-5;
+  }
+
+  .flash-sale__time-unit {
+    min-height: 78px;
+    padding: $space-2 $space-1;
+  }
+
+  .flash-sale__digit {
+    font-size: 1.35rem;
+  }
+
+  .flash-sale__time-label {
+    font-size: 10px;
+  }
+
+  .flash-sale__cta {
+    width: 100%;
+    margin-top: $space-5;
+  }
+
+  .flash-sale__phones {
+    min-height: 315px;
+  }
+
+  .flash-sale__phone {
+    width: min(43vw, 185px);
+    border-width: 6px;
+    border-radius: 24px;
+  }
+
+  .flash-sale__phone::before {
+    top: 6px;
+    height: 14px;
+  }
+
+  .flash-sale__phone-speaker {
+    top: 11px;
+  }
+
+  .flash-sale__line-art {
+    display: none;
+  }
+
+  .flash-sale__orb--one {
+    top: -8rem;
+    left: auto;
+    right: -6rem;
+  }
+
+  .flash-sale__perks {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-sale *,
+  .flash-sale *::before,
+  .flash-sale *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
