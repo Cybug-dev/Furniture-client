@@ -6,14 +6,14 @@ const u = (id, extra = "w=1920&h=1080&fit=crop&q=80") =>
 /** @type {Array<{id: string, type: 'default' | 'ad' | 'showcase' | 'promo', backgroundUrl: string, content: object}>} */
 export const slides = [
   {
-    id: "promo-comfortcraft-sofa",
+    id: "promo-space-saving-convertible couch",
     type: "promo",
-    backgroundUrl: u("photo-1540518614846-7eded433c457"),
+    backgroundUrl: u("photo-1615529182904-14819c35db37"),
     content: {
       offer: "25% OFF",
-      heading: "ComfortCraft Sofa",
+      heading: "Space-saving convertible couch",
       subtext: "Don't miss our best discount for this month for our subscribers",
-      ctaLabel: "Subscribe",
+      ctaLabel: "Unlock Private Access",
       placeholder: "Email",
       endsAt: null,
     },
@@ -37,7 +37,7 @@ export const slides = [
     backgroundUrl: u("photo-1618221195710-dd6b41faaea6"),
     content: {
       productName: "Lumen Lounge Chair",
-      productImage: u("photo-1567538096630-e0c55bd6374c", "w=900&h=1100&fit=crop&q=80"),
+      productImage: u("photo-1598300042247-d088f8ab3a91", "w=900&h=1100&fit=crop&q=80"),
       price: 890,
       compareAt: 1180,
       discount: 25,

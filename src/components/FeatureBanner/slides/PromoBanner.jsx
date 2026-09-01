@@ -1,23 +1,30 @@
 // @ts-nocheck
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const fade = {
-  hidden: { opacity: 0, y: 14 },
-  show: (i = 0) => ({
+  hidden: { opacity: 0, y: 18 },
+  show: (index = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: 0.1 + i * 0.08, duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: 0.1 + index * 0.09, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   }),
 };
+
+const timerUnits = [
+  { key: 'days', label: 'Days' },
+  { key: 'hours', label: 'Hours' },
+  { key: 'minutes', label: 'Min' },
+  { key: 'seconds', label: 'Sec' },
+];
 
 function monthEndMs() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth() + 1, 1).getTime();
 }
 
-function pad(n) {
-  return String(n).padStart(2, "0");
+function pad(value) {
+  return String(value).padStart(2, '0');
 }
 
 function useCountdown(endsAt) {
@@ -25,88 +32,117 @@ function useCountdown(endsAt) {
   const [left, setLeft] = useState(() => Math.max(0, target - Date.now()));
 
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setLeft(Math.max(0, target - Date.now()));
-    }, 1000);
-    return () => window.clearInterval(id);
+    const updateCountdown = () => {
+      const remaining = Math.max(0, target - Date.now());
+      setLeft(remaining);
+      return remaining;
+    };
+
+    if (updateCountdown() === 0) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      if (updateCountdown() === 0) window.clearInterval(intervalId);
+    }, 1_000);
+
+    return () => window.clearInterval(intervalId);
   }, [target]);
 
-  const total = Math.floor(left / 1000);
-  const days = Math.floor(total / 86400);
-  const hours = Math.floor((total % 86400) / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = total % 60;
-  return { days, hours, minutes, seconds };
+  const total = Math.floor(left / 1_000);
+  return {
+    days: Math.floor(total / 86_400),
+    hours: Math.floor((total % 86_400) / 3_600),
+    minutes: Math.floor((total % 3_600) / 60),
+    seconds: total % 60,
+  };
 }
 
 export default function PromoBanner({ content, isActive }) {
-  const { days, hours, minutes, seconds } = useCountdown(content.endsAt);
-  const [email, setEmail] = useState("");
+  const time = useCountdown(content.endsAt);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [done, setDone] = useState(false);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!email.trim()) return;
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (!email.trim() || !name.trim()) return;
     setDone(true);
   };
 
   return (
-    <div className="promo-banner">
+    <section className="promo-banner" aria-labelledby="promo-banner-heading">
       <div className="promo-banner__veil" />
-      <div className="promo-banner__sparkles" aria-hidden="true" />
+      <div className="promo-banner__texture" aria-hidden="true" />
+
       <motion.div
-        className="promo-banner__copy"
+        className="promo-banner__layout"
         initial="hidden"
-        animate={isActive ? "show" : "hidden"}
+        animate={isActive ? 'show' : 'hidden'}
       >
-        <motion.span className="promo-banner__offer" variants={fade} custom={0}>
-          {content.offer}
-        </motion.span>
-        <motion.h2 className="promo-banner__heading" variants={fade} custom={1}>
-          {content.heading}
-        </motion.h2>
-        <motion.p className="promo-banner__sub" variants={fade} custom={2}>
-          {content.subtext}
-        </motion.p>
-        <motion.p className="promo-banner__count" variants={fade} custom={3}>
-          <span>
-            {pad(days)}d {pad(hours)}h {pad(minutes)}m {pad(seconds)}s
-          </span>
-        </motion.p>
-        <motion.form className="promo-banner__form is-clickable" onSubmit={onSubmit} variants={fade} custom={4}>
+        <motion.header className="promo-banner__masthead" variants={fade} custom={0}>
+          <span>Members&apos; private sale</span>
+          <span>Edition 01</span>
+        </motion.header>
+
+        <div className="promo-banner__main">
+          <motion.p className="promo-banner__offer" variants={fade} custom={1}>
+            {content.offer}
+          </motion.p>
+          <motion.h2 id="promo-banner-heading" className="promo-banner__heading" variants={fade} custom={2}>
+            {content.heading}
+          </motion.h2>
+          <motion.p className="promo-banner__sub" variants={fade} custom={3}>
+            {content.subtext}
+          </motion.p>
+          <motion.p className="promo-banner__note" variants={fade} custom={4}>
+            <span aria-hidden="true" /> Reserved for your next room refresh
+          </motion.p>
+          <motion.div className="promo-banner__countdown" variants={fade} custom={5} aria-live="polite" aria-label="Time remaining in this private sale">
+            {timerUnits.map((unit) => (
+              <div className="promo-banner__time-unit" key={unit.key}>
+                <strong>{pad(time[unit.key])}</strong>
+                <span>{unit.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.form className="promo-banner__form" onSubmit={onSubmit} variants={fade} custom={6}>
           {done ? (
-            <p className="promo-banner__thanks">You’re on the list. Welcome in.</p>
+            <p className="promo-banner__thanks">You&apos;re on the list. Welcome in.</p>
           ) : (
             <>
-              <label className="sr-only" htmlFor="promo-email">
-                Email
-              </label>
-              <input
-                id="promo-email"
-                type="email"
-                name="email"
-                required
-                placeholder={content.placeholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
+              <div className="promo-banner__fields">
+                <label>
+                  <span>Email</span>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder={content.placeholder}
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="email"
+                  />
+                </label>
+                <label>
+                  <span>Name</span>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    autoComplete="name"
+                  />
+                </label>
+              </div>
               <button type="submit">{content.ctaLabel}</button>
             </>
           )}
         </motion.form>
+
       </motion.div>
-      <svg className="promo-banner__arrow" viewBox="0 0 160 90" aria-hidden="true">
-        <path
-          d="M8 12 C 70 8, 130 28, 148 78"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeDasharray="5 7"
-          strokeLinecap="round"
-        />
-        <path d="M138 68 L148 78 L132 76" fill="none" stroke="currentColor" strokeWidth="2" />
-      </svg>
-    </div>
+    </section>
   );
 }

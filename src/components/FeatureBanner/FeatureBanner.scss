@@ -85,7 +85,9 @@
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity $transition-base, transform $transition-fast;
+  transition:
+    opacity $transition-base,
+    transform $transition-fast;
 }
 
 .feature-banner__nav--prev {
@@ -133,7 +135,9 @@
   border: 0;
   border-radius: $radius-full;
   background: rgba(255, 255, 255, 0.55);
-  transition: width $transition-base, background $transition-fast;
+  transition:
+    width $transition-base,
+    background $transition-fast;
 }
 
 .feature-banner__dot.is-active {
@@ -281,7 +285,9 @@
   font-weight: $font-weight-semibold;
   letter-spacing: $letter-spacing-cta;
   text-decoration: none;
-  transition: background $transition-fast, transform $transition-fast;
+  transition:
+    background $transition-fast,
+    transform $transition-fast;
 }
 
 .default-banner__cta:hover,
@@ -341,8 +347,8 @@
   position: absolute;
   top: $space-3;
   left: $space-3;
-  background: $color-error;
-  color: $color-white;
+  background: $color-primary-surface;
+  color: $color-text-primary;
   font-size: $font-size-caption;
   font-weight: $font-weight-bold;
   padding: $space-1 $space-2;
@@ -399,9 +405,9 @@
 }
 
 .ad-banner__was {
-  color: $color-text-disabled;
+  color: $color-text-primary;
   text-decoration: line-through;
-  font-size: $font-size-label;
+  font-size: $font-size-caption-sm;
 }
 
 .showcase-banner__inner {
@@ -465,7 +471,9 @@
   padding: $space-3;
   min-height: 88px;
   text-decoration: none;
-  transition: transform $transition-fast, box-shadow $transition-fast;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast;
 }
 
 .showcase-banner__card:hover,
@@ -514,10 +522,31 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: $space-5 $space-4 80px;
-  width: 100%;
-  max-width: 640px;
-  color: $color-text-heading;
+  width: 92%;
+  max-width: 620px;
+  margin: 0 auto;
+  box-sizing: border-box; 
+  padding: 32px 20px 36px;
+
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.38) 100%
+  );
+  backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.18),
+    0 8px 20px -6px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.25);
+
+  color: #1a1a1a;
 }
 
 @media (min-width: $bp-desktop) {
@@ -528,12 +557,11 @@
 
 .promo-banner__sparkles {
   position: absolute;
-  top: 8%;
-  left: 50%;
-  width: 220px;
-  height: 80px;
+  top: 0%;
+  left: 10%;
+  width: 240px;
+  height: 70px;
   transform: translateX(-50%);
-  z-index: 2;
   pointer-events: none;
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.5px, transparent 2px),
     radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 2px);
@@ -542,6 +570,7 @@
   opacity: 0.85;
 }
 
+/* ---------- 25% OFF badge ---------- */
 .promo-banner__offer {
   display: inline-flex;
   align-items: center;
@@ -549,68 +578,107 @@
   min-height: 36px;
   padding: 0 $space-4;
   border-radius: $radius-full;
-  background: $color-surface;
-  color: $color-accent-orange;
+  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
+  color: $color-white;
   font-weight: $font-weight-bold;
   font-size: $font-size-label;
-  box-shadow: $shadow-default;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    0 4px 14px rgba(47, 184, 84, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  position: relative;
+  z-index: 4;
 }
 
 .promo-banner__heading {
   font-family: $font-secondary;
-  font-size: $font-size-h4-mobile;
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: 700;
   line-height: $line-height-tight;
-  margin: $space-4 0 $space-2;
-  color: $color-text-heading;
+  letter-spacing: -0.025em;
+  margin: 18px 0 12px; 
   word-break: break-word;
+  background: linear-gradient(
+    125deg,
+    #1f9a45 0%,
+    #2FB854 38%,
+    #5ed07a 68%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__heading {
-    font-size: $font-size-h3-mobile;
+    font-size: clamp(2rem, 3.8vw, 3rem);
   }
 }
 
 @media (min-width: $bp-desktop) {
   .promo-banner__heading {
-    font-size: $font-size-h2;
+    font-size: 3.1rem;
   }
 }
 
+/* ---------- Subtext ---------- */
 .promo-banner__sub {
-  margin: 0 auto $space-3;
-  max-width: 36ch;
-  color: $color-text-muted;
-  font-size: $font-size-label-mobile;
+  margin: 0 auto 14px;
+  max-width: 34ch;
+  color: rgba(26, 26, 26, 0.72);
+  font-size: $font-size-body-mobile;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  letter-spacing: 0.01em;
 }
 
+/* ---------- Countdown ---------- */
 .promo-banner__count {
-  margin: 0 0 $space-4;
-  font-size: $font-size-caption;
+  margin: 0 0 20px; /* FIXED: Lowered bottom gap from 28px */
+  font-size: 13px;
   font-weight: $font-weight-semibold;
-  letter-spacing: 0.08em;
-  color: $color-text-heading;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.55);
 }
 
+/* ---------- Email Form ---------- */
 .promo-banner__form {
   display: flex;
   flex-direction: column;
   gap: $space-2;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  background: $color-surface;
-  border-radius: $radius-lg;
-  padding: $space-2;
-  box-shadow: $shadow-default;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow:
+    0 10px 30px -8px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.25s ease;
+}
+
+.promo-banner__form:focus-within {
+  box-shadow:
+    0 14px 36px -8px rgba(47, 184, 84, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__form {
     flex-direction: row;
     align-items: stretch;
-    border-radius: $radius-full;
-    padding: $space-1;
+    border-radius: 999px;
+    padding: 6px;
+    gap: 0;
   }
 }
 
@@ -619,73 +687,961 @@
   width: 100%;
   border: 0;
   background: transparent;
-  min-height: 48px;
-  padding: 0 $space-4;
+  min-height: 50px;
+  padding: 0 22px;
   font-family: $font-primary;
-  font-size: 16px;
-  color: $color-text-primary;
+  font-size: 15.5px;
+  color: #1a1a1a;
   outline: none;
+  border-radius: 12px;
+}
+
+.promo-banner__form input::placeholder {
+  color: rgba(26, 26, 26, 0.4);
+  font-weight: 400;
 }
 
 .promo-banner__form button {
-  min-height: 48px;
+  min-height: 50px;
   width: 100%;
   border: 0;
-  border-radius: $radius-md;
-  background: $color-accent-orange;
-  color: $color-white;
-  font-weight: $font-weight-semibold;
-  padding: 0 $space-5;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  padding: 0 28px;
   font-family: $font-primary;
-  font-size: $font-size-body-mobile;
-  transition: filter $transition-fast;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 14px rgba(47, 184, 84, 0.3);
 }
 
 @media (min-width: $bp-tablet) {
   .promo-banner__form button {
     width: auto;
-    border-radius: $radius-full;
+    border-radius: 999px;
+    min-width: 140px;
   }
 }
 
 .promo-banner__form button:hover {
-  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(47, 184, 84, 0.4);
+  filter: brightness(1.05);
 }
 
+.promo-banner__form button:active {
+  transform: translateY(0);
+}
+
+/* ---------- Thank-you state ---------- */
 .promo-banner__thanks {
   margin: 0;
   width: 100%;
-  min-height: 48px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-label;
-  font-weight: $font-weight-medium;
-  color: $color-primary;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2FB854;
+  letter-spacing: 0.01em;
 }
 
-.promo-banner__arrow {
-  display: none;
-  position: absolute;
-  right: 18%;
-  top: 28%;
-  width: 140px;
-  height: 80px;
-  color: $color-text-subtle;
-  z-index: 2;
-  pointer-events: none;
-}
-
-@media (min-width: $bp-desktop) {
-  .promo-banner__arrow {
-    display: block;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .feature-banner__nav,
-  .feature-banner__dot,
-  .feature-skeleton {
+  .promo-banner__form button,
+  .promo-banner__form {
     transition: none;
   }
 }
+
+/* ========================================================================== */
+/* Private-sale promo: a restrained editorial composition, not a glass card. */
+/* ========================================================================== */
+.promo-banner {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: clamp($space-4, 3vw, $space-7);
+  isolation: isolate;
+}
+
+
+.promo-banner__texture {
+  position: absolute;
+  z-index: 1;
+  top: -20%;
+  right: 4%;
+  width: clamp(18rem, 33vw, 32rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba($color-white, 0.38);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-white, 0.055);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.promo-banner__texture::after {
+  position: absolute;
+  top: 22%;
+  right: 22%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $color-primary-surface;
+  box-shadow: 36px 28px 0 rgba($color-primary-surface, 0.7), -24px 52px 0 rgba($color-primary-surface, 0.5);
+  content: '';
+}
+
+.promo-banner__panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(100%, 690px);
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 3.4vw, 3.25rem);
+  color: $color-white;
+}
+
+.promo-banner__panel::before,
+.promo-banner__panel::after {
+  display: none;
+}
+
+.promo-banner__panel::before {
+  top: -4rem;
+  right: -4rem;
+  width: 13rem;
+  height: 13rem;
+  border: 1px solid rgba($color-primary, 0.23);
+  border-radius: 50%;
+}
+
+.promo-banner__panel::after {
+  right: 1.35rem;
+  bottom: 1.35rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary-surface 1.4px, transparent 1.7px);
+  background-size: 10px 10px;
+}
+
+.promo-banner__panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-banner__masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid rgba($color-white, 0.32);
+  color: rgba($color-white, 0.78);
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.promo-banner__masthead span:last-child {
+  color: $color-primary-surface;
+}
+
+.promo-banner__main {
+  max-width: 34rem;
+  padding: clamp(1.5rem, 4.5vh, 3.75rem) 0;
+}
+
+.promo-banner__offer {
+  width: fit-content;
+  margin: 0 0 $space-4;
+  padding: 6px $space-3;
+  border: 1px solid rgba($color-primary-surface, 0.58);
+  border-radius: $radius-full;
+  background: rgba($color-primary-surface, 0.16);
+  color: $color-primary-surface;
+  font-size: $font-size-caption-sm;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-banner__heading {
+  max-width: 13ch;
+  margin: 0;
+  color: $color-white;
+  font-family: $font-secondary;
+  font-size: clamp(2rem, 4.4vw, 4.25rem);
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.055em;
+  line-height: 1.04;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: 0 3px 22px rgba($color-text-primary, 0.36);
+}
+
+.promo-banner__sub {
+  max-width: 41ch;
+  margin: $space-4 0 0;
+  color: rgba($color-white, 0.86);
+  text-shadow: 0 2px 12px rgba($color-text-primary, 0.22);
+  font-size: $font-size-body-mobile;
+  line-height: 1.65;
+}
+
+.promo-banner__note {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin: $space-5 0 0;
+  color: rgba($color-white, 0.78);
+  font-size: $font-size-caption;
+}
+
+.promo-banner__note span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $color-primary;
+  box-shadow: 0 0 0 5px rgba($color-primary, 0.14);
+}
+
+.promo-banner__utility {
+  display: grid;
+  gap: $space-4;
+}
+
+.promo-banner__countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba($color-white, 0.32);
+  border-bottom: 1px solid rgba($color-white, 0.32);
+}
+
+.promo-banner__time-unit {
+  display: flex;
+  min-height: 60px;
+  flex-direction: column;
+  justify-content: center;
+  padding: $space-2 $space-3;
+  border-right: 1px solid rgba($color-white, 0.24);
+}
+
+.promo-banner__time-unit:last-child {
+  border-right: 0;
+}
+
+.promo-banner__time-unit strong {
+  color: $color-white;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.promo-banner__time-unit span {
+  margin-top: 5px;
+  color: rgba($color-primary-surface, 0.92);
+  font-size: 9px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo-banner__form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: none;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid rgba($color-primary, 0.25);
+  border-radius: $radius-full;
+  background: rgba($color-surface, 0.75);
+  box-shadow: none;
+}
+
+.promo-banner__form:focus-within {
+  border-color: rgba($color-primary, 0.75);
+  box-shadow: 0 0 0 3px rgba($color-primary, 0.17);
+}
+
+.promo-banner__form input {
+  min-height: 42px;
+  padding: 0 $space-4;
+  border-radius: $radius-full;
+  color: $color-text-primary;
+  font-size: $font-size-caption;
+}
+
+.promo-banner__form input::placeholder {
+  color: $color-text-subtle;
+}
+
+.promo-banner__form button {
+  display: inline-flex;
+  width: auto;
+  min-height: 42px;
+  align-items: center;
+  gap: $space-2;
+  padding: 0 $space-4;
+  border-radius: $radius-full;
+  background: $color-primary;
+  color: $color-white;
+  font-size: $font-size-caption;
+  font-weight: $font-weight-bold;
+  box-shadow: none;
+}
+
+.promo-banner__form button:hover {
+  background: $color-primary;
+  box-shadow: none;
+  filter: brightness(0.92);
+  transform: none;
+}
+
+.promo-banner__thanks {
+  min-height: 42px;
+  color: $color-primary;
+  font-size: $font-size-caption;
+}
+
+.promo-banner__side-mark {
+  position: absolute;
+  z-index: 2;
+  right: clamp(2rem, 7vw, 8rem);
+  bottom: clamp(4rem, 11vh, 7rem);
+  display: flex;
+  align-items: flex-end;
+  gap: $space-3;
+  color: $color-primary-surface;
+  pointer-events: none;
+}
+
+.promo-banner__side-mark strong {
+  font-family: $font-secondary;
+  font-size: clamp(3rem, 8vw, 8rem);
+  background: transparent;
+  letter-spacing: -0.08em;
+  line-height: 0.75;
+  // background: linear-gradient(135deg, $color-primary-surface 0%, $color-white 52%, $color-primary 100%);
+  // background-clip: text;
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  text-shadow: 0 6px 28px rgba($color-text-primary, 0.28);
+}
+
+.promo-banner__side-mark span {
+  padding-bottom: 3px;
+  padding-left: $space-2;
+  border-left: 1px solid rgba($color-primary-surface, 0.72);
+  color: $color-primary-surface;
+  font-size: 10px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.15em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+@media (min-width: $bp-tablet) {
+  .promo-banner__sub {
+    font-size: $font-size-body;
+  }
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .promo-banner {
+    align-items: flex-end;
+    padding: 6rem $space-4 $space-4;
+  }
+
+  .promo-banner__panel {
+    min-height: auto;
+    padding: $space-5;
+  }
+
+  .promo-banner__side-mark {
+    right: $space-5;
+    bottom: $space-6;
+    opacity: 0.3 !important;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .promo-banner {
+    padding: 7rem $space-3 $space-3;
+  }
+
+  .promo-banner__panel {
+    padding: $space-4;
+    border-radius: 20px;
+  }
+
+  .promo-banner__masthead {
+    font-size: 8px;
+  }
+
+  .promo-banner__main {
+    padding: $space-4 0;
+  }
+
+  .promo-banner__heading {
+    font-size: 2rem;
+  }
+
+  .promo-banner__sub {
+    margin-top: $space-3;
+    font-size: $font-size-body-mobile;
+    line-height: 1.5;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-4;
+  }
+
+  .promo-banner__time-unit {
+    min-height: 53px;
+    padding: $space-2;
+  }
+
+  .promo-banner__form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $space-2;
+    border-radius: $radius-md;
+  }
+
+  .promo-banner__form input,
+  .promo-banner__form button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .promo-banner__form button {
+    justify-content: center;
+  }
+
+  .promo-banner__side-mark,
+  .promo-banner__texture {
+    display: none;
+  }
+}
+
+/* Small shared finishing details for the non-promo carousel slides. */
+.default-banner__copy {
+  isolation: isolate;
+}
+
+.default-banner__copy::after {
+  position: absolute;
+  z-index: -1;
+  top: 22%;
+  left: $space-3;
+  width: 46px;
+  height: 46px;
+  opacity: 0.5;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary-surface 1.3px, transparent 1.6px);
+  background-size: 9px 9px;
+  content: '';
+}
+
+.default-banner__kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 $space-3;
+  border: 1px solid rgba($color-primary-surface, 0.34);
+  border-radius: $radius-full;
+  background: rgba($color-primary-surface, 0.1);
+}
+
+.default-banner__cta,
+.ad-banner__cta {
+  box-shadow: 0 10px 22px rgba($color-primary, 0.25);
+}
+
+.default-banner__cta::after,
+.ad-banner__cta::after {
+  margin-left: $space-2;
+  content: '↗';
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.ad-banner::before {
+  position: absolute;
+  z-index: -1;
+  top: -15%;
+  left: -6rem;
+  width: 23rem;
+  height: 23rem;
+  border: 1px solid rgba($color-primary-surface, 0.28);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.5rem rgba($color-primary-surface, 0.055);
+  content: '';
+}
+
+
+.default-banner__cta:hover,
+.ad-banner__cta:hover {
+  box-shadow: 0 13px 26px rgba($color-primary, 0.35);
+  transform: translateY(-2px);
+}
+
+.ad-banner__media {
+  border: 5px solid rgba($color-surface, 0.9);
+  outline: 1px solid rgba($color-primary-surface, 0.5);
+  outline-offset: 4px;
+}
+
+.ad-banner__media img {
+  transition: transform $transition-slow;
+}
+
+.ad-banner__media:hover img,
+.ad-banner__media:focus-visible img {
+  transform: scale(1.04);
+}
+
+.showcase-banner__inner {
+  isolation: isolate;
+}
+
+.showcase-banner__inner::before {
+  position: absolute;
+  z-index: -1;
+  top: 18%;
+  left: -9rem;
+  width: 23rem;
+  height: 23rem;
+  border: 1px solid rgba($color-primary-surface, 0.28);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.5rem rgba($color-primary-surface, 0.055);
+  content: '';
+}
+
+.showcase-banner__heading {
+  max-width: 14ch;
+}
+
+.showcase-banner__card {
+  border: 1px solid rgba($color-surface, 0.65);
+  transition: transform $transition-fast, box-shadow $transition-fast, background $transition-fast;
+}
+
+.showcase-banner__card:hover,
+.showcase-banner__card:focus-visible {
+  background: $color-surface;
+}
+
+@media (min-width: $bp-tablet) {
+  .ad-banner__meta {
+    position: relative;
+    padding-left: $space-6;
+  }
+
+  .ad-banner__meta::before {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 0;
+    width: 1px;
+    background: rgba($color-primary-surface, 0.55);
+    content: '';
+  }
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .default-banner__copy::before {
+    width: 92%;
+  }
+
+  .ad-banner__panel {
+    border-radius: $radius-lg;
+  }
+}
+
+/* Promo slide: private-sale layout based on the supplied campaign reference. */
+.promo-banner {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.promo-banner__veil {
+  background:
+    linear-gradient(90deg, rgba($color-text-heading, 0.48) 0%, rgba($color-text-heading, 0.28) 48%, rgba($color-text-heading, 0.08) 100%),
+    linear-gradient(180deg, transparent 58%, rgba($color-text-heading, 0.22) 100%);
+}
+
+.promo-banner__texture {
+  top: -28%;
+  right: 13%;
+  width: clamp(18rem, 31vw, 30rem);
+  border-color: rgba($color-primary-surface, 0.28);
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-primary-surface, 0.05);
+}
+
+.promo-banner__layout {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: clamp(2rem, 5vw, 4.75rem) clamp(2.5rem, 8vw, 8.75rem);
+}
+
+.promo-banner__masthead {
+  position: absolute;
+  top: clamp(1.25rem, 4vh, 2.5rem);
+  left: clamp(2.5rem, 8vw, 8.75rem);
+  display: flex;
+  width: min(50%, 680px);
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  padding: 0 0 $space-3;
+  border-bottom: 1px solid rgba($color-primary-surface, 0.5);
+  color: $color-primary-surface;
+  font-size: $font-size-caption-sm;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo-banner__masthead span:last-child {
+  color: $color-primary-surface;
+}
+
+.promo-banner__main {
+  position: absolute;
+  top: clamp(5.5rem, 15vh, 7.5rem);
+  left: clamp(2.5rem, 8vw, 8.75rem);
+  width: min(44%, 610px);
+  max-width: none;
+  padding: 0;
+}
+
+.promo-banner__offer {
+  margin: 0 0 $space-3;
+  border-color: rgba($color-primary-surface, 0.78);
+  background: rgba($color-text-heading, 0.3);
+  color: $color-primary-surface;
+}
+
+.promo-banner__heading {
+  max-width: 12ch;
+  color: $color-white;
+  font-size: clamp(2.5rem, 4.45vw, 4.75rem);
+  line-height: 0.98;
+  text-shadow: 0 4px 20px rgba($color-text-heading, 0.36);
+}
+
+.promo-banner__sub {
+  max-width: 39ch;
+  margin-top: $space-3;
+  color: rgba($color-white, 0.92);
+  font-size: clamp($font-size-body-mobile, 1.25vw, $font-size-body-lg);
+  line-height: 1.45;
+}
+
+.promo-banner__note {
+  margin-top: $space-3;
+  color: rgba($color-primary-surface, 0.95);
+  font-size: $font-size-body-mobile;
+}
+
+.promo-banner__form {
+  position: absolute;
+  top: clamp(8.5rem, 27vh, 13.5rem);
+  right: clamp(2.5rem, 8vw, 8.75rem);
+  display: block;
+  width: min(38%, 570px);
+  margin: 0;
+  padding: clamp($space-4, 2vw, $space-5);
+  border: 1px solid rgba($color-primary, 0.58);
+  border-radius: $radius-md;
+  background: $color-surface;
+  box-shadow: 0 18px 42px rgba($color-text-heading, 0.24);
+}
+
+.promo-banner__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.promo-banner__fields label {
+  display: grid;
+  gap: $space-2;
+  color: $color-text-primary;
+  font-size: $font-size-label;
+  font-weight: $font-weight-medium;
+}
+
+.promo-banner__fields input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 $space-3;
+  border: 1px solid rgba($color-primary, 0.65);
+  border-radius: $radius-xs;
+  background: $color-surface;
+  color: $color-text-primary;
+  font-size: $font-size-body;
+  outline: 0;
+}
+
+.promo-banner__fields input::placeholder {
+  color: $color-text-subtle;
+}
+
+.promo-banner__fields input:focus {
+  border-color: $color-primary;
+  box-shadow: 0 0 0 3px rgba($color-primary, 0.16);
+}
+
+.promo-banner__form button {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  margin-top: $space-4;
+  border-radius: $radius-xs;
+  background: $color-primary;
+  color: $color-white;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+}
+
+.promo-banner__form button:hover {
+  background: $color-primary;
+  box-shadow: 0 8px 18px rgba($color-primary, 0.3);
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+}
+
+.promo-banner__thanks {
+  display: grid;
+  min-height: 140px;
+  margin: 0;
+  color: $color-primary;
+  font-size: $font-size-body;
+  font-weight: $font-weight-semibold;
+  place-items: center;
+  text-align: center;
+}
+
+.promo-banner__countdown {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: $space-4;
+  border: 1px solid rgba($color-primary-surface, 0.48);
+}
+
+.promo-banner__time-unit {
+  min-height: 56px;
+  padding: $space-2 $space-3;
+  border-right-color: rgba($color-primary-surface, 0.38);
+}
+
+.promo-banner__time-unit strong {
+  color: $color-white;
+  font-size: clamp(1.3rem, 2.1vw, 2rem);
+  text-shadow: 0 2px 12px rgba($color-text-heading, 0.3);
+}
+
+.promo-banner__time-unit span {
+  color: $color-primary-surface;
+  font-size: 9px;
+}
+
+.promo-banner__side-mark {
+  z-index: 2;
+  right: clamp(2.5rem, 8vw, 8.75rem);
+  bottom: clamp(4.5rem, 12vh, 7rem);
+  gap: $space-4;
+  color: $color-primary-surface;
+}
+
+.promo-banner__side-mark strong {
+  background: linear-gradient(135deg, $color-primary-surface 0%, $color-white 58%, $color-primary-surface 100%);
+  font-size: clamp(4.5rem, 9vw, 9rem);
+  text-shadow: 0 6px 28px rgba($color-text-heading, 0.28);
+}
+
+.promo-banner__side-mark span {
+  padding: 0 0 5px $space-3;
+  border-left-color: rgba($color-primary-surface, 0.84);
+  color: $color-primary-surface;
+  font-size: $font-size-caption-sm;
+}
+
+/* Keep carousel indicators clear of the promo copy and timer. */
+.feature-banner:has(.promo-banner) .feature-banner__dots {
+  right: $space-6;
+  bottom: $space-5;
+  left: auto;
+  transform: none;
+}
+
+@media (max-width: #{$bp-desktop - 1px}) {
+  .promo-banner__masthead,
+  .promo-banner__main {
+    left: $space-6;
+  }
+
+  .promo-banner__form {
+    right: $space-6;
+  }
+
+  .promo-banner__masthead {
+    width: 48%;
+  }
+
+  .promo-banner__main {
+    width: 45%;
+  }
+
+  .promo-banner__form {
+    width: 42%;
+  }
+}
+
+@media (max-width: #{$bp-tablet - 1px}) {
+  .feature-banner:has(.promo-banner) .feature-banner__dots {
+    right: auto;
+    bottom: $space-2;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .promo-banner {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .promo-banner__veil {
+    background: linear-gradient(180deg, rgba($color-text-heading, 0.16) 0%, rgba($color-text-heading, 0.68) 100%);
+  }
+
+  .promo-banner__texture,
+  .promo-banner__side-mark {
+    display: none;
+  }
+
+  .promo-banner__layout {
+    display: grid;
+    height: auto;
+    gap: $space-3;
+    padding: clamp(3.25rem, 12vh, 5rem) $space-4 $space-7;
+  }
+
+  .promo-banner__masthead,
+  .promo-banner__main,
+  .promo-banner__form {
+    position: static;
+    width: 100%;
+  }
+
+  .promo-banner__masthead {
+    padding-bottom: $space-3;
+    font-size: 10px;
+  }
+
+  .promo-banner__main {
+    padding: $space-2 0;
+  }
+
+  .promo-banner__heading {
+    max-width: 16ch;
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .promo-banner__sub {
+    max-width: 46ch;
+    margin-top: $space-3;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-3;
+  }
+
+  .promo-banner__form {
+    padding: $space-4;
+  }
+
+  .promo-banner__countdown {
+    margin-top: $space-4;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .promo-banner__layout {
+    gap: $space-2;
+    padding: clamp(1.75rem, 7vh, 3.25rem) $space-3 $space-7;
+  }
+
+  .promo-banner__masthead {
+    font-size: 8px;
+  }
+
+  .promo-banner__offer {
+    margin-bottom: $space-2;
+  }
+
+  .promo-banner__heading {
+    font-size: clamp(1.65rem, 8.5vw, 2.2rem);
+  }
+
+  .promo-banner__sub {
+    font-size: $font-size-body-mobile;
+    line-height: 1.45;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-2;
+    font-size: $font-size-caption-sm;
+  }
+
+  .promo-banner__form {
+    padding: $space-3;
+  }
+
+  .promo-banner__fields {
+    gap: $space-2;
+  }
+
+  .promo-banner__fields label {
+    gap: $space-1;
+    font-size: $font-size-caption-sm;
+  }
+
+  .promo-banner__fields input,
+  .promo-banner__form button {
+    min-height: 42px;
+    font-size: $font-size-label-mobile;
+  }
+
+  .promo-banner__form button {
+    margin-top: $space-3;
+  }
+
+  .promo-banner__time-unit {
+    min-height: 48px;
+    padding: $space-2;
+  }
+
+  .promo-banner__time-unit strong {
+    font-size: 1.2rem;
+  }
+}
+
