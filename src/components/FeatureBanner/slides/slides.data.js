@@ -13,7 +13,7 @@ export const slides = [
       offer: "25% OFF",
       heading: "Space-saving convertible couch",
       subtext: "Don't miss our best discount for this month for our subscribers",
-      ctaLabel: "Subscribe",
+      ctaLabel: "Unlock Private Access",
       placeholder: "Email",
       endsAt: null,
     },

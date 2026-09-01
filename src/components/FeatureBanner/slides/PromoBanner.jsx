@@ -40,18 +40,18 @@ function useCountdown(endsAt) {
 
     if (updateCountdown() === 0) return undefined;
 
-    const id = window.setInterval(() => {
-      if (updateCountdown() === 0) window.clearInterval(id);
-    }, 1000);
+    const intervalId = window.setInterval(() => {
+      if (updateCountdown() === 0) window.clearInterval(intervalId);
+    }, 1_000);
 
-    return () => window.clearInterval(id);
+    return () => window.clearInterval(intervalId);
   }, [target]);
 
-  const total = Math.floor(left / 1000);
+  const total = Math.floor(left / 1_000);
   return {
-    days: Math.floor(total / 86400),
-    hours: Math.floor((total % 86400) / 3600),
-    minutes: Math.floor((total % 3600) / 60),
+    days: Math.floor(total / 86_400),
+    hours: Math.floor((total % 86_400) / 3_600),
+    minutes: Math.floor((total % 3_600) / 60),
     seconds: total % 60,
   };
 }
@@ -59,11 +59,12 @@ function useCountdown(endsAt) {
 export default function PromoBanner({ content, isActive }) {
   const time = useCountdown(content.endsAt);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [done, setDone] = useState(false);
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (!email.trim()) return;
+    if (!email.trim() || !name.trim()) return;
     setDone(true);
   };
 
@@ -71,15 +72,16 @@ export default function PromoBanner({ content, isActive }) {
     <section className="promo-banner" aria-labelledby="promo-banner-heading">
       <div className="promo-banner__veil" />
       <div className="promo-banner__texture" aria-hidden="true" />
-      <motion.aside
-        className="promo-banner__panel"
+
+      <motion.div
+        className="promo-banner__layout"
         initial="hidden"
         animate={isActive ? 'show' : 'hidden'}
       >
-        <motion.div className="promo-banner__masthead" variants={fade} custom={0}>
-          <span>Members' private sale</span>
+        <motion.header className="promo-banner__masthead" variants={fade} custom={0}>
+          <span>Members&apos; private sale</span>
           <span>Edition 01</span>
-        </motion.div>
+        </motion.header>
 
         <div className="promo-banner__main">
           <motion.p className="promo-banner__offer" variants={fade} custom={1}>
@@ -94,52 +96,52 @@ export default function PromoBanner({ content, isActive }) {
           <motion.p className="promo-banner__note" variants={fade} custom={4}>
             <span aria-hidden="true" /> Reserved for your next room refresh
           </motion.p>
-        </div>
-
-        <motion.div className="promo-banner__utility" variants={fade} custom={5}>
-          <div className="promo-banner__countdown" aria-live="polite" aria-label="Time remaining in this private sale">
+          <motion.div className="promo-banner__countdown" variants={fade} custom={5} aria-live="polite" aria-label="Time remaining in this private sale">
             {timerUnits.map((unit) => (
               <div className="promo-banner__time-unit" key={unit.key}>
                 <strong>{pad(time[unit.key])}</strong>
                 <span>{unit.label}</span>
               </div>
             ))}
-          </div>
+          </motion.div>
+        </div>
 
-          <form className="promo-banner__form" onSubmit={onSubmit}>
-            {done ? (
-              <p className="promo-banner__thanks">You’re on the list. Welcome in.</p>
-            ) : (
-              <>
-                <label className="sr-only" htmlFor="promo-email">Email address</label>
-                <input
-                  id="promo-email"
-                  type="email"
-                  name="email"
-                  required
-                  placeholder={content.placeholder}
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="email"
-                />
-                <button type="submit">
-                  {content.ctaLabel} <span aria-hidden="true">↗</span>
-                </button>
-              </>
-            )}
-          </form>
-        </motion.div>
-      </motion.aside>
+        <motion.form className="promo-banner__form" onSubmit={onSubmit} variants={fade} custom={6}>
+          {done ? (
+            <p className="promo-banner__thanks">You&apos;re on the list. Welcome in.</p>
+          ) : (
+            <>
+              <div className="promo-banner__fields">
+                <label>
+                  <span>Email</span>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder={content.placeholder}
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="email"
+                  />
+                </label>
+                <label>
+                  <span>Name</span>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    autoComplete="name"
+                  />
+                </label>
+              </div>
+              <button type="submit">{content.ctaLabel}</button>
+            </>
+          )}
+        </motion.form>
 
-      <motion.div
-        className="promo-banner__side-mark"
-        aria-hidden="true"
-        initial={{ opacity: 0, x: 24 }}
-        animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
-        transition={{ delay: 0.35, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <strong>{content.offer}</strong>
-        <span>Private<br />access</span>
       </motion.div>
     </section>
   );
