@@ -1,0 +1,212 @@
+@use 'sass:list';
+
+// Warm Contemporary Editorial design tokens.
+// Sass variables are the executable source of truth. CSS custom properties are
+// emitted from _base.scss for plain CSS and data-driven values.
+
+// Primitive colours
+$brand-50: #eff8f1;
+$brand-100: #dcefe2;
+$brand-200: #b9dfc4;
+$brand-300: #8bcc9e;
+$brand-400: #5dbd77;
+$brand-500: #2fb854;
+$brand-600: #249546;
+$brand-700: #1c7538;
+$brand-800: #175e2f;
+$brand-900: #124d28;
+
+$warm-white: #fffefb;
+$cream: #f8f6f1;
+$stone-100: #efeae1;
+$stone-300: #d9d2c7;
+$taupe: #aaa296;
+$text-muted: #746e65;
+$charcoal-soft: #45413c;
+$charcoal: #292724;
+$ink: #171714;
+$walnut: #b9895b;
+$clay: #c9784b;
+$sage: #7b8f77;
+$sale: #c94e4e;
+$warning: #b87918;
+$white: #ffffff;
+
+// Semantic colours
+$color-page-background: $cream;
+$color-surface: $warm-white;
+$color-surface-subtle: $stone-100;
+$color-surface-brand-soft: $brand-50;
+$color-text-primary: $ink;
+$color-text-secondary: $text-muted;
+$color-text-tertiary: $taupe;
+$color-text-inverse: $warm-white;
+$color-text-brand: $brand-700;
+$color-border-default: $stone-300;
+$color-border-strong: $taupe;
+$color-action-primary: $brand-500;
+$color-action-primary-hover: $brand-600;
+$color-action-primary-active: $brand-700;
+$color-focus-ring: rgba($brand-500, 0.42);
+$color-status-success: $brand-600;
+$color-status-warning: $warning;
+$color-status-sale: $sale;
+
+// Font roles
+$font-family-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+$font-family-ui: 'Manrope', 'Segoe UI', Arial, sans-serif;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$line-height-display: 1.04;
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.65;
+
+// Fluid type roles. Use via @include type(<role>) or a .type-* utility.
+$type-display-large: clamp(2.875rem, 5vw, 4.5rem);
+$type-display-medium: clamp(2.375rem, 4vw, 3.5rem);
+$type-heading-1: clamp(2rem, 3.2vw, 3rem);
+$type-heading-2: clamp(1.75rem, 2.5vw, 2.375rem);
+$type-heading-3: clamp(1.375rem, 1.8vw, 1.75rem);
+$type-heading-4: clamp(1.125rem, 1.4vw, 1.25rem);
+$type-body-large: clamp(1rem, 1.1vw, 1.125rem);
+$type-body-medium: 1rem;
+$type-body-small: 0.875rem;
+$type-label: 0.75rem;
+$type-caption: 0.6875rem;
+$type-price: 1.125rem;
+$type-price-large: clamp(1.25rem, 1.6vw, 1.5rem);
+
+// Spacing: use this named scale instead of one-off values.
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+$space-7: 40px;
+$space-8: 48px;
+$space-9: 64px;
+$space-10: 80px;
+$space-11: 96px;
+$space-12: 120px;
+$space-section: clamp($space-9, 7vw, $space-12);
+$space-section-compact: clamp($space-8, 5vw, $space-10);
+$space-page-gutter: clamp($space-4, 3vw, $space-6);
+$space-grid-gap: clamp($space-4, 2vw, $space-6);
+
+// Layout, elevation, and interaction
+$container-max-width: 1440px;
+$content-width: 1280px;
+$content-width-reading: 720px;
+$content-padding: $space-page-gutter;
+$section-spacing: $space-section;
+$header-height: 76px;
+$grid-gap: $space-grid-gap;
+$radius-xs: 4px;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-full: 999px;
+$shadow-card: 0 2px 10px rgba($ink, 0.06), 0 10px 24px rgba($ink, 0.04);
+$shadow-floating: 0 8px 24px rgba($ink, 0.1), 0 2px 6px rgba($ink, 0.05);
+$shadow-overlay: 0 20px 48px rgba($ink, 0.16);
+$duration-fast: 150ms;
+$duration-base: 220ms;
+$duration-slow: 360ms;
+$ease-standard: cubic-bezier(0.2, 0, 0, 1);
+$ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+
+// Icons, aspect ratios, layers, and responsive values
+$icon-size-xs: 16px;
+$icon-size-sm: 20px;
+$icon-size-md: 24px;
+$icon-size-lg: 28px;
+$icon-size-xl: 32px;
+$icon-size-2xl: 40px;
+$icon-stroke-width: 1.75;
+$aspect-product: list.slash(4, 5);
+$aspect-category: list.slash(4, 5);
+$aspect-editorial: list.slash(3, 4);
+$aspect-promo: list.slash(16, 9);
+$aspect-gallery-landscape: list.slash(4, 3);
+$aspect-gallery-portrait: list.slash(3, 4);
+$z-base: 0;
+$z-raised: 1;
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-header: 300;
+$z-overlay: 400;
+$z-modal: 500;
+$z-toast: 600;
+$z-tooltip: 700;
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1440px;
+
+// Transitional aliases: preserve existing components while Phase 2 moves them
+// to the semantic names above. Do not use these for new component work.
+$color-primary: $color-action-primary;
+$color-primary-surface: $color-surface-brand-soft;
+$color-primary-light: rgba($brand-500, 0.17);
+$color-text-heading: $color-text-primary;
+$color-text-muted: $color-text-secondary;
+$color-text-subtle: $color-text-tertiary;
+$color-text-disabled: $taupe;
+$color-background: $color-page-background;
+$color-border: $color-border-default;
+$color-error: $color-status-sale;
+$color-success: $color-status-success;
+$color-accent-teal: $sage;
+$color-accent-yellow: $warning;
+$color-accent-orange: $clay;
+$color-white: $white;
+$color-black: $ink;
+$font-primary: $font-family-ui;
+$font-secondary: $font-family-display;
+$font-size-display: 56px;
+$font-size-h1: 48px;
+$font-size-h2: 40px;
+$font-size-h3: 32px;
+$font-size-h4: 28px;
+$font-size-h5: 24px;
+$font-size-body-lg: 18px;
+$font-size-body: 16px;
+$font-size-label: 14px;
+$font-size-caption: 12px;
+$font-size-caption-sm: 11px;
+$font-size-display-mobile: 40px;
+$font-size-h1-mobile: 32px;
+$font-size-h2-mobile: 28px;
+$font-size-h3-mobile: 24px;
+$font-size-h4-mobile: 20px;
+$font-size-h5-mobile: 18px;
+$font-size-body-lg-mobile: 16px;
+$font-size-body-mobile: 14px;
+$font-size-label-mobile: 13px;
+$font-size-caption-mobile: 12px;
+$font-size-caption-sm-mobile: 11px;
+$line-height-mobile: 1.4;
+$letter-spacing-cta: 0.03em;
+$space-xs: $space-1;
+$space-sm: $space-2;
+$space-md: $space-4;
+$space-lg: $space-5;
+$space-xl: $space-6;
+$space-2xl: $space-8;
+$space-3xl: $space-9;
+$card-width: 252px;
+$card-image-height: 446px;
+$button-height-lg: 56px;
+$button-width: 252px;
+$shadow-default: $shadow-card;
+$transition-fast: $duration-fast $ease-standard;
+$transition-base: $duration-base $ease-standard;
+$transition-slow: $duration-slow $ease-standard;
+$bp-mobile: $breakpoint-mobile;
+$bp-tablet: $breakpoint-tablet;
+$bp-desktop: $breakpoint-desktop;
+$bp-wide: $breakpoint-wide;
