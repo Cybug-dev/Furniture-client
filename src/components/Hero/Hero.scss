@@ -41,7 +41,7 @@
   width: 44.65%;
   min-height: 61.7%;
   padding: 3.75rem 2.6rem 2.25rem;
-  background: $color-primary-light;
+  background: rgba($color-bg-brand, 0.17);
   border-radius: $radius-sm;
   box-shadow: 0 12px 40px rgba($color-text-heading, 0.08);
   display: flex;
@@ -52,9 +52,8 @@
 /* ---- Typography ---- */
 .hero__eyebrow {
   margin: 0 0 $space-2;
-  color: $color-text-primary;
-  font-family: $font-primary;
-  font-size: $font-size-caption;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -63,9 +62,9 @@
 .hero__heading {
   max-width: 15ch;
   margin: 0 0 $space-3;
-  color: $color-primary;
+  color: $color-text-brand;
   font-size: clamp(2.25rem, 3.2vw, 3.125rem);
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   letter-spacing: -0.045em;
   line-height: $line-height-tight;
 }
@@ -73,9 +72,8 @@
 .hero__description {
   max-width: 44ch;
   margin: 0 0 $space-6;
-  color: $color-text-primary;
-  font-family: $font-primary;
-  font-size: $font-size-label;
+  color: $color-text-heading;
+  font-size: $font-size-sm;
   line-height: 1.45;
 }
 
@@ -85,13 +83,12 @@
   align-items: center;
   justify-content: center;
   width: 14rem;
-  min-height: $button-height-lg;
+  min-height: $control-size-lg;
   padding: $space-3 $space-5;
   border-radius: 0;
-  background: $color-primary;
-  color: $color-surface;
-  font-family: $font-primary;
-  font-size: $font-size-caption-sm;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   letter-spacing: 0.02em;
   text-decoration: none;
@@ -101,17 +98,17 @@
 
   &:hover,
   &:focus-visible {
-    background: $color-primary;
+    background: $color-action-primary;
     outline: none;
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.35);
+    box-shadow: 0 0 0 3px rgba($color-action-primary, 0.35);
   }
 }
 
-/* =============== Responsive – Mobile / Android first priority ============= */
-@media (max-width: #{$bp-tablet - 1px}) {
+/* =============== Responsive mobile priority ============= */
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .hero {
     height: 100dvh;
     min-height: 34rem;
@@ -131,7 +128,7 @@
 
   .hero__heading {
     max-width: 13ch;
-    font-size: clamp($font-size-h5, 9vw, $font-size-h3);
+    font-size: clamp($font-size-lg, 9vw, $font-size-xl);
   }
 
   .hero__description {

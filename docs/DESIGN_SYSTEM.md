@@ -38,12 +38,6 @@ Available helpers are `page-container`, `section-spacing`, `responsive-grid`, `s
 
 Keep only a useful layout or content idea. Replace its fonts, colours, spacing, container rules, radii, shadows, transitions, and responsive behavior with this project’s foundation. Add a new variable only when an existing role cannot represent a genuine need.
 
-## Pending variable migration
+## Migration status
 
-Compatibility aliases were deliberately removed. These files still use retired variable names and must be migrated during the next shared-component/section pass:
-
-- `Browse.scss`, `Carousel.scss`, `Hero.scss`, and `ShareSetup.scss`
-- `Header.scss`, `DesktopNav.scss`, and `MobileNav.scss`
-- `FeatureBanner.scss`, `FlashSale.scss`, and `Footer.scss`
-
-Retired names include `$color-primary`, `$color-surface`, `$color-background`, `$font-primary`, legacy heading/body sizes, `bp-*`, legacy radii/transitions, and old sizing helpers. This foundation cleanup intentionally does not alter those section designs or React behavior.
+All component and section styles now use the three-file foundation directly. Retired variables and mixin names, component-level font overrides, and legacy imports have been removed rather than aliased. Decorative image masks retain their required black mask channel; all visible colours use semantic foundation tokens.

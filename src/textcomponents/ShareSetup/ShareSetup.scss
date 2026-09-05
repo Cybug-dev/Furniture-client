@@ -3,7 +3,7 @@
 .share-setup {
   overflow: hidden;
   padding: 5.5rem 0 6.5rem;
-  background: $color-surface;
+  background: $color-bg-card;
 }
 
 .share-setup__heading {
@@ -15,17 +15,16 @@
 .share-setup__heading p,
 .share-setup__heading h2 {
   margin: 0;
-  font-family: $font-primary;
-  color: $color-text-primary;
+  color: $color-text-heading;
 }
 
 .share-setup__heading p {
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
   line-height: 1.35;
 }
 
 .share-setup__heading h2 {
-  font-size: $font-size-h5;
+  font-size: $font-size-lg;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
 }
@@ -72,7 +71,7 @@
   width: 100%;
   aspect-ratio: var(--image-ratio);
   overflow: hidden;
-  background: $color-background;
+  background: $color-bg-page;
   text-decoration: none;
 }
 
@@ -89,7 +88,7 @@
 }
 
 .share-setup__card:focus-visible {
-  outline: 3px solid $color-primary;
+  outline: 3px solid $color-border-focus;
   outline-offset: 3px;
 }
 
@@ -97,7 +96,7 @@
   display: none;
 }
 
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .share-setup {
     padding: 4rem $space-4;
   }
@@ -123,13 +122,13 @@
   }
 }
 
-@media (max-width: #{$bp-mobile}) {
+@media (max-width: #{$breakpoint-mobile}) {
   .share-setup {
     padding-top: 3.5rem;
     padding-bottom: 4rem;
   }
 
   .share-setup__heading h2 {
-    font-size: $font-size-h5-mobile;
+    font-size: $font-size-lg;
   }
 }

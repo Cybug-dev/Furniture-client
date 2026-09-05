@@ -5,7 +5,7 @@
   position: relative;
   overflow: hidden;
   padding: 5.5rem $space-6;
-  background: $color-surface;
+  background: $color-bg-card;
   isolation: isolate;
 }
 
@@ -19,8 +19,8 @@
   content: '';
   opacity: 0.58;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba($color-primary, 0.14) 1px, transparent 1.2px),
-    linear-gradient(135deg, transparent 49.7%, rgba($color-primary, 0.035) 50%, transparent 50.3%);
+    radial-gradient(circle at 1px 1px, rgba($color-bg-brand, 0.14) 1px, transparent 1.2px),
+    linear-gradient(135deg, transparent 49.7%, rgba($color-action-primary, 0.035) 50%, transparent 50.3%);
   background-position: 0 0, 0 0;
   background-size: 16px 16px, 34px 34px;
   mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.6) 58%, transparent 100%);
@@ -38,7 +38,7 @@
   position: absolute;
   display: block;
   border-radius: 50%;
-  background: rgba($color-primary, 0.08);
+  background: rgba($color-bg-brand, 0.08);
 }
 
 .flash-sale__orb--one {
@@ -46,8 +46,8 @@
   left: 17%;
   width: clamp(15rem, 29vw, 28rem);
   aspect-ratio: 1;
-  border: 1px solid rgba($color-primary, 0.12);
-  box-shadow: inset 0 0 0 2.2rem rgba($color-primary, 0.025);
+  border: 1px solid rgba($color-border-brand, 0.12);
+  box-shadow: inset 0 0 0 2.2rem rgba($color-action-primary, 0.025);
 }
 
 .flash-sale__orb--two {
@@ -55,7 +55,7 @@
   bottom: -8rem;
   width: clamp(13rem, 21vw, 20rem);
   aspect-ratio: 1;
-  background: rgba($color-accent-teal, 0.055);
+  background: rgba($color-bg-brand-soft, 0.055);
 }
 
 .flash-sale__line-art {
@@ -64,7 +64,7 @@
   left: -3.5rem;
   width: 14rem;
   height: 7rem;
-  border: 1px solid rgba($color-primary, 0.18);
+  border: 1px solid rgba($color-border-brand, 0.18);
   border-radius: 7rem 7rem 0 0;
   border-bottom: 0;
   transform: rotate(-24deg);
@@ -86,11 +86,11 @@
   overflow: hidden;
   max-width: 540px;
   padding: clamp(1.5rem, 3.2vw, 2.5rem);
-  border: 1px solid rgba($color-primary, 0.13);
+  border: 1px solid rgba($color-border-brand, 0.13);
   border-radius: 24px;
   background:
-    linear-gradient(135deg, rgba($color-primary-surface, 0.7), rgba($color-surface, 0.88) 53%, rgba($color-primary-surface, 0.26));
-  box-shadow: 0 22px 46px rgba(30, 91, 50, 0.07);
+    linear-gradient(135deg, rgba($color-bg-brand-soft, 0.7), rgba($color-bg-card, 0.88) 53%, rgba($color-bg-brand-soft, 0.26));
+  box-shadow: 0 22px 46px rgba($color-text-brand, 0.07);
 }
 
 .flash-sale__content::before,
@@ -110,9 +110,9 @@
   right: -3.75rem;
   width: 10rem;
   height: 10rem;
-  border: 1px solid rgba($color-primary, 0.19);
+  border: 1px solid rgba($color-border-brand, 0.19);
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1.25rem rgba($color-primary, 0.035);
+  box-shadow: inset 0 0 0 1.25rem rgba($color-action-primary, 0.035);
 }
 
 .flash-sale__content::after {
@@ -121,14 +121,14 @@
   width: 3.25rem;
   height: 3.25rem;
   opacity: 0.45;
-  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary 1.4px, transparent 1.7px);
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-action-primary 1.4px, transparent 1.7px);
   background-size: 9px 9px;
 }
 
 .flash-sale__eyebrow {
   margin: 0 0 $space-2;
-  color: $color-primary;
-  font-size: $font-size-label;
+  color: $color-text-brand;
+  font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -146,7 +146,7 @@
 .flash-sale__subtext {
   margin: $space-3 0 0;
   color: $color-text-muted;
-  font-size: $font-size-body-lg;
+  font-size: $font-size-lg;
   line-height: $line-height-normal;
 }
 
@@ -164,10 +164,10 @@
   align-items: center;
   justify-content: center;
   padding: $space-3 $space-2;
-  border: 1px solid rgba($color-primary, 0.16);
+  border: 1px solid rgba($color-border-brand, 0.16);
   border-radius: $radius-md;
-  background: rgba($color-surface, 0.76);
-  box-shadow: 0 10px 25px rgba(39, 88, 53, 0.055);
+  background: rgba($color-bg-card, 0.76);
+  box-shadow: 0 10px 25px rgba($color-text-brand, 0.055);
   backdrop-filter: blur(4px);
 }
 
@@ -190,7 +190,7 @@
 .flash-sale__time-label {
   margin-top: $space-2;
   color: $color-text-muted;
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
   font-weight: $font-weight-medium;
 }
 
@@ -203,30 +203,30 @@
   margin-top: $space-6;
   padding: 0 1.6rem;
   border: 0;
-  border-radius: $radius-full;
-  background: $color-primary;
-  color: $color-white;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
   cursor: pointer;
-  font-size: $font-size-body;
+  font-size: $font-size-base;
   font-weight: $font-weight-semibold;
   text-decoration: none;
-  transition: background-color $transition-base, box-shadow $transition-base, transform $transition-base;
+  transition: background-color $transition-default, box-shadow $transition-default, transform $transition-default;
 }
 
 .flash-sale__cta:hover {
-  background: color.adjust($color-primary, $lightness: -7%);
-  box-shadow: 0 10px 22px rgba($color-primary, 0.28);
+  background: color.adjust($color-action-primary, $lightness: -7%);
+  box-shadow: 0 10px 22px rgba($color-action-primary, 0.28);
   transform: translateY(-2px);
 }
 
 .flash-sale__cta:focus-visible,
 .flash-sale__phone:focus-visible {
-  outline: 3px solid $color-primary;
+  outline: 3px solid $color-border-focus;
   outline-offset: 4px;
 }
 
 .flash-sale__cta.is-ended {
-  background: $color-text-disabled;
+  background: $color-action-disabled-text;
   cursor: not-allowed;
 }
 
@@ -236,7 +236,7 @@
   gap: $space-2 $space-4;
   margin-top: $space-5;
   padding-top: $space-4;
-  border-top: 1px solid rgba($color-primary, 0.13);
+  border-top: 1px solid rgba($color-border-brand, 0.13);
 }
 
 .flash-sale__perk {
@@ -244,7 +244,7 @@
   align-items: center;
   gap: 6px;
   color: $color-text-muted;
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
   font-weight: $font-weight-medium;
 }
 
@@ -253,21 +253,21 @@
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background: rgba($color-primary, 0.16);
+  background: rgba($color-bg-brand, 0.16);
   place-items: center;
 }
 
 .flash-sale__perk-icon::after {
   width: 5px;
   height: 8px;
-  border: solid $color-primary;
+  border: solid $color-action-primary;
   border-width: 0 2px 2px 0;
   content: '';
   transform: rotate(45deg) translate(-1px, -1px);
 }
 
 .flash-sale__perk-icon--2 {
-  border-radius: $radius-xs;
+  border-radius: $radius-sm;
 }
 
 .flash-sale__phones {
@@ -284,10 +284,10 @@
   width: clamp(175px, 17vw, 235px);
   aspect-ratio: 0.49;
   overflow: hidden;
-  border: 7px solid #1d1d1d;
+  border: 7px solid $color-border-dark;
   border-radius: 29px;
-  background: #1d1d1d;
-  box-shadow: 0 25px 42px rgba(23, 27, 24, 0.22), 0 5px 12px rgba(23, 27, 24, 0.14);
+  background: $color-bg-inverse;
+  box-shadow: 0 25px 42px rgba($color-bg-inverse, 0.22), 0 5px 12px rgba($color-bg-inverse, 0.14);
   transform-origin: center bottom;
 }
 
@@ -299,7 +299,7 @@
   width: 37%;
   height: 17px;
   border-radius: 0 0 13px 13px;
-  background: #1d1d1d;
+  background: $color-bg-inverse;
   content: '';
   transform: translateX(-50%);
 }
@@ -311,8 +311,8 @@
   left: 50%;
   width: 22px;
   height: 3px;
-  border-radius: $radius-full;
-  background: #575757;
+  border-radius: $radius-round;
+  background: $color-bg-inverse-muted;
   transform: translateX(-50%);
 }
 
@@ -348,21 +348,21 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 2rem $space-3 $space-3;
-  background: linear-gradient(transparent, rgba($color-black, 0.78));
-  color: $color-white;
+  background: linear-gradient(transparent, rgba($color-bg-inverse, 0.78));
+  color: $color-text-inverse;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity $transition-base, transform $transition-base;
+  transition: opacity $transition-default, transform $transition-default;
 }
 
 .flash-sale__phone-overlay span {
   margin-bottom: 2px;
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
   opacity: 0.84;
 }
 
 .flash-sale__phone-overlay strong {
-  font-size: $font-size-label;
+  font-size: $font-size-sm;
   line-height: 1.25;
 }
 
@@ -372,7 +372,7 @@
   transform: translateY(0);
 }
 
-@media (max-width: #{$bp-desktop - 1px}) {
+@media (max-width: #{$breakpoint-desktop - 1px}) {
   .flash-sale {
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
@@ -389,7 +389,7 @@
   }
 }
 
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .flash-sale {
     padding: 4rem $space-4;
   }
@@ -419,18 +419,18 @@
 
 }
 
-@media (max-width: #{$bp-mobile}) {
+@media (max-width: #{$breakpoint-mobile}) {
   .flash-sale {
     padding-top: 3.5rem;
     padding-bottom: 3.5rem;
   }
 
   .flash-sale h2 {
-    font-size: $font-size-display-mobile;
+    font-size: $font-size-3xl;
   }
 
   .flash-sale__subtext {
-    font-size: $font-size-body-lg-mobile;
+    font-size: $font-size-base;
   }
 
   .flash-sale__countdown {

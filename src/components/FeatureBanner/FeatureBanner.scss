@@ -1,21 +1,13 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  @include visually-hidden;
 }
 
 .feature-banner {
   position: relative;
   width: 100%;
-  font-family: $font-primary;
   color: $color-text-heading;
 }
 
@@ -25,10 +17,10 @@
   border-radius: 0;
   min-height: calc(100dvh - $header-height);
   height: calc(100dvh - $header-height);
-  background: $color-background;
+  background: $color-bg-page;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .feature-banner {
     padding: $space-4 $space-6 $space-2;
   }
@@ -38,7 +30,7 @@
     min-height: 520px;
     max-height: 760px;
     border-radius: $radius-lg;
-    box-shadow: $shadow-default;
+    box-shadow: $shadow-card;
   }
 }
 
@@ -76,17 +68,17 @@
   width: 44px;
   height: 44px;
   border: 0;
-  border-radius: $radius-full;
-  background: $color-surface;
+  border-radius: $radius-round;
+  background: $color-bg-card;
   color: $color-text-heading;
-  box-shadow: $shadow-default;
+  box-shadow: $shadow-card;
   display: none;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity $transition-base,
+    opacity $transition-default,
     transform $transition-fast;
 }
 
@@ -98,7 +90,7 @@
   right: $space-4;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .feature-banner__nav {
     display: flex;
   }
@@ -120,7 +112,7 @@
   gap: $space-2;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .feature-banner__dots {
     left: $space-6;
     transform: none;
@@ -133,23 +125,23 @@
   height: 10px;
   padding: 0;
   border: 0;
-  border-radius: $radius-full;
-  background: rgba(255, 255, 255, 0.55);
+  border-radius: $radius-round;
+  background: rgba($color-bg-card, 0.55);
   transition:
-    width $transition-base,
+    width $transition-default,
     background $transition-fast;
 }
 
 .feature-banner__dot.is-active {
   width: 28px;
-  background: $color-surface;
+  background: $color-bg-card;
 }
 
 .feature-skeleton {
   position: absolute;
   inset: 0;
   z-index: $z-overlay;
-  background: $color-background;
+  background: $color-bg-page;
   transition: opacity $transition-slow;
 }
 
@@ -209,9 +201,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.28) 0%,
-    rgba(0, 0, 0, 0.18) 40%,
-    rgba(0, 0, 0, 0.35) 100%
+    rgba($color-bg-inverse, 0.28) 0%,
+    rgba($color-bg-inverse, 0.18) 40%,
+    rgba($color-bg-inverse, 0.35) 100%
   );
   z-index: 1;
 }
@@ -226,49 +218,48 @@
   align-items: flex-start;
   padding: $space-6 $space-5 72px;
   max-width: 720px;
-  color: $color-white;
+  color: $color-text-inverse;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .default-banner__copy {
     padding: $space-8 $space-8;
   }
 }
 
 .default-banner__kicker {
-  font-size: $font-size-caption;
+  font-size: $font-size-xs;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: $font-weight-semibold;
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
   margin: 0 0 $space-3;
 }
 
 .default-banner__heading {
-  font-family: $font-primary;
-  font-size: $font-size-h2-mobile;
+  font-size: $font-size-2xl;
   line-height: $line-height-tight;
   margin: 0 0 $space-3;
-  color: $color-white;
+  color: $color-text-inverse;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .default-banner__heading {
-    font-size: $font-size-h1;
+    font-size: $font-size-3xl;
   }
 }
 
 .default-banner__sub {
-  font-size: $font-size-body-mobile;
+  font-size: $font-size-sm;
   line-height: $line-height-normal;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba($color-text-inverse, 0.88);
   margin: 0 0 $space-5;
   max-width: 42ch;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .default-banner__sub {
-    font-size: $font-size-body-lg;
+    font-size: $font-size-lg;
   }
 }
 
@@ -279,11 +270,11 @@
   justify-content: center;
   min-height: 48px;
   padding: 0 $space-5;
-  border-radius: $radius-full;
-  background: $color-primary;
-  color: $color-white;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
   font-weight: $font-weight-semibold;
-  letter-spacing: $letter-spacing-cta;
+  letter-spacing: 0.03em;
   text-decoration: none;
   transition:
     background $transition-fast,
@@ -292,7 +283,7 @@
 
 .default-banner__cta:hover,
 .ad-banner__cta:hover {
-  background: #279a46;
+  background: $color-action-hover;
 }
 
 .ad-banner {
@@ -312,7 +303,7 @@
   width: min(920px, 100%);
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .ad-banner__panel {
     flex-direction: row;
     justify-content: center;
@@ -327,11 +318,11 @@
   aspect-ratio: 4 / 5;
   border-radius: $radius-md;
   overflow: hidden;
-  box-shadow: $shadow-default;
-  background: $color-surface;
+  box-shadow: $shadow-card;
+  background: $color-bg-card;
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .ad-banner__media {
     width: min(280px, 70vw);
   }
@@ -347,16 +338,16 @@
   position: absolute;
   top: $space-3;
   left: $space-3;
-  background: $color-primary-surface;
-  color: $color-text-primary;
-  font-size: $font-size-caption;
+  background: $color-bg-brand-soft;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   padding: $space-1 $space-2;
-  border-radius: $radius-full;
+  border-radius: $radius-round;
 }
 
 .ad-banner__meta {
-  color: $color-white;
+  color: $color-text-inverse;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -364,7 +355,7 @@
   gap: $space-3;
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .ad-banner__meta {
     text-align: left;
     align-items: flex-start;
@@ -372,23 +363,22 @@
 }
 
 .ad-banner__badge {
-  background: $color-primary-surface;
+  background: $color-bg-brand-soft;
   color: $color-text-heading;
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   padding: $space-1 $space-3;
-  border-radius: $radius-full;
+  border-radius: $radius-round;
 }
 
 .ad-banner__name {
-  font-family: $font-primary;
-  font-size: $font-size-h3-mobile;
+  font-size: $font-size-xl;
   margin: 0;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .ad-banner__name {
-    font-size: $font-size-h3;
+    font-size: $font-size-xl;
   }
 }
 
@@ -400,14 +390,14 @@
 }
 
 .ad-banner__now {
-  font-size: $font-size-h5;
+  font-size: $font-size-lg;
   font-weight: $font-weight-bold;
 }
 
 .ad-banner__was {
-  color: $color-text-primary;
+  color: $color-text-heading;
   text-decoration: line-through;
-  font-size: $font-size-caption-sm;
+  font-size: $font-size-xs;
 }
 
 .showcase-banner__inner {
@@ -418,31 +408,30 @@
   flex-direction: column;
   justify-content: center;
   padding: $space-5 $space-4 72px;
-  color: $color-white;
+  color: $color-text-inverse;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .showcase-banner__inner {
     padding: $space-7 $space-8;
   }
 }
 
 .showcase-banner__heading {
-  font-family: $font-primary;
-  font-size: $font-size-h3-mobile;
+  font-size: $font-size-xl;
   margin: 0 0 $space-2;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .showcase-banner__heading {
-    font-size: $font-size-h2;
+    font-size: $font-size-2xl;
   }
 }
 
 .showcase-banner__sub {
   margin: 0 0 $space-5;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: $font-size-body-mobile;
+  color: rgba($color-text-inverse, 0.86);
+  font-size: $font-size-sm;
 }
 
 .showcase-banner__grid {
@@ -454,7 +443,7 @@
   gap: $space-3;
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .showcase-banner__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: $space-4;
@@ -465,7 +454,7 @@
   display: flex;
   align-items: center;
   gap: $space-3;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba($color-bg-card, 0.92);
   color: $color-text-heading;
   border-radius: $radius-md;
   padding: $space-3;
@@ -479,7 +468,7 @@
 .showcase-banner__card:hover,
 .showcase-banner__card:focus-visible {
   transform: translateY(-2px);
-  box-shadow: $shadow-default;
+  box-shadow: $shadow-card;
 }
 
 .showcase-banner__card img {
@@ -493,13 +482,13 @@
 .showcase-banner__name {
   margin: 0 0 $space-1;
   font-weight: $font-weight-semibold;
-  font-size: $font-size-label;
+  font-size: $font-size-sm;
 }
 
 .showcase-banner__price {
   margin: 0;
   color: $color-text-muted;
-  font-size: $font-size-caption;
+  font-size: $font-size-xs;
 }
 
 .promo-banner {
@@ -512,9 +501,9 @@
 .promo-banner__veil {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 42%,
-    rgba(0, 0, 0, 0.22) 100%
+    rgba($color-bg-card, 0.12) 0%,
+    rgba($color-bg-card, 0.04) 42%,
+    rgba($color-bg-inverse, 0.22) 100%
   );
 }
 
@@ -530,26 +519,26 @@
 
   background: linear-gradient(
     165deg,
-    rgba(255, 255, 255, 0.72) 0%,
-    rgba(255, 255, 255, 0.48) 50%,
-    rgba(255, 255, 255, 0.38) 100%
+    rgba($color-bg-card, 0.72) 0%,
+    rgba($color-bg-card, 0.48) 50%,
+    rgba($color-bg-card, 0.38) 100%
   );
   backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
   -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
 
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba($color-border-inverse, 0.55);
   border-radius: 28px;
 
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.18),
-    0 8px 20px -6px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.25);
+    0 25px 50px -12px rgba($color-bg-inverse, 0.18),
+    0 8px 20px -6px rgba($color-bg-inverse, 0.08),
+    inset 0 1px 1px rgba($color-bg-card, 0.7),
+    inset 0 -1px 1px rgba($color-bg-card, 0.25);
 
-  color: #1a1a1a;
+  color: $color-text-heading;
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .promo-banner__copy {
     padding-top: $space-6;
   }
@@ -563,8 +552,8 @@
   height: 70px;
   transform: translateX(-50%);
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.5px, transparent 2px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 2px);
+  background-image: radial-gradient(circle, rgba($color-bg-card, 0.95) 1.5px, transparent 2px),
+    radial-gradient(circle, rgba($color-bg-card, 0.7) 1px, transparent 2px);
   background-size: 40px 40px, 28px 28px;
   background-position: 20px 10px, 80px 30px;
   opacity: 0.85;
@@ -577,49 +566,48 @@
   justify-content: center;
   min-height: 36px;
   padding: 0 $space-4;
-  border-radius: $radius-full;
-  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
-  color: $color-white;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-action-primary 0%, $color-action-hover 100%);
+  color: $color-text-inverse;
   font-weight: $font-weight-bold;
-  font-size: $font-size-label;
+  font-size: $font-size-sm;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow:
-    0 4px 14px rgba(47, 184, 84, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    0 4px 14px rgba($color-action-primary, 0.35),
+    inset 0 1px 0 rgba($color-bg-card, 0.25);
   position: relative;
   z-index: 4;
 }
 
 .promo-banner__heading {
-  font-family: $font-primary;
   font-size: clamp(1.75rem, 4.2vw, 2.75rem);
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   letter-spacing: -0.025em;
   margin: 18px 0 12px; 
   word-break: break-word;
   background: linear-gradient(
     125deg,
-    #1f9a45 0%,
-    #2FB854 38%,
-    #5ed07a 68%,
-    #ffffff 100%
+    $color-action-hover 0%,
+    $color-action-primary 38%,
+    $color-bg-brand-muted 68%,
+    $color-text-inverse 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 1px 1px rgba($color-bg-inverse, 0.06));
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .promo-banner__heading {
     font-size: clamp(2rem, 3.8vw, 3rem);
   }
 }
 
-@media (min-width: $bp-desktop) {
+@media (min-width: $breakpoint-desktop) {
   .promo-banner__heading {
     font-size: 3.1rem;
   }
@@ -629,8 +617,8 @@
 .promo-banner__sub {
   margin: 0 auto 14px;
   max-width: 34ch;
-  color: rgba(26, 26, 26, 0.72);
-  font-size: $font-size-body-mobile;
+  color: rgba($color-text-heading, 0.72);
+  font-size: $font-size-sm;
   font-weight: $font-weight-regular;
   line-height: $line-height-normal;
   letter-spacing: 0.01em;
@@ -643,7 +631,7 @@
   font-weight: $font-weight-semibold;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(26, 26, 26, 0.55);
+  color: rgba($color-text-heading, 0.55);
 }
 
 /* ---------- Email Form ---------- */
@@ -654,25 +642,25 @@
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba($color-bg-card, 0.92);
   border-radius: 18px;
   padding: 8px;
   box-shadow:
-    0 10px 30px -8px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+    0 10px 30px -8px rgba($color-bg-inverse, 0.12),
+    0 2px 8px rgba($color-bg-inverse, 0.04),
+    inset 0 1px 0 rgba($color-bg-card, 0.9);
+  border: 1px solid rgba($color-border-inverse, 0.7);
   transition: box-shadow 0.25s ease;
 }
 
 .promo-banner__form:focus-within {
   box-shadow:
-    0 14px 36px -8px rgba(47, 184, 84, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 14px 36px -8px rgba($color-action-primary, 0.18),
+    0 4px 12px rgba($color-bg-inverse, 0.06),
+    inset 0 1px 0 rgba($color-bg-card, 0.95);
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .promo-banner__form {
     flex-direction: row;
     align-items: stretch;
@@ -689,16 +677,15 @@
   background: transparent;
   min-height: 50px;
   padding: 0 22px;
-  font-family: $font-primary;
   font-size: 15.5px;
-  color: #1a1a1a;
+  color: $color-text-heading;
   outline: none;
   border-radius: 12px;
 }
 
 .promo-banner__form input::placeholder {
-  color: rgba(26, 26, 26, 0.4);
-  font-weight: 400;
+  color: rgba($color-text-heading, 0.4);
+  font-weight: $font-weight-regular;
 }
 
 .promo-banner__form button {
@@ -706,19 +693,18 @@
   width: 100%;
   border: 0;
   border-radius: 14px;
-  background: linear-gradient(135deg, #2FB854 0%, #27a049 100%);
-  color: #ffffff;
-  font-weight: 600;
+  background: linear-gradient(135deg, $color-action-primary 0%, $color-action-hover 100%);
+  color: $color-text-inverse;
+  font-weight: $font-weight-semibold;
   font-size: 15px;
   letter-spacing: 0.02em;
   padding: 0 28px;
-  font-family: $font-primary;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 4px 14px rgba(47, 184, 84, 0.3);
+  box-shadow: 0 4px 14px rgba($color-action-primary, 0.3);
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .promo-banner__form button {
     width: auto;
     border-radius: 999px;
@@ -728,7 +714,7 @@
 
 .promo-banner__form button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(47, 184, 84, 0.4);
+  box-shadow: 0 8px 22px rgba($color-action-primary, 0.4);
   filter: brightness(1.05);
 }
 
@@ -745,8 +731,8 @@
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  font-weight: 500;
-  color: #2FB854;
+  font-weight: $font-weight-medium;
+  color: $color-action-primary;
   letter-spacing: 0.01em;
 }
 
@@ -777,9 +763,9 @@
   right: 4%;
   width: clamp(18rem, 33vw, 32rem);
   aspect-ratio: 1;
-  border: 1px solid rgba($color-white, 0.38);
+  border: 1px solid rgba($color-border-inverse, 0.38);
   border-radius: 50%;
-  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-white, 0.055);
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-text-inverse, 0.055);
   opacity: 0.7;
   pointer-events: none;
 }
@@ -791,8 +777,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: $color-primary-surface;
-  box-shadow: 36px 28px 0 rgba($color-primary-surface, 0.7), -24px 52px 0 rgba($color-primary-surface, 0.5);
+  background: $color-bg-brand-soft;
+  box-shadow: 36px 28px 0 rgba($color-bg-brand-soft, 0.7), -24px 52px 0 rgba($color-bg-brand-soft, 0.5);
   content: '';
 }
 
@@ -805,7 +791,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: clamp(1.5rem, 3.4vw, 3.25rem);
-  color: $color-white;
+  color: $color-text-inverse;
 }
 
 .promo-banner__panel::before,
@@ -818,7 +804,7 @@
   right: -4rem;
   width: 13rem;
   height: 13rem;
-  border: 1px solid rgba($color-primary, 0.23);
+  border: 1px solid rgba($color-border-brand, 0.23);
   border-radius: 50%;
 }
 
@@ -828,7 +814,7 @@
   width: 4.8rem;
   height: 4.8rem;
   opacity: 0.2;
-  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary-surface 1.4px, transparent 1.7px);
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-bg-brand-soft 1.4px, transparent 1.7px);
   background-size: 10px 10px;
 }
 
@@ -843,8 +829,8 @@
   justify-content: space-between;
   gap: $space-3;
   padding-bottom: $space-4;
-  border-bottom: 1px solid rgba($color-white, 0.32);
-  color: rgba($color-white, 0.78);
+  border-bottom: 1px solid rgba($color-border-inverse, 0.32);
+  color: rgba($color-text-inverse, 0.78);
   font-size: 10px;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.14em;
@@ -852,7 +838,7 @@
 }
 
 .promo-banner__masthead span:last-child {
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
 }
 
 .promo-banner__main {
@@ -864,11 +850,11 @@
   width: fit-content;
   margin: 0 0 $space-4;
   padding: 6px $space-3;
-  border: 1px solid rgba($color-primary-surface, 0.58);
-  border-radius: $radius-full;
-  background: rgba($color-primary-surface, 0.16);
-  color: $color-primary-surface;
-  font-size: $font-size-caption-sm;
+  border: 1px solid rgba($color-border-brand-soft, 0.58);
+  border-radius: $radius-round;
+  background: rgba($color-bg-brand-soft, 0.16);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -877,22 +863,21 @@
 .promo-banner__heading {
   max-width: 13ch;
   margin: 0;
-  color: $color-white;
-  font-family: $font-primary;
+  color: $color-text-inverse;
   font-size: clamp(2rem, 4.4vw, 4.25rem);
   font-weight: $font-weight-bold;
   letter-spacing: -0.055em;
   line-height: 1.04;
   -webkit-text-fill-color: currentColor;
-  text-shadow: 0 3px 22px rgba($color-text-primary, 0.36);
+  text-shadow: 0 3px 22px rgba($color-text-heading, 0.36);
 }
 
 .promo-banner__sub {
   max-width: 41ch;
   margin: $space-4 0 0;
-  color: rgba($color-white, 0.86);
-  text-shadow: 0 2px 12px rgba($color-text-primary, 0.22);
-  font-size: $font-size-body-mobile;
+  color: rgba($color-text-inverse, 0.86);
+  text-shadow: 0 2px 12px rgba($color-text-heading, 0.22);
+  font-size: $font-size-sm;
   line-height: 1.65;
 }
 
@@ -901,16 +886,16 @@
   align-items: center;
   gap: $space-2;
   margin: $space-5 0 0;
-  color: rgba($color-white, 0.78);
-  font-size: $font-size-caption;
+  color: rgba($color-text-inverse, 0.78);
+  font-size: $font-size-xs;
 }
 
 .promo-banner__note span {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: $color-primary;
-  box-shadow: 0 0 0 5px rgba($color-primary, 0.14);
+  background: $color-action-primary;
+  box-shadow: 0 0 0 5px rgba($color-action-primary, 0.14);
 }
 
 .promo-banner__utility {
@@ -921,8 +906,8 @@
 .promo-banner__countdown {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid rgba($color-white, 0.32);
-  border-bottom: 1px solid rgba($color-white, 0.32);
+  border-top: 1px solid rgba($color-border-inverse, 0.32);
+  border-bottom: 1px solid rgba($color-border-inverse, 0.32);
 }
 
 .promo-banner__time-unit {
@@ -931,7 +916,7 @@
   flex-direction: column;
   justify-content: center;
   padding: $space-2 $space-3;
-  border-right: 1px solid rgba($color-white, 0.24);
+  border-right: 1px solid rgba($color-border-inverse, 0.24);
 }
 
 .promo-banner__time-unit:last-child {
@@ -939,7 +924,7 @@
 }
 
 .promo-banner__time-unit strong {
-  color: $color-white;
+  color: $color-text-inverse;
   font-size: clamp(1.05rem, 2vw, 1.5rem);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -947,7 +932,7 @@
 
 .promo-banner__time-unit span {
   margin-top: 5px;
-  color: rgba($color-primary-surface, 0.92);
+  color: rgba($color-text-brand-soft, 0.92);
   font-size: 9px;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.1em;
@@ -961,23 +946,23 @@
   max-width: none;
   margin: 0;
   padding: 4px;
-  border: 1px solid rgba($color-primary, 0.25);
-  border-radius: $radius-full;
-  background: rgba($color-surface, 0.75);
+  border: 1px solid rgba($color-border-brand, 0.25);
+  border-radius: $radius-round;
+  background: rgba($color-bg-card, 0.75);
   box-shadow: none;
 }
 
 .promo-banner__form:focus-within {
-  border-color: rgba($color-primary, 0.75);
-  box-shadow: 0 0 0 3px rgba($color-primary, 0.17);
+  border-color: rgba($color-border-brand, 0.75);
+  box-shadow: 0 0 0 3px rgba($color-action-primary, 0.17);
 }
 
 .promo-banner__form input {
   min-height: 42px;
   padding: 0 $space-4;
-  border-radius: $radius-full;
-  color: $color-text-primary;
-  font-size: $font-size-caption;
+  border-radius: $radius-round;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
 }
 
 .promo-banner__form input::placeholder {
@@ -991,16 +976,16 @@
   align-items: center;
   gap: $space-2;
   padding: 0 $space-4;
-  border-radius: $radius-full;
-  background: $color-primary;
-  color: $color-white;
-  font-size: $font-size-caption;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   box-shadow: none;
 }
 
 .promo-banner__form button:hover {
-  background: $color-primary;
+  background: $color-action-primary;
   box-shadow: none;
   filter: brightness(0.92);
   transform: none;
@@ -1008,8 +993,8 @@
 
 .promo-banner__thanks {
   min-height: 42px;
-  color: $color-primary;
-  font-size: $font-size-caption;
+  color: $color-text-brand;
+  font-size: $font-size-xs;
 }
 
 .promo-banner__side-mark {
@@ -1020,28 +1005,27 @@
   display: flex;
   align-items: flex-end;
   gap: $space-3;
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
   pointer-events: none;
 }
 
 .promo-banner__side-mark strong {
-  font-family: $font-primary;
   font-size: clamp(3rem, 8vw, 8rem);
   background: transparent;
   letter-spacing: -0.08em;
   line-height: 0.75;
-  // background: linear-gradient(135deg, $color-primary-surface 0%, $color-white 52%, $color-primary 100%);
+  // background: linear-gradient(135deg, $color-bg-brand-soft 0%, $color-text-inverse 52%, $color-action-primary 100%);
   // background-clip: text;
   // -webkit-background-clip: text;
   // -webkit-text-fill-color: transparent;
-  text-shadow: 0 6px 28px rgba($color-text-primary, 0.28);
+  text-shadow: 0 6px 28px rgba($color-text-heading, 0.28);
 }
 
 .promo-banner__side-mark span {
   padding-bottom: 3px;
   padding-left: $space-2;
-  border-left: 1px solid rgba($color-primary-surface, 0.72);
-  color: $color-primary-surface;
+  border-left: 1px solid rgba($color-border-brand-soft, 0.72);
+  color: $color-text-brand-soft;
   font-size: 10px;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.15em;
@@ -1049,13 +1033,13 @@
   text-transform: uppercase;
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .promo-banner__sub {
-    font-size: $font-size-body;
+    font-size: $font-size-base;
   }
 }
 
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .promo-banner {
     align-items: flex-end;
     padding: 6rem $space-4 $space-4;
@@ -1073,7 +1057,7 @@
   }
 }
 
-@media (max-width: $bp-mobile) {
+@media (max-width: $breakpoint-mobile) {
   .promo-banner {
     padding: 7rem $space-3 $space-3;
   }
@@ -1097,7 +1081,7 @@
 
   .promo-banner__sub {
     margin-top: $space-3;
-    font-size: $font-size-body-mobile;
+    font-size: $font-size-sm;
     line-height: 1.5;
   }
 
@@ -1146,7 +1130,7 @@
   width: 46px;
   height: 46px;
   opacity: 0.5;
-  background-image: radial-gradient(circle at 1.5px 1.5px, $color-primary-surface 1.3px, transparent 1.6px);
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-bg-brand-soft 1.3px, transparent 1.6px);
   background-size: 9px 9px;
   content: '';
 }
@@ -1156,20 +1140,20 @@
   align-items: center;
   min-height: 30px;
   padding: 0 $space-3;
-  border: 1px solid rgba($color-primary-surface, 0.34);
-  border-radius: $radius-full;
-  background: rgba($color-primary-surface, 0.1);
+  border: 1px solid rgba($color-border-brand-soft, 0.34);
+  border-radius: $radius-round;
+  background: rgba($color-bg-brand-soft, 0.1);
 }
 
 .default-banner__cta,
 .ad-banner__cta {
-  box-shadow: 0 10px 22px rgba($color-primary, 0.25);
+  box-shadow: 0 10px 22px rgba($color-action-primary, 0.25);
 }
 
 .default-banner__cta::after,
 .ad-banner__cta::after {
   margin-left: $space-2;
-  content: '↗';
+  content: '\2197';
   font-size: 1.1em;
   line-height: 1;
 }
@@ -1181,22 +1165,22 @@
   left: -6rem;
   width: 23rem;
   height: 23rem;
-  border: 1px solid rgba($color-primary-surface, 0.28);
+  border: 1px solid rgba($color-border-brand-soft, 0.28);
   border-radius: 50%;
-  box-shadow: inset 0 0 0 2.5rem rgba($color-primary-surface, 0.055);
+  box-shadow: inset 0 0 0 2.5rem rgba($color-bg-brand-soft, 0.055);
   content: '';
 }
 
 
 .default-banner__cta:hover,
 .ad-banner__cta:hover {
-  box-shadow: 0 13px 26px rgba($color-primary, 0.35);
+  box-shadow: 0 13px 26px rgba($color-action-primary, 0.35);
   transform: translateY(-2px);
 }
 
 .ad-banner__media {
-  border: 5px solid rgba($color-surface, 0.9);
-  outline: 1px solid rgba($color-primary-surface, 0.5);
+  border: 5px solid rgba($color-border-inverse, 0.9);
+  outline: 1px solid rgba($color-border-brand-soft, 0.5);
   outline-offset: 4px;
 }
 
@@ -1220,9 +1204,9 @@
   left: -9rem;
   width: 23rem;
   height: 23rem;
-  border: 1px solid rgba($color-primary-surface, 0.28);
+  border: 1px solid rgba($color-border-brand-soft, 0.28);
   border-radius: 50%;
-  box-shadow: inset 0 0 0 2.5rem rgba($color-primary-surface, 0.055);
+  box-shadow: inset 0 0 0 2.5rem rgba($color-bg-brand-soft, 0.055);
   content: '';
 }
 
@@ -1231,16 +1215,16 @@
 }
 
 .showcase-banner__card {
-  border: 1px solid rgba($color-surface, 0.65);
+  border: 1px solid rgba($color-border-inverse, 0.65);
   transition: transform $transition-fast, box-shadow $transition-fast, background $transition-fast;
 }
 
 .showcase-banner__card:hover,
 .showcase-banner__card:focus-visible {
-  background: $color-surface;
+  background: $color-bg-card;
 }
 
-@media (min-width: $bp-tablet) {
+@media (min-width: $breakpoint-tablet) {
   .ad-banner__meta {
     position: relative;
     padding-left: $space-6;
@@ -1252,12 +1236,12 @@
     bottom: 10%;
     left: 0;
     width: 1px;
-    background: rgba($color-primary-surface, 0.55);
+    background: rgba($color-bg-brand-soft, 0.55);
     content: '';
   }
 }
 
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .default-banner__copy::before {
     width: 92%;
   }
@@ -1285,8 +1269,8 @@
   top: -28%;
   right: 13%;
   width: clamp(18rem, 31vw, 30rem);
-  border-color: rgba($color-primary-surface, 0.28);
-  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-primary-surface, 0.05);
+  border-color: rgba($color-border-brand-soft, 0.28);
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-bg-brand-soft, 0.05);
 }
 
 .promo-banner__layout {
@@ -1307,16 +1291,16 @@
   justify-content: space-between;
   gap: $space-4;
   padding: 0 0 $space-3;
-  border-bottom: 1px solid rgba($color-primary-surface, 0.5);
-  color: $color-primary-surface;
-  font-size: $font-size-caption-sm;
+  border-bottom: 1px solid rgba($color-border-brand-soft, 0.5);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .promo-banner__masthead span:last-child {
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
 }
 
 .promo-banner__main {
@@ -1330,14 +1314,14 @@
 
 .promo-banner__offer {
   margin: 0 0 $space-3;
-  border-color: rgba($color-primary-surface, 0.78);
-  background: rgba($color-text-heading, 0.3);
-  color: $color-primary-surface;
+  border-color: rgba($color-border-brand-soft, 0.78);
+  background: rgba($color-bg-inverse, 0.3);
+  color: $color-text-brand-soft;
 }
 
 .promo-banner__heading {
   max-width: 12ch;
-  color: $color-white;
+  color: $color-text-inverse;
   font-size: clamp(2.5rem, 4.45vw, 4.75rem);
   line-height: 0.98;
   text-shadow: 0 4px 20px rgba($color-text-heading, 0.36);
@@ -1346,15 +1330,15 @@
 .promo-banner__sub {
   max-width: 39ch;
   margin-top: $space-3;
-  color: rgba($color-white, 0.92);
-  font-size: clamp($font-size-body-mobile, 1.25vw, $font-size-body-lg);
+  color: rgba($color-text-inverse, 0.92);
+  font-size: clamp($font-size-sm, 1.25vw, $font-size-lg);
   line-height: 1.45;
 }
 
 .promo-banner__note {
   margin-top: $space-3;
-  color: rgba($color-primary-surface, 0.95);
-  font-size: $font-size-body-mobile;
+  color: rgba($color-text-brand-soft, 0.95);
+  font-size: $font-size-sm;
 }
 
 .promo-banner__form {
@@ -1365,9 +1349,9 @@
   width: min(38%, 570px);
   margin: 0;
   padding: clamp($space-4, 2vw, $space-5);
-  border: 1px solid rgba($color-primary, 0.58);
+  border: 1px solid rgba($color-border-brand, 0.58);
   border-radius: $radius-md;
-  background: $color-surface;
+  background: $color-bg-card;
   box-shadow: 0 18px 42px rgba($color-text-heading, 0.24);
 }
 
@@ -1380,8 +1364,8 @@
 .promo-banner__fields label {
   display: grid;
   gap: $space-2;
-  color: $color-text-primary;
-  font-size: $font-size-label;
+  color: $color-text-heading;
+  font-size: $font-size-sm;
   font-weight: $font-weight-medium;
 }
 
@@ -1389,11 +1373,11 @@
   width: 100%;
   min-height: 48px;
   padding: 0 $space-3;
-  border: 1px solid rgba($color-primary, 0.65);
-  border-radius: $radius-xs;
-  background: $color-surface;
-  color: $color-text-primary;
-  font-size: $font-size-body;
+  border: 1px solid rgba($color-border-brand, 0.65);
+  border-radius: $radius-sm;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  font-size: $font-size-base;
   outline: 0;
 }
 
@@ -1402,8 +1386,8 @@
 }
 
 .promo-banner__fields input:focus {
-  border-color: $color-primary;
-  box-shadow: 0 0 0 3px rgba($color-primary, 0.16);
+  border-color: $color-border-brand;
+  box-shadow: 0 0 0 3px rgba($color-action-primary, 0.16);
 }
 
 .promo-banner__form button {
@@ -1413,17 +1397,17 @@
   align-items: center;
   justify-content: center;
   margin-top: $space-4;
-  border-radius: $radius-xs;
-  background: $color-primary;
-  color: $color-white;
-  font-size: $font-size-body;
+  border-radius: $radius-sm;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-base;
   font-weight: $font-weight-semibold;
   transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
 }
 
 .promo-banner__form button:hover {
-  background: $color-primary;
-  box-shadow: 0 8px 18px rgba($color-primary, 0.3);
+  background: $color-action-primary;
+  box-shadow: 0 8px 18px rgba($color-action-primary, 0.3);
   filter: brightness(0.94);
   transform: translateY(-1px);
 }
@@ -1432,8 +1416,8 @@
   display: grid;
   min-height: 140px;
   margin: 0;
-  color: $color-primary;
-  font-size: $font-size-body;
+  color: $color-text-brand;
+  font-size: $font-size-base;
   font-weight: $font-weight-semibold;
   place-items: center;
   text-align: center;
@@ -1444,23 +1428,23 @@
   width: 100%;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: $space-4;
-  border: 1px solid rgba($color-primary-surface, 0.48);
+  border: 1px solid rgba($color-border-brand-soft, 0.48);
 }
 
 .promo-banner__time-unit {
   min-height: 56px;
   padding: $space-2 $space-3;
-  border-right-color: rgba($color-primary-surface, 0.38);
+  border-right-color: rgba($color-border-brand-soft, 0.38);
 }
 
 .promo-banner__time-unit strong {
-  color: $color-white;
+  color: $color-text-inverse;
   font-size: clamp(1.3rem, 2.1vw, 2rem);
   text-shadow: 0 2px 12px rgba($color-text-heading, 0.3);
 }
 
 .promo-banner__time-unit span {
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
   font-size: 9px;
 }
 
@@ -1469,20 +1453,20 @@
   right: clamp(2.5rem, 8vw, 8.75rem);
   bottom: clamp(4.5rem, 12vh, 7rem);
   gap: $space-4;
-  color: $color-primary-surface;
+  color: $color-text-brand-soft;
 }
 
 .promo-banner__side-mark strong {
-  background: linear-gradient(135deg, $color-primary-surface 0%, $color-white 58%, $color-primary-surface 100%);
+  background: linear-gradient(135deg, $color-bg-brand-soft 0%, $color-bg-card 58%, $color-bg-brand-soft 100%);
   font-size: clamp(4.5rem, 9vw, 9rem);
   text-shadow: 0 6px 28px rgba($color-text-heading, 0.28);
 }
 
 .promo-banner__side-mark span {
   padding: 0 0 5px $space-3;
-  border-left-color: rgba($color-primary-surface, 0.84);
-  color: $color-primary-surface;
-  font-size: $font-size-caption-sm;
+  border-left-color: rgba($color-border-brand-soft, 0.84);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
 }
 
 /* Keep carousel indicators clear of the promo copy and timer. */
@@ -1493,7 +1477,7 @@
   transform: none;
 }
 
-@media (max-width: #{$bp-desktop - 1px}) {
+@media (max-width: #{$breakpoint-desktop - 1px}) {
   .promo-banner__masthead,
   .promo-banner__main {
     left: $space-6;
@@ -1516,7 +1500,7 @@
   }
 }
 
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .feature-banner:has(.promo-banner) .feature-banner__dots {
     right: auto;
     bottom: $space-2;
@@ -1530,7 +1514,7 @@
   }
 
   .promo-banner__veil {
-    background: linear-gradient(180deg, rgba($color-text-heading, 0.16) 0%, rgba($color-text-heading, 0.68) 100%);
+    background: linear-gradient(180deg, rgba($color-bg-inverse, 0.16) 0%, rgba($color-bg-inverse, 0.68) 100%);
   }
 
   .promo-banner__texture,
@@ -1584,7 +1568,7 @@
   }
 }
 
-@media (max-width: $bp-mobile) {
+@media (max-width: $breakpoint-mobile) {
   .promo-banner__layout {
     gap: $space-2;
     padding: clamp(1.75rem, 7vh, 3.25rem) $space-3 $space-7;
@@ -1603,13 +1587,13 @@
   }
 
   .promo-banner__sub {
-    font-size: $font-size-body-mobile;
+    font-size: $font-size-sm;
     line-height: 1.45;
   }
 
   .promo-banner__note {
     margin-top: $space-2;
-    font-size: $font-size-caption-sm;
+    font-size: $font-size-xs;
   }
 
   .promo-banner__form {
@@ -1622,13 +1606,13 @@
 
   .promo-banner__fields label {
     gap: $space-1;
-    font-size: $font-size-caption-sm;
+    font-size: $font-size-xs;
   }
 
   .promo-banner__fields input,
   .promo-banner__form button {
     min-height: 42px;
-    font-size: $font-size-label-mobile;
+    font-size: $font-size-sm;
   }
 
   .promo-banner__form button {

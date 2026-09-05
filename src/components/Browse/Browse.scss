@@ -12,15 +12,13 @@
 }
 
 .browse-heading h2 {
-  font-family: $font-primary;
-  font-size: $font-size-h4;
+  font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   margin: 0 0 0;
 }
 
 .browse-heading p {
-  font-family: $font-primary;
-  font-size: $font-size-label;
+  font-size: $font-size-sm;
   color: $color-text-muted;
   max-width: 520px;
   margin: 0 auto;
@@ -55,20 +53,19 @@
 
 .browse-label {
   display: block;
-  font-family: $font-primary;
-  font-size: $font-size-body;
+  font-size: $font-size-base;
   font-weight: $font-weight-bold;
   text-align: center;
 }
 
-@media (max-width: #{$bp-tablet - 1px}) and (min-width: #{$bp-mobile + 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) and (min-width: #{$breakpoint-mobile + 1px}) {
   .browse-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: $space-4;
   }
 }
 
-@media (max-width: #{$bp-mobile}) {
+@media (max-width: #{$breakpoint-mobile}) {
   .browse {
     padding-left: $space-4;
     padding-right: $space-4;

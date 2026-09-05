@@ -16,14 +16,14 @@
   border: 1px solid transparent;
 
   transition:
-    top $transition-base,
-    left $transition-base,
-    right $transition-base,
-    background $transition-base,
-    box-shadow $transition-base,
-    border-radius $transition-base,
-    border-color $transition-base,
-    backdrop-filter $transition-base;
+    top $transition-default,
+    left $transition-default,
+    right $transition-default,
+    background $transition-default,
+    box-shadow $transition-default,
+    border-radius $transition-default,
+    border-color $transition-default,
+    backdrop-filter $transition-default;
 
   &--scrolled {
     --blur-effect: blur(20px) saturate(140%);
@@ -31,13 +31,13 @@
     left: 16px;
     right: 16px;
     border-radius: 14px;
-    background: rgba(235, 245, 240, 0.55);
+    background: rgba($color-bg-brand-soft, 0.55);
     -webkit-backdrop-filter: var(--blur-effect);
     backdrop-filter: var(--blur-effect);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba($color-border-inverse, 0.6);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.18),
-      0 2px 8px rgba(0, 0, 0, 0.08);
+      0 8px 32px rgba($color-bg-inverse, 0.18),
+      0 2px 8px rgba($color-bg-inverse, 0.08);
 
     @supports (-webkit-backdrop-filter: none) {
       -webkit-backdrop-filter: var(--blur-effect);
@@ -62,9 +62,8 @@
   align-items: center;
   flex-shrink: 0;
   gap: 0.45rem;
-  color: $color-primary;
-  font-family: $font-primary;
-  font-size: $font-size-h4;
+  color: $color-text-brand;
+  font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   letter-spacing: -0.035em;
   text-decoration: none;
@@ -110,7 +109,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: $color-text-primary;
+  color: $color-text-heading;
   cursor: pointer;
   transition:
     color $transition-fast,
@@ -118,7 +117,7 @@
 
   &:hover,
   &:focus-visible {
-    color: $color-primary;
+    color: $color-text-brand;
     transform: translateY(-1px);
   }
 }
@@ -140,12 +139,11 @@
   height: $space-4;
   padding-inline: $space-1;
   place-items: center;
-  border: 2px solid $color-surface;
-  border-radius: $radius-full;
-  background: $color-primary;
-  color: $color-surface;
-  font-family: $font-primary;
-  font-size: $font-size-caption-sm;
+  border: 2px solid $color-border-inverse;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   line-height: $line-height-tight;
 }
@@ -192,12 +190,11 @@
   width: 100%;
   height: 3rem;
   padding: 0 3rem 0 2.6rem;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-full;
-  background: $color-background;
-  color: $color-text-primary;
-  font-family: $font-primary;
-  font-size: $font-size-body;
+  border: 1.5px solid $color-border-default;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+  color: $color-text-heading;
+  font-size: $font-size-base;
   outline: none;
   transition:
     border-color $transition-fast,
@@ -213,9 +210,9 @@
   }
 
   &:focus {
-    border-color: $color-primary;
-    background: $color-surface;
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.12);
+    border-color: $color-border-brand;
+    background: $color-bg-card;
+    box-shadow: 0 0 0 3px rgba($color-action-primary, 0.12);
   }
 }
 
@@ -231,7 +228,7 @@
   height: 2rem;
   padding: 0;
   border: none;
-  border-radius: $radius-full;
+  border-radius: $radius-round;
   background: transparent;
   color: $color-text-muted;
   cursor: pointer;
@@ -240,13 +237,13 @@
     transform $transition-fast;
 
   &:hover {
-    color: $color-primary;
+    color: $color-text-brand;
     transform: translateY(-50%) scale(1.08);
   }
 }
 
 /* Mobile adjustments for the header bar itself */
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .header-container {
     position: relative;
     height: 4.75rem;

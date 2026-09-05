@@ -24,6 +24,7 @@ $primitive-white: #ffffff;
 $primitive-off-white: #fcfcfa;
 $primitive-soft-white: #f7f8f5;
 $primitive-green-50: #eff8f1;
+$primitive-green-200: #a6e3b5;
 $primitive-green-500: #2fb854;
 $primitive-green-600: #249546;
 $primitive-green-700: #1c7538;
@@ -43,9 +44,12 @@ $color-bg-page: $primitive-off-white;
 $color-bg-section: $primitive-white;
 $color-bg-section-soft: $primitive-soft-white;
 $color-bg-card: $primitive-white;
+$color-bg-brand: $primitive-green-500;
 $color-bg-brand-soft: $primitive-green-50;
+$color-bg-brand-muted: $primitive-green-200;
 $color-bg-overlay: rgba($primitive-ink-900, 0.55);
 $color-bg-inverse: $primitive-ink-900;
+$color-bg-inverse-muted: $primitive-ink-500;
 $color-bg-warm-neutral: $primitive-warm-neutral;
 
 // Text colors
@@ -53,14 +57,18 @@ $color-text-heading: $primitive-ink-900;
 $color-text-body: $primitive-ink-700;
 $color-text-muted: $primitive-ink-500;
 $color-text-subtle: $primitive-ink-400;
-$color-text-brand: $primitive-green-700;
+$color-text-brand: $primitive-green-500;
+$color-text-brand-soft: $primitive-green-50;
 $color-text-inverse: $primitive-white;
 
 // Border colors
 $color-border-default: $primitive-border-light;
 $color-border-strong: $primitive-border-strong;
 $color-border-brand: $primitive-green-500;
+$color-border-brand-soft: $primitive-green-50;
 $color-border-focus: $primitive-green-600;
+$color-border-inverse: $primitive-white;
+$color-border-dark: $primitive-ink-900;
 
 // Action colors
 $color-action-primary: $primitive-green-500;
@@ -98,6 +106,10 @@ $space-grid-gap: clamp(16px, 2vw, 32px);
 $container-max-width: 1440px;
 $content-width: 1280px;
 $content-width-reading: 720px;
+$carousel-control-width: 252px;
+$carousel-card-image-height: 446px;
+$header-height: 72px;
+$header-height-mobile: 64px;
 $control-size-sm: 36px;
 $control-size-md: 44px;
 $control-size-lg: 48px;
@@ -107,6 +119,12 @@ $image-ratio-product: 0.8; // 4:5
 $image-ratio-category: 0.8; // 4:5
 $image-ratio-editorial: 0.75; // 3:4
 $image-ratio-promo: 1.7778; // 16:9
+
+// Icon sizes
+$icon-size-sm: 16px;
+$icon-size-md: 20px;
+$icon-size-lg: 24px;
+$icon-size-xl: 28px;
 
 // Breakpoints
 $breakpoint-mobile: 480px;
