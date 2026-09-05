@@ -1,132 +1,49 @@
 # Furniture design system
 
-## Direction
+## Structure
 
-The visual language is **Warm Contemporary Editorial**: composed, tactile, and quiet. The familiar green `#2fb854` remains the primary action colour; cream, warm white, stone, walnut, clay, and sage support it without competing for attention. Use visual contrast through composition, imagery, and surface tone—not arbitrary new colours, heavy shadows, or oversized controls.
+The style foundation has three files only:
 
-The executable source of truth is in [`src/styles/_tokens.scss`](../src/styles/_tokens.scss) and [`src/styles/_mixins.scss`](../src/styles/_mixins.scss). This document describes their intended use. `src/styles/variable.scss` remains only as a temporary compatibility facade for existing section styles.
+- [`src/styles/variables.scss`](../src/styles/variables.scss): every shared design value.
+- [`src/styles/mixins.scss`](../src/styles/mixins.scss): optional, small reusable style blocks.
+- [`src/styles/global.scss`](../src/styles/global.scss): reset and website-wide base styles.
 
-## Fonts and typography
+`src/index.scss` imports `global.scss`. Components keep their own SCSS files and should import `variables.scss` directly. Import `mixins.scss` only when a helper makes a style clearer.
 
-- **Instrument Serif** is reserved for editorial display moments: campaign headlines, a hero statement, and large inspirational content. It is not for navigation, forms, prices, or dense product information.
-- **Manrope** is the interface font for all other content: body text, navigation, controls, labels, prices, product information, and forms.
-- The font request in `index.html` loads only Instrument Serif (regular/italic) and Manrope (400–700), with preconnects already in place.
+## Foundation rules
 
-Use `@include mx.type(<role>)` from `mixins`, or the matching utility where utility classes are appropriate:
+Manrope (`'Manrope', 'Segoe UI', Arial, sans-serif`) is the only visible font family. It is loaded at weights 400, 500, 600, and 700 in `index.html`; there is no serif fallback.
 
-| Role | Utility | Intended use |
-| --- | --- | --- |
-| Display large / medium | `.type-display-large`, `.type-display-medium` | Major editorial moments only |
-| Heading 1–4 | `.type-heading-1` through `.type-heading-4` | Section and component hierarchy |
-| Body large / body / body small | `.type-body-large`, `.type-body`, `.type-body-small` | Reading text and supporting copy |
-| Label / caption | `.type-label`, `.type-caption` | Eyebrows, metadata, compact UI text |
-| Price / price large | `.type-price`, `.type-price-large` | Product and promotional pricing |
+The compact type scale is `xs` 0.75rem, `sm` 0.875rem, `base` 1rem, `lg` 1.125rem, `xl` 1.25rem, `2xl` clamp(1.5rem, 2vw, 2rem), `3xl` clamp(1.875rem, 3vw, 2.75rem), and `display` clamp(2.25rem, 5vw, 4.5rem). Use 400 for body copy, 500 for labels, 600 for controls/headings, and 700 for strong prices or headings.
 
-The display and heading roles use fluid `clamp()` values. Keep display text to short, readable line lengths and avoid promoting every section heading to display type.
+Colour variables have a single role:
 
-```scss
-@use '../styles/mixins' as mx;
+- `$color-bg-*` only for backgrounds.
+- `$color-text-*` only for text.
+- `$color-border-*` only for borders and dividers.
+- `$color-action-*` only for action states.
+- `$color-status-*` only for error, warning, success, and sale messages.
 
-.campaign-title {
-  @include mx.type(display-medium);
-}
-```
+The palette is soft white, near-black grey-green, brand green `#2fb854`, one restrained warm neutral, and functional red/amber. Components must not use a background variable as text or a text variable as a background.
 
-## Colour system
+Spacing uses 4, 8, 12, 16, 24, 32, 48, 64, and 80px. Section spacing, gutters, and grid gaps use compact `clamp()` values. Content is capped at 1280px, readable copy at 720px, and standard controls at 36px, 44px, and 48px. Breakpoints are 480px, 768px, 1024px, and 1440px.
 
-Primitive palette values are named `$brand-50` through `$brand-900`, `$warm-white`, `$cream`, `$stone-100`, `$stone-300`, `$taupe`, `$text-muted`, `$charcoal-soft`, `$charcoal`, `$ink`, `$walnut`, `$clay`, `$sage`, `$sale`, and `$warning`.
+Radii are 4px, 8px, 12px, 16px, and 999px. Use only the card, card-hover, and floating shadows; transitions are 150ms, 220ms, or 320ms ease. Common image ratios are product/category 4:5, editorial 3:4, and promotional 16:9.
 
-New component styles must use semantic names, never primitive values directly:
+## Mixins
 
-| Semantic token | Use |
-| --- | --- |
-| `$color-page-background` | Default page background |
-| `$color-surface`, `$color-surface-subtle`, `$color-surface-brand-soft` | Cards and intentional surface variation |
-| `$color-text-primary`, `$color-text-secondary`, `$color-text-tertiary`, `$color-text-inverse`, `$color-text-brand` | Copy hierarchy and green text actions |
-| `$color-border-default`, `$color-border-strong` | Subtle and emphasized boundaries |
-| `$color-action-primary`, `$color-action-primary-hover`, `$color-action-primary-active` | Primary interaction states |
-| `$color-focus-ring` | Keyboard focus only |
-| `$color-status-success`, `$color-status-warning`, `$color-status-sale` | Status and availability—not decoration |
+Available helpers are `page-container`, `section-spacing`, `responsive-grid`, `section-heading`, `button-base`, `card-base`, `focus-visible`, `respond-to`, `reduced-motion`, `visually-hidden`, and `aspect-ratio`. They are helpers, not a UI framework; sections may keep their own layout and composition while using the shared values.
 
-The same semantic values are emitted as CSS custom properties in `_base.scss` for plain CSS and data-driven values, for example `var(--color-surface)`.
+## External inspiration
 
-```scss
-.notice {
-  border: 1px solid $color-border-default;
-  background: $color-surface-brand-soft;
-  color: $color-text-primary;
-}
-```
+Keep only a useful layout or content idea. Replace its fonts, colours, spacing, container rules, radii, shadows, transitions, and responsive behavior with this project’s foundation. Add a new variable only when an existing role cannot represent a genuine need.
 
-## Spacing and layout
+## Pending variable migration
 
-The approved spacing scale is 4, 8, 12, 16, 24, 32, 40, 48, 64, 80, 96, and 120px (`$space-1` through `$space-12`). Do not introduce values such as 17px or 37px for visual spacing without a genuine technical reason.
+Compatibility aliases were deliberately removed. These files still use retired variable names and must be migrated during the next shared-component/section pass:
 
-- `$space-page-gutter`: responsive 16–32px page rail.
-- `$space-section`: responsive 64–120px vertical section padding.
-- `$space-section-compact`: responsive 48–80px section padding.
-- `$grid-gap`: responsive 16–32px grid spacing.
-- `$content-width`: 1280px maximum content rail.
-- `$content-width-reading`: 720px maximum for prose.
+- `Browse.scss`, `Carousel.scss`, `Hero.scss`, and `ShareSetup.scss`
+- `Header.scss`, `DesktopNav.scss`, and `MobileNav.scss`
+- `FeatureBanner.scss`, `FlashSale.scss`, and `Footer.scss`
 
-Use the shared mixins or global helpers before creating section-local containers:
-
-```scss
-.featured {
-  @include mx.section;
-}
-
-.featured__inner {
-  @include mx.container;
-}
-```
-
-`layout-container`, `layout-section`, `layout-section--compact`, and `layout-text` are global helpers for simple layout composition. Full-width sections own their background; their inner content uses the shared container.
-
-## Responsive rules
-
-Breakpoints are centralised in `_tokens.scss`: mobile 480px, tablet 768px, desktop 1024px, and wide 1440px. Use `mx.respond-up(tablet)` and `mx.respond-down(tablet)` rather than scattering literal breakpoint values. At smaller widths, reduce section padding and gaps, stack intentional layouts, preserve 44px interactive targets, and do not solve fit by hiding meaningful content.
-
-## Radius, shadows, and imagery
-
-- Radius: 4px (`xs`), 8px (`sm`), 12px (`md`), 16px (`lg`), and 999px (`full`). Pill shapes are limited to compact chips, badges, and icon controls.
-- Elevation: `$shadow-card` for cards, `$shadow-floating` for menus/popovers, and `$shadow-overlay` for modal/promotional layers. Avoid arbitrary black shadows.
-- Image ratios: `$aspect-product` / `$aspect-category` (4:5), `$aspect-editorial` (3:4), `$aspect-promo` (16:9), and gallery ratios (4:3 / 3:4). Use `mx.aspect-ratio()` so imagery crops predictably.
-- Icons use 16, 20, 24, 28, 32, or 40px tokens and a default 1.75px visual stroke. Keep icon and text colour tied to the owning control state.
-
-## Interactions and accessibility
-
-- Use `mx.focus-ring` for keyboard focus. Every keyboard-focusable custom control must have a visible focus state.
-- Motion uses 150ms, 220ms, or 360ms tokens with the standard easing token. Transitions should target colour, border, shadow, opacity, or image transform—not layout dimensions.
-- `_base.scss` respects `prefers-reduced-motion` globally. Existing Framer Motion components should also use their local `useReducedMotion` pattern.
-- Buttons perform actions; links navigate. Disabled controls stay readable and use a `not-allowed` cursor.
-- `mx.truncate()` is the approved truncation utility. Do not hide content simply because a layout narrows.
-- Inputs use `mx.form-control`; labels are explicit, and invalid fields use the sale/status token.
-
-Z-index is a named scale: base 0, raised 1, dropdown 100, sticky 200, header 300, overlay 400, modal 500, toast 600, and tooltip 700. Never introduce unexplained high z-index values.
-
-## Shared component conventions
-
-Phase 1 intentionally introduces no new React component or prop API; it preserves the existing section markup and interaction logic. All current buttons, cards, and inputs are section-local and will be standardised in Phase 2.
-
-Phase 2's shared component API is reserved as follows, so parallel one-off implementations are not added:
-
-```jsx
-<Button variant="primary" size="md" isLoading={false} disabled={false} iconStart={null} iconEnd={null} />
-<ProductCard product={product} variant="standard" imageRatio="product" />
-<Badge tone="sale" size="sm" />
-```
-
-- `Button.variant`: `primary`, `secondary`, `outline`, `ghost`, `text`, or `destructive`.
-- `Button.size`: `sm`, `md`, or `lg`; `isLoading` preserves the control width and exposes a busy state.
-- Card variants remain purpose-specific (product, category, editorial, promotional, review), but share the border, elevation, focus, and image-ratio rules.
-
-The relevant Sass building blocks already exist: `mx.button-base`, `mx.button-variant`, `mx.card-base`, `mx.form-control`, `mx.aspect-ratio`, and `mx.truncate`.
-
-## Adapting external inspiration
-
-An inspired section may retain a layout idea or content composition only. Before merging it, replace its typography with Instrument Serif/Manrope roles, translate every colour to a semantic token, use the project button/card variants, move spacing onto the approved scale, use project radii/shadows/containers, and check it at 1440, 1024, 768, 390, and 320px. Add no more than one or two new semantic tokens; if more are required, the design is not native enough yet.
-
-## Foundation migration status
-
-`variable.scss` exports old token aliases solely to keep Phase 1 non-disruptive. New code imports `tokens` and `mixins` directly. Phase 2 will replace duplicated section button, card, badge, icon, and form-control styles; Phase 3 will apply the shared layout and typography rules section by section. Remove aliases only after repository-wide usage has been eliminated.
+Retired names include `$color-primary`, `$color-surface`, `$color-background`, `$font-primary`, legacy heading/body sizes, `bp-*`, legacy radii/transitions, and old sizing helpers. This foundation cleanup intentionally does not alter those section designs or React behavior.

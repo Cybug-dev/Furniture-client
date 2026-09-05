@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../styles/variable.scss' as *;
+@use '../../styles/variables' as *;
 
 .flash-sale {
   position: relative;
@@ -137,7 +137,7 @@
 .flash-sale h2 {
   margin: 0;
   color: $color-text-heading;
-  font-size: clamp(2.75rem, 4.4vw, $font-size-display);
+  font-size: $font-size-display;
   font-weight: $font-weight-bold;
   letter-spacing: -0.04em;
   line-height: 1.08;

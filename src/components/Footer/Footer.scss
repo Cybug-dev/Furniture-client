@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../styles/variable.scss' as *;
+@use '../../styles/variables' as *;
 
 .footer {
   background: $color-background;
@@ -31,7 +31,7 @@
     gap: $space-2;
     width: fit-content;
     color: $color-primary;
-    font-family: $font-secondary;
+    font-family: $font-primary;
     font-size: $font-size-h4;
     font-weight: $font-weight-bold;
     letter-spacing: -0.035em;

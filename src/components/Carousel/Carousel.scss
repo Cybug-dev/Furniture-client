@@ -1,4 +1,4 @@
-@use "../../styles/variable" as *;
+@use '../../styles/variables' as *;
 
 // Keep these values in sync with carouselTiming in Usecarousel.js.
 $carousel-transition-duration: 620ms;

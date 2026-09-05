@@ -1,0 +1,111 @@
+@use 'variables' as *;
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: $breakpoint-mobile) { @content; }
+  } @else if $breakpoint == tablet {
+    @media (max-width: #{$breakpoint-tablet - 1px}) { @content; }
+  } @else if $breakpoint == desktop {
+    @media (max-width: #{$breakpoint-desktop - 1px}) { @content; }
+  } @else if $breakpoint == wide {
+    @media (min-width: $breakpoint-wide) { @content; }
+  }
+}
+
+@mixin page-container($max-width: $content-width) {
+  width: min(100% - (2 * #{$space-page-gutter}), $max-width);
+  margin-inline: auto;
+}
+
+@mixin section-spacing($spacing: $space-section) {
+  padding-block: $spacing;
+}
+
+@mixin responsive-grid($minimum-column-width: 240px, $gap: $space-grid-gap) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, $minimum-column-width), 1fr));
+  gap: $gap;
+}
+
+@mixin section-heading($size: $font-size-2xl) {
+  margin: 0;
+  color: $color-text-heading;
+  font-family: $font-family-primary;
+  font-size: $size;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  letter-spacing: -0.02em;
+}
+
+@mixin button-base {
+  display: inline-flex;
+  min-height: $control-size-md;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: 0 $space-5;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  text-decoration: none;
+  transition: background-color $transition-default, border-color $transition-default, color $transition-default, box-shadow $transition-default;
+
+  &:focus-visible { @include focus-visible; }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    background: $color-action-disabled-bg;
+    color: $color-action-disabled-text;
+    cursor: not-allowed;
+  }
+}
+
+@mixin card-base($padding: $space-5) {
+  overflow: hidden;
+  padding: $padding;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: $shadow-card;
+  transition: border-color $transition-default, box-shadow $transition-default, transform $transition-default;
+}
+
+@mixin focus-visible($offset: 3px) {
+  outline: 2px solid $color-focus-ring;
+  outline-offset: $offset;
+}
+
+@mixin reduced-motion {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin aspect-ratio($ratio) {
+  aspect-ratio: $ratio;
+  overflow: hidden;
+
+  > img,
+  > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

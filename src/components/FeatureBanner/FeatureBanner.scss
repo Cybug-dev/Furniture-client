@@ -1,4 +1,4 @@
-@use "../../styles/variable.scss" as *;
+@use '../../styles/variables' as *;
 
 .sr-only {
   position: absolute;
@@ -381,7 +381,7 @@
 }
 
 .ad-banner__name {
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: $font-size-h3-mobile;
   margin: 0;
 }
@@ -428,7 +428,7 @@
 }
 
 .showcase-banner__heading {
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: $font-size-h3-mobile;
   margin: 0 0 $space-2;
 }
@@ -592,7 +592,7 @@
 }
 
 .promo-banner__heading {
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: clamp(1.75rem, 4.2vw, 2.75rem);
   font-weight: 700;
   line-height: $line-height-tight;
@@ -878,7 +878,7 @@
   max-width: 13ch;
   margin: 0;
   color: $color-white;
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: clamp(2rem, 4.4vw, 4.25rem);
   font-weight: $font-weight-bold;
   letter-spacing: -0.055em;
@@ -1025,7 +1025,7 @@
 }
 
 .promo-banner__side-mark strong {
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: clamp(3rem, 8vw, 8rem);
   background: transparent;
   letter-spacing: -0.08em;

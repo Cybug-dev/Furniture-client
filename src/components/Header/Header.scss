@@ -1,4 +1,4 @@
-@use "../../styles/variable.scss" as *;
+@use '../../styles/variables' as *;
 
 /* =======================
    Header bar only
@@ -63,7 +63,7 @@
   flex-shrink: 0;
   gap: 0.45rem;
   color: $color-primary;
-  font-family: $font-secondary;
+  font-family: $font-primary;
   font-size: $font-size-h4;
   font-weight: $font-weight-bold;
   letter-spacing: -0.035em;

@@ -1,0 +1,141 @@
+// Fonts
+$font-family-primary: 'Manrope', 'Segoe UI', Arial, sans-serif;
+
+// Font sizes and weights
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: clamp(1.5rem, 2vw, 2rem);
+$font-size-3xl: clamp(1.875rem, 3vw, 2.75rem);
+$font-size-display: clamp(2.25rem, 5vw, 4.5rem);
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$line-height-display: 1.1;
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.65;
+
+// Primitive colors
+$primitive-white: #ffffff;
+$primitive-off-white: #fcfcfa;
+$primitive-soft-white: #f7f8f5;
+$primitive-green-50: #eff8f1;
+$primitive-green-500: #2fb854;
+$primitive-green-600: #249546;
+$primitive-green-700: #1c7538;
+$primitive-ink-900: #181b18;
+$primitive-ink-800: #292e29;
+$primitive-ink-700: #3f463f;
+$primitive-ink-500: #687068;
+$primitive-ink-400: #858c85;
+$primitive-border-light: #e5e9e3;
+$primitive-border-strong: #d3d9d1;
+$primitive-warm-neutral: #d8c7ae;
+$primitive-error: #c94e4e;
+$primitive-warning: #b87918;
+
+// Background colors
+$color-bg-page: $primitive-off-white;
+$color-bg-section: $primitive-white;
+$color-bg-section-soft: $primitive-soft-white;
+$color-bg-card: $primitive-white;
+$color-bg-brand-soft: $primitive-green-50;
+$color-bg-overlay: rgba($primitive-ink-900, 0.55);
+$color-bg-inverse: $primitive-ink-900;
+$color-bg-warm-neutral: $primitive-warm-neutral;
+
+// Text colors
+$color-text-heading: $primitive-ink-900;
+$color-text-body: $primitive-ink-700;
+$color-text-muted: $primitive-ink-500;
+$color-text-subtle: $primitive-ink-400;
+$color-text-brand: $primitive-green-700;
+$color-text-inverse: $primitive-white;
+
+// Border colors
+$color-border-default: $primitive-border-light;
+$color-border-strong: $primitive-border-strong;
+$color-border-brand: $primitive-green-500;
+$color-border-focus: $primitive-green-600;
+
+// Action colors
+$color-action-primary: $primitive-green-500;
+$color-action-hover: $primitive-green-600;
+$color-action-active: $primitive-green-700;
+$color-action-primary-text: $primitive-white;
+$color-action-secondary: $primitive-ink-900;
+$color-action-secondary-hover: $primitive-ink-800;
+$color-action-secondary-text: $primitive-white;
+$color-action-disabled-bg: $primitive-border-light;
+$color-action-disabled-text: $primitive-ink-400;
+$color-focus-ring: rgba($primitive-green-500, 0.42);
+
+// Status colors
+$color-status-error: $primitive-error;
+$color-status-warning: $primitive-warning;
+$color-status-success: $primitive-green-700;
+$color-status-sale: $primitive-error;
+
+// Spacing
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+$space-7: 48px;
+$space-8: 64px;
+$space-9: 80px;
+$space-section: clamp(56px, 7vw, 120px);
+$space-page-gutter: clamp(16px, 3vw, 32px);
+$space-grid-gap: clamp(16px, 2vw, 32px);
+
+// Containers and content widths
+$container-max-width: 1440px;
+$content-width: 1280px;
+$content-width-reading: 720px;
+$control-size-sm: 36px;
+$control-size-md: 44px;
+$control-size-lg: 48px;
+
+// Image ratios
+$image-ratio-product: 0.8; // 4:5
+$image-ratio-category: 0.8; // 4:5
+$image-ratio-editorial: 0.75; // 3:4
+$image-ratio-promo: 1.7778; // 16:9
+
+// Breakpoints
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1440px;
+
+// Border radii
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-round: 999px;
+
+// Shadows
+$shadow-card: 0 6px 24px rgba($primitive-ink-900, 0.07);
+$shadow-card-hover: 0 12px 32px rgba($primitive-ink-900, 0.11);
+$shadow-floating: 0 18px 48px rgba($primitive-ink-900, 0.14);
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-default: 220ms ease;
+$transition-slow: 320ms ease;
+
+// Z-index
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-header: 300;
+$z-overlay: 400;
+$z-modal: 500;
+$z-toast: 600;
+$z-tooltip: 700;
