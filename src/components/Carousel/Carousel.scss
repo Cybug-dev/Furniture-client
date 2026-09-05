@@ -63,7 +63,7 @@ $carousel-sonar-duration: 1500ms;
   min-width: 148px;
   padding: 0 $space-5;
   text-decoration: none;
-  @include cta-primary;
+  @include cta-standard;
 }
 
 .inspiration-carousel {

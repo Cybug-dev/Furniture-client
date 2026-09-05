@@ -211,7 +211,7 @@
   font-weight: $font-weight-semibold;
   text-decoration: none;
 
-  @include cta-primary;
+  @include cta-velvet-reveal;
 }
 
 .flash-sale__phone:focus-visible {
@@ -222,6 +222,22 @@
 .flash-sale__cta.is-ended {
   background: $color-action-disabled-bg;
   color: $color-action-disabled-text;
+}
+
+.flash-sale__cta > svg {
+  transition: transform $transition-default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flash-sale__cta:not(:disabled):not([aria-disabled='true']):hover > svg {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-sale__cta > svg {
+    transition: none;
+  }
 }
 
 .flash-sale__perks {

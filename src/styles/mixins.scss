@@ -64,15 +64,117 @@
   }
 }
 
-@mixin cta-primary {
-  transition: background-color $transition-default, box-shadow $transition-default, transform $transition-default;
+@mixin cta-velvet-reveal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 
-  > svg,
-  > .cta-icon,
-  &::after {
-    display: inline-block;
-    transition: transform $transition-default;
+  color: $color-text-inverse;
+  background-color: $color-action-primary;
+  border: 1px solid $color-action-primary;
+
+  box-shadow: 0 8px 18px rgba($color-action-active, 0.16);
+
+  transition:
+    transform $transition-default,
+    border-color $transition-default,
+    box-shadow $transition-default;
+
+  // Dark-green layer rising into the button.
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    inset: -30% -8%;
+
+    background: linear-gradient(
+      118deg,
+      $color-action-active 8%,
+      $color-action-hover 62%,
+      $color-action-active 100%
+    );
+
+    transform: translateY(92%) rotate(-3deg);
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
   }
+
+  // Single light reflection.
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -70%;
+    bottom: -70%;
+    left: -20%;
+    width: 30%;
+
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($color-text-inverse, 0.28),
+      transparent
+    );
+
+    transform: translateX(-250%) rotate(16deg);
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color-focus-ring;
+    outline-offset: 3px;
+  }
+
+  &:active:not(:disabled):not([aria-disabled='true']) {
+    transform: translateY(0);
+    box-shadow: 0 5px 12px rgba($color-action-active, 0.16);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:not(:disabled):not([aria-disabled='true']):hover {
+      transform: translateY(-2px);
+      border-color: $color-action-active;
+      box-shadow: 0 14px 28px rgba($color-action-active, 0.24);
+
+      &::before {
+        transform: translateY(0) rotate(-3deg);
+      }
+
+      &::after {
+        animation: velvet-cta-sheen 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition: none;
+    }
+
+    &::before {
+      transition: none;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+@mixin cta-standard {
+  transition: background-color $transition-slow, border-color $transition-slow, box-shadow $transition-slow, transform $transition-slow;
 
   &:focus-visible {
     @include focus-visible;
@@ -80,6 +182,7 @@
 
   &:active:not(:disabled):not([aria-disabled='true']) {
     background-color: $color-action-active;
+    border-color: $color-action-active;
     box-shadow: $shadow-card;
     transform: translateY(0);
   }
@@ -94,111 +197,14 @@
   @media (hover: hover) {
     &:not(:disabled):not([aria-disabled='true']):hover {
       background-color: $color-action-hover;
+      border-color: $color-action-hover;
       box-shadow: $shadow-card-hover;
-      transform: translateY(-2px);
-
-      > svg,
-      > .cta-icon,
-      &::after {
-        transform: translateX(3px);
-      }
+      transform: translateY(-1px);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    &,
-    > svg,
-    > .cta-icon,
-    &::after {
-      transition: none;
-    }
-
-    &:hover {
-      transform: none;
-    }
-  }
-}
-
-@mixin cta-outline {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border-color: $color-border-brand;
-  color: $color-text-brand;
-  transition: border-color $transition-default, color $transition-default, box-shadow $transition-default, transform $transition-default;
-
-  &::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    background: $color-action-primary;
-    content: '';
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform $transition-default;
-  }
-
-  > svg,
-  > .cta-icon,
-  &::after {
-    display: inline-block;
-    transition: transform $transition-default;
-  }
-
-  &:focus-visible {
-    @include focus-visible;
-  }
-
-  &:active:not(:disabled):not([aria-disabled='true']) {
-    border-color: $color-action-active;
-    color: $color-text-inverse;
-    transform: translateY(0);
-
-    &::before {
-      background: $color-action-active;
-      transform: scaleX(1);
-    }
-  }
-
-  &:disabled,
-  &[aria-disabled='true'] {
-    border-color: $color-border-default;
-    box-shadow: none;
-    color: $color-action-disabled-text;
-    cursor: not-allowed;
-    transform: none;
-
-    &::before {
-      background: $color-action-disabled-bg;
-      transform: scaleX(0);
-    }
-  }
-
-  @media (hover: hover) {
-    &:not(:disabled):not([aria-disabled='true']):hover {
-      border-color: $color-action-primary;
-      box-shadow: $shadow-card-hover;
-      color: $color-text-inverse;
-      transform: translateY(-2px);
-
-      &::before {
-        transform: scaleX(1);
-      }
-
-      > svg,
-      > .cta-icon,
-      &::after {
-        transform: translateX(3px);
-      }
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    &,
-    &::before,
-    > svg,
-    > .cta-icon,
-    &::after {
+    & {
       transition: none;
     }
 

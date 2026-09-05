@@ -321,7 +321,7 @@
     font: $font-weight-semibold $font-size-sm $font-primary;
     overflow: hidden;
 
-    @include cta-primary;
+    @include cta-velvet-reveal;
   }
 
   &__success {

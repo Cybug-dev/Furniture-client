@@ -276,7 +276,7 @@
   font-weight: $font-weight-semibold;
   letter-spacing: 0.03em;
   text-decoration: none;
-  @include cta-primary;
+  @include cta-standard;
 }
 
 .ad-banner {
@@ -966,7 +966,7 @@
   font-weight: $font-weight-semibold;
   box-shadow: none;
 
-  @include cta-primary;
+  @include cta-velvet-reveal;
 }
 
 .promo-banner__thanks {
@@ -1134,6 +1134,21 @@
   content: '\2197';
   font-size: 1.1em;
   line-height: 1;
+  transition: transform $transition-default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .default-banner__cta:not(:disabled):not([aria-disabled='true']):hover::after,
+  .ad-banner__cta:not(:disabled):not([aria-disabled='true']):hover::after {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .default-banner__cta::after,
+  .ad-banner__cta::after {
+    transition: none;
+  }
 }
 
 .ad-banner::before {
@@ -1375,7 +1390,7 @@
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
 
-  @include cta-primary;
+  @include cta-velvet-reveal;
 }
 
 .promo-banner__thanks {

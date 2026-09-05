@@ -55,6 +55,16 @@ select { font: inherit; }
 
 button { font-weight: $font-weight-semibold; }
 
+@keyframes velvet-cta-sheen {
+  from {
+    transform: translateX(-250%) rotate(16deg);
+  }
+
+  to {
+    transform: translateX(500%) rotate(16deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
