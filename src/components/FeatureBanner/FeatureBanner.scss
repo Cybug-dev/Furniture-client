@@ -231,7 +231,7 @@
   font-size: $font-size-xs;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   color: $color-text-brand-soft;
   margin: 0 0 $space-3;
 }
@@ -341,7 +341,7 @@
   background: $color-bg-brand-soft;
   color: $color-text-heading;
   font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-medium;
   padding: $space-1 $space-2;
   border-radius: $radius-round;
 }
@@ -366,7 +366,7 @@
   background: $color-bg-brand-soft;
   color: $color-text-heading;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   padding: $space-1 $space-3;
   border-radius: $radius-round;
 }
@@ -569,7 +569,7 @@
   border-radius: $radius-round;
   background: linear-gradient(135deg, $color-action-primary 0%, $color-action-hover 100%);
   color: $color-text-inverse;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-medium;
   font-size: $font-size-sm;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -582,7 +582,7 @@
 
 .promo-banner__heading {
   font-size: clamp(1.75rem, 4.2vw, 2.75rem);
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   line-height: $line-height-tight;
   letter-spacing: -0.025em;
   margin: 18px 0 12px; 
@@ -628,7 +628,7 @@
 .promo-banner__count {
   margin: 0 0 20px; /* FIXED: Lowered bottom gap from 28px */
   font-size: 13px;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba($color-text-heading, 0.55);
@@ -832,7 +832,7 @@
   border-bottom: 1px solid rgba($color-border-inverse, 0.32);
   color: rgba($color-text-inverse, 0.78);
   font-size: 10px;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -855,7 +855,7 @@
   background: rgba($color-bg-brand-soft, 0.16);
   color: $color-text-brand-soft;
   font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -865,7 +865,7 @@
   margin: 0;
   color: $color-text-inverse;
   font-size: clamp(2rem, 4.4vw, 4.25rem);
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-extrabold;
   letter-spacing: -0.055em;
   line-height: 1.04;
   -webkit-text-fill-color: currentColor;
@@ -934,7 +934,7 @@
   margin-top: 5px;
   color: rgba($color-text-brand-soft, 0.92);
   font-size: 9px;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -980,7 +980,7 @@
   background: $color-action-primary;
   color: $color-text-inverse;
   font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-semibold;
   box-shadow: none;
 }
 
@@ -1027,7 +1027,7 @@
   border-left: 1px solid rgba($color-border-brand-soft, 0.72);
   color: $color-text-brand-soft;
   font-size: 10px;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.15em;
   line-height: 1.45;
   text-transform: uppercase;
@@ -1294,7 +1294,7 @@
   border-bottom: 1px solid rgba($color-border-brand-soft, 0.5);
   color: $color-text-brand-soft;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -1418,7 +1418,7 @@
   margin: 0;
   color: $color-text-brand;
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-medium;
   place-items: center;
   text-align: center;
 }

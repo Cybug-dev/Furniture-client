@@ -12,9 +12,9 @@ The style foundation has three files only:
 
 ## Foundation rules
 
-Manrope (`'Manrope', 'Segoe UI', Arial, sans-serif`) is the only visible font family. It is loaded at weights 400, 500, 600, and 700 in `index.html`; there is no serif fallback.
+Montserrat is used across the interface, while M PLUS 1 is reserved exclusively for `$font-logo`. `$font-style-accent` reserves Montserrat’s italic style for quote, review, and testimonial text. Both families are loaded at weights 400, 500, 600, 700, and 800.
 
-The compact type scale is `xs` 0.75rem, `sm` 0.875rem, `base` 1rem, `lg` 1.125rem, `xl` 1.25rem, `2xl` clamp(1.5rem, 2vw, 2rem), `3xl` clamp(1.875rem, 3vw, 2.75rem), and `display` clamp(2.25rem, 5vw, 4.5rem). Use 400 for body copy, 500 for labels, 600 for controls/headings, and 700 for strong prices or headings.
+The compact type scale is `xs` 0.75rem, `sm` 0.875rem, `base` 1rem, `lg` 1.125rem, `xl` 1.25rem, `2xl` clamp(1.5rem, 2vw, 2rem), `3xl` clamp(1.875rem, 3vw, 2.75rem), and `display` clamp(2.25rem, 5vw, 4.5rem). Use 400 for body copy, 500 for labels, 600 for controls and subheadings, 700 for H2–H3 headings and strong prices, and 800 for display headings.
 
 Colour variables have a single role:
 

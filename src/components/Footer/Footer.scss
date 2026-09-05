@@ -30,6 +30,7 @@
     gap: $space-2;
     width: fit-content;
     color: $color-text-brand;
+    font-family: $font-logo;
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     letter-spacing: -0.035em;
@@ -125,7 +126,7 @@
     margin: 0 0 $space-4;
     color: $color-text-heading;
     font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
+    font-weight: $font-weight-bold;
     line-height: $line-height-tight;
   }
 
@@ -316,7 +317,7 @@
     background: $color-action-primary;
     color: $color-text-inverse;
     cursor: pointer;
-    font: $font-weight-semibold $font-size-sm $font-family-primary;
+    font: $font-weight-semibold $font-size-sm $font-primary;
     overflow: hidden;
     transition:
       background $transition-fast,

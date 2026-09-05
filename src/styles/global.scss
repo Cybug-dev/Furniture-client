@@ -12,7 +12,7 @@ body {
   margin: 0;
   background: $color-bg-page;
   color: $color-text-body;
-  font-family: $font-family-primary;
+  font-family: $font-primary;
   font-size: $font-size-base;
   line-height: $line-height-normal;
   text-rendering: optimizeLegibility;
@@ -28,6 +28,17 @@ h5,
 h6,
 p { margin: 0; }
 
+h1 { font-weight: $font-weight-extrabold; }
+
+h2,
+h3 { font-weight: $font-weight-bold; }
+
+h4,
+h5,
+h6 { font-weight: $font-weight-semibold; }
+
+p { font-weight: $font-weight-regular; }
+
 img,
 picture,
 svg {
@@ -41,6 +52,8 @@ button,
 input,
 textarea,
 select { font: inherit; }
+
+button { font-weight: $font-weight-semibold; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
