@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 // Keep these values in sync with carouselTiming in Usecarousel.js.
 $carousel-transition-duration: 620ms;
@@ -62,15 +63,7 @@ $carousel-sonar-duration: 1500ms;
   min-width: 148px;
   padding: 0 $space-5;
   text-decoration: none;
-  transition:
-    background $transition-default,
-    color $transition-default;
-}
-
-.inspiration__button:hover,
-.inspiration__button:focus-visible {
-  background: $color-bg-inverse;
-  color: $color-text-inverse;
+  @include cta-primary;
 }
 
 .inspiration-carousel {

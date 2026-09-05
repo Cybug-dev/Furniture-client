@@ -89,8 +89,6 @@ export default function Hero() {
           href="/shop"
           className="hero__cta"
           variants={itemVariants}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
         >
           Buy Now
         </motion.a>

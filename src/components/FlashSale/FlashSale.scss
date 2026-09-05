@@ -1,5 +1,5 @@
-@use 'sass:color';
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .flash-sale {
   position: relative;
@@ -210,24 +210,18 @@
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
   text-decoration: none;
-  transition: background-color $transition-default, box-shadow $transition-default, transform $transition-default;
+
+  @include cta-primary;
 }
 
-.flash-sale__cta:hover {
-  background: color.adjust($color-action-primary, $lightness: -7%);
-  box-shadow: 0 10px 22px rgba($color-action-primary, 0.28);
-  transform: translateY(-2px);
-}
-
-.flash-sale__cta:focus-visible,
 .flash-sale__phone:focus-visible {
   outline: 3px solid $color-border-focus;
   outline-offset: 4px;
 }
 
 .flash-sale__cta.is-ended {
-  background: $color-action-disabled-text;
-  cursor: not-allowed;
+  background: $color-action-disabled-bg;
+  color: $color-action-disabled-text;
 }
 
 .flash-sale__perks {

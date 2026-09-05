@@ -276,14 +276,7 @@
   font-weight: $font-weight-semibold;
   letter-spacing: 0.03em;
   text-decoration: none;
-  transition:
-    background $transition-fast,
-    transform $transition-fast;
-}
-
-.default-banner__cta:hover,
-.ad-banner__cta:hover {
-  background: $color-action-hover;
+  @include cta-primary;
 }
 
 .ad-banner {
@@ -584,7 +577,7 @@
   font-size: clamp(1.75rem, 4.2vw, 2.75rem);
   font-weight: $font-weight-extrabold;
   line-height: $line-height-tight;
-  letter-spacing: -0.025em;
+  // letter-spacing: -0.025em;
   margin: 18px 0 12px; 
   word-break: break-word;
   background: linear-gradient(
@@ -710,16 +703,6 @@
     border-radius: 999px;
     min-width: 140px;
   }
-}
-
-.promo-banner__form button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba($color-action-primary, 0.4);
-  filter: brightness(1.05);
-}
-
-.promo-banner__form button:active {
-  transform: translateY(0);
 }
 
 /* ---------- Thank-you state ---------- */
@@ -866,7 +849,7 @@
   color: $color-text-inverse;
   font-size: clamp(2rem, 4.4vw, 4.25rem);
   font-weight: $font-weight-extrabold;
-  letter-spacing: -0.055em;
+  // letter-spacing: -0.055em;
   line-height: 1.04;
   -webkit-text-fill-color: currentColor;
   text-shadow: 0 3px 22px rgba($color-text-heading, 0.36);
@@ -982,13 +965,8 @@
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   box-shadow: none;
-}
 
-.promo-banner__form button:hover {
-  background: $color-action-primary;
-  box-shadow: none;
-  filter: brightness(0.92);
-  transform: none;
+  @include cta-primary;
 }
 
 .promo-banner__thanks {
@@ -1171,12 +1149,6 @@
   content: '';
 }
 
-
-.default-banner__cta:hover,
-.ad-banner__cta:hover {
-  box-shadow: 0 13px 26px rgba($color-action-primary, 0.35);
-  transform: translateY(-2px);
-}
 
 .ad-banner__media {
   border: 5px solid rgba($color-border-inverse, 0.9);
@@ -1402,14 +1374,8 @@
   color: $color-text-inverse;
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
-  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-fast;
-}
 
-.promo-banner__form button:hover {
-  background: $color-action-primary;
-  box-shadow: 0 8px 18px rgba($color-action-primary, 0.3);
-  filter: brightness(0.94);
-  transform: translateY(-1px);
+  @include cta-primary;
 }
 
 .promo-banner__thanks {

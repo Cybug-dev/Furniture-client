@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 /* =========================================================
    Hero Section
@@ -94,18 +95,9 @@
   letter-spacing: 0.02em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: background $transition-fast, transform $transition-fast;
   will-change: transform;
 
-  &:hover,
-  &:focus-visible {
-    background: $color-action-primary;
-    outline: none;
-  }
-
-  &:focus-visible {
-    box-shadow: 0 0 0 3px rgba($color-action-primary, 0.35);
-  }
+  @include cta-primary;
 }
 
 /* =============== Responsive mobile priority ============= */
