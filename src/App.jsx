@@ -6,7 +6,7 @@ import FeatureBanner from "./components/FeatureBanner/FeatureBanner";
 import FlashSale from './components/FlashSale';
 import Carousel from './components/Carousel/Carousel'
 import Footer from './components/Footer/Footer';
-
+import Products from './components/Products/Products'
 function App() {
 
   return (
@@ -15,6 +15,7 @@ function App() {
       <main className="main-content">
         <Hero />
         <Browse />
+        <Products />
         <Carousel/>
         <FeatureBanner />
         <ShareSetup />
