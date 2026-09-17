@@ -1,0 +1,1612 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.sr-only {
+  @include visually-hidden;
+}
+
+.feature-banner {
+  position: relative;
+  width: 100%;
+  color: $color-text-heading;
+}
+
+.feature-banner__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  min-height: calc(100dvh - $header-height);
+  height: calc(100dvh - $header-height);
+  background: $color-bg-page;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .feature-banner {
+    padding: $space-4 $space-6 $space-2;
+  }
+
+  .feature-banner__frame {
+    height: 60vh;
+    min-height: 520px;
+    max-height: 760px;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+  }
+}
+
+.feature-banner__swiper,
+.feature-banner__swiper .swiper,
+.feature-banner__swiper .swiper-wrapper,
+.feature-banner__swiper .swiper-slide {
+  height: 100%;
+  cursor: default;
+}
+
+.feature-banner__slide {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.feature-banner__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.feature-banner__nav {
+  position: absolute;
+  top: 50%;
+  z-index: $z-overlay;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  box-shadow: $shadow-card;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity $transition-default,
+    transform $transition-fast;
+}
+
+.feature-banner__nav--prev {
+  left: $space-4;
+}
+
+.feature-banner__nav--next {
+  right: $space-4;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .feature-banner__nav {
+    display: flex;
+  }
+
+  .feature-banner:hover .feature-banner__nav,
+  .feature-banner:focus-within .feature-banner__nav {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.feature-banner__dots {
+  position: absolute;
+  z-index: $z-overlay;
+  left: 50%;
+  bottom: $space-4;
+  transform: translateX(-50%);
+  display: flex;
+  gap: $space-2;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .feature-banner__dots {
+    left: $space-6;
+    transform: none;
+    bottom: $space-5;
+  }
+}
+
+.feature-banner__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: $radius-round;
+  background: rgba($color-bg-card, 0.55);
+  transition:
+    width $transition-default,
+    background $transition-fast;
+}
+
+.feature-banner__dot.is-active {
+  width: 28px;
+  background: $color-bg-card;
+}
+
+.feature-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: $z-overlay;
+  background: $color-bg-page;
+  transition: opacity $transition-slow;
+}
+
+.feature-skeleton.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.feature-skeleton__stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6;
+}
+
+.feature-skeleton__copy {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-banner__content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feature-banner a,
+.feature-banner button,
+.feature-banner input {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.feature-banner input {
+  cursor: text;
+}
+
+.default-banner,
+.ad-banner,
+.showcase-banner,
+.promo-banner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.default-banner__veil,
+.ad-banner__veil,
+.showcase-banner__veil,
+.promo-banner__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba($color-bg-inverse, 0.28) 0%,
+    rgba($color-bg-inverse, 0.18) 40%,
+    rgba($color-bg-inverse, 0.35) 100%
+  );
+  z-index: 1;
+}
+
+.default-banner__copy {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: $space-6 $space-5 72px;
+  max-width: 720px;
+  color: $color-text-inverse;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .default-banner__copy {
+    padding: $space-8 $space-8;
+  }
+}
+
+.default-banner__kicker {
+  font-size: $font-size-xs;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: $font-weight-medium;
+  color: $color-text-brand-soft;
+  margin: 0 0 $space-3;
+}
+
+.default-banner__heading {
+  font-size: $font-size-2xl;
+  line-height: $line-height-tight;
+  margin: 0 0 $space-3;
+  color: $color-text-inverse;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .default-banner__heading {
+    font-size: $font-size-3xl;
+  }
+}
+
+.default-banner__sub {
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+  color: rgba($color-text-inverse, 0.88);
+  margin: 0 0 $space-5;
+  max-width: 42ch;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .default-banner__sub {
+    font-size: $font-size-lg;
+  }
+}
+
+.default-banner__cta,
+.ad-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 $space-5;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  @include cta-standard;
+}
+
+.ad-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-banner__panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-5;
+  padding: $space-6 $space-4;
+  width: min(920px, 100%);
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .ad-banner__panel {
+    flex-direction: row;
+    justify-content: center;
+    gap: $space-7;
+  }
+}
+
+.ad-banner__media {
+  position: relative;
+  display: block;
+  width: min(220px, 58vw);
+  aspect-ratio: 4 / 5;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  background: $color-bg-card;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .ad-banner__media {
+    width: min(280px, 70vw);
+  }
+}
+
+.ad-banner__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ad-banner__discount {
+  position: absolute;
+  top: $space-3;
+  left: $space-3;
+  background: $color-bg-brand-soft;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  padding: $space-1 $space-2;
+  border-radius: $radius-round;
+}
+
+.ad-banner__meta {
+  color: $color-text-inverse;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .ad-banner__meta {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+.ad-banner__badge {
+  background: $color-bg-brand-soft;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  padding: $space-1 $space-3;
+  border-radius: $radius-round;
+}
+
+.ad-banner__name {
+  font-size: $font-size-xl;
+  margin: 0;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .ad-banner__name {
+    font-size: $font-size-xl;
+  }
+}
+
+.ad-banner__price {
+  margin: 0;
+  display: flex;
+  gap: $space-3;
+  align-items: baseline;
+}
+
+.ad-banner__now {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.ad-banner__was {
+  color: $color-text-heading;
+  text-decoration: line-through;
+  font-size: $font-size-xs;
+}
+
+.showcase-banner__inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: $space-5 $space-4 72px;
+  color: $color-text-inverse;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .showcase-banner__inner {
+    padding: $space-7 $space-8;
+  }
+}
+
+.showcase-banner__heading {
+  font-size: $font-size-xl;
+  margin: 0 0 $space-2;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .showcase-banner__heading {
+    font-size: $font-size-2xl;
+  }
+}
+
+.showcase-banner__sub {
+  margin: 0 0 $space-5;
+  color: rgba($color-text-inverse, 0.86);
+  font-size: $font-size-sm;
+}
+
+.showcase-banner__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .showcase-banner__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-4;
+  }
+}
+
+.showcase-banner__card {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  background: rgba($color-bg-card, 0.92);
+  color: $color-text-heading;
+  border-radius: $radius-md;
+  padding: $space-3;
+  min-height: 88px;
+  text-decoration: none;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast;
+}
+
+.showcase-banner__card:hover,
+.showcase-banner__card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: $shadow-card;
+}
+
+.showcase-banner__card img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+.showcase-banner__name {
+  margin: 0 0 $space-1;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+}
+
+.showcase-banner__price {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+}
+
+.promo-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.promo-banner__veil {
+  background: linear-gradient(
+    180deg,
+    rgba($color-bg-card, 0.12) 0%,
+    rgba($color-bg-card, 0.04) 42%,
+    rgba($color-bg-inverse, 0.22) 100%
+  );
+}
+
+.promo-banner__copy {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 92%;
+  max-width: 620px;
+  margin: 0 auto;
+  box-sizing: border-box; 
+  padding: 32px 20px 36px;
+
+  background: linear-gradient(
+    165deg,
+    rgba($color-bg-card, 0.72) 0%,
+    rgba($color-bg-card, 0.48) 50%,
+    rgba($color-bg-card, 0.38) 100%
+  );
+  backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+
+  border: 1px solid rgba($color-border-inverse, 0.55);
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 50px -12px rgba($color-bg-inverse, 0.18),
+    0 8px 20px -6px rgba($color-bg-inverse, 0.08),
+    inset 0 1px 1px rgba($color-bg-card, 0.7),
+    inset 0 -1px 1px rgba($color-bg-card, 0.25);
+
+  color: $color-text-heading;
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .promo-banner__copy {
+    padding-top: $space-6;
+  }
+}
+
+.promo-banner__sparkles {
+  position: absolute;
+  top: 0%;
+  left: 10%;
+  width: 240px;
+  height: 70px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba($color-bg-card, 0.95) 1.5px, transparent 2px),
+    radial-gradient(circle, rgba($color-bg-card, 0.7) 1px, transparent 2px);
+  background-size: 40px 40px, 28px 28px;
+  background-position: 20px 10px, 80px 30px;
+  opacity: 0.85;
+}
+
+/* ---------- 25% OFF badge ---------- */
+.promo-banner__offer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 $space-4;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-action-primary 0%, $color-action-hover 100%);
+  color: $color-text-inverse;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    0 4px 14px rgba($color-action-primary, 0.35),
+    inset 0 1px 0 rgba($color-bg-card, 0.25);
+  position: relative;
+  z-index: 4;
+}
+
+.promo-banner__heading {
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-tight;
+  // letter-spacing: -0.025em;
+  margin: 18px 0 12px; 
+  word-break: break-word;
+  background: linear-gradient(
+    125deg,
+    $color-action-hover 0%,
+    $color-action-primary 38%,
+    $color-bg-brand-muted 68%,
+    $color-text-inverse 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 1px 1px rgba($color-bg-inverse, 0.06));
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .promo-banner__heading {
+    font-size: clamp(2rem, 3.8vw, 3rem);
+  }
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .promo-banner__heading {
+    font-size: 3.1rem;
+  }
+}
+
+/* ---------- Subtext ---------- */
+.promo-banner__sub {
+  margin: 0 auto 14px;
+  max-width: 34ch;
+  color: rgba($color-text-heading, 0.72);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Countdown ---------- */
+.promo-banner__count {
+  margin: 0 0 20px; /* FIXED: Lowered bottom gap from 28px */
+  font-size: 13px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba($color-text-heading, 0.55);
+}
+
+/* ---------- Email Form ---------- */
+.promo-banner__form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  background: rgba($color-bg-card, 0.92);
+  border-radius: 18px;
+  padding: 8px;
+  box-shadow:
+    0 10px 30px -8px rgba($color-bg-inverse, 0.12),
+    0 2px 8px rgba($color-bg-inverse, 0.04),
+    inset 0 1px 0 rgba($color-bg-card, 0.9);
+  border: 1px solid rgba($color-border-inverse, 0.7);
+  transition: box-shadow 0.25s ease;
+}
+
+.promo-banner__form:focus-within {
+  box-shadow:
+    0 14px 36px -8px rgba($color-action-primary, 0.18),
+    0 4px 12px rgba($color-bg-inverse, 0.06),
+    inset 0 1px 0 rgba($color-bg-card, 0.95);
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .promo-banner__form {
+    flex-direction: row;
+    align-items: stretch;
+    border-radius: 999px;
+    padding: 6px;
+    gap: 0;
+  }
+}
+
+.promo-banner__form input {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  min-height: 50px;
+  padding: 0 22px;
+  font-size: 15.5px;
+  color: $color-text-heading;
+  outline: none;
+  border-radius: 12px;
+}
+
+.promo-banner__form input::placeholder {
+  color: rgba($color-text-heading, 0.4);
+  font-weight: $font-weight-regular;
+}
+
+.promo-banner__form button {
+  min-height: 50px;
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, $color-action-primary 0%, $color-action-hover 100%);
+  color: $color-text-inverse;
+  font-weight: $font-weight-semibold;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  padding: 0 28px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 14px rgba($color-action-primary, 0.3);
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .promo-banner__form button {
+    width: auto;
+    border-radius: 999px;
+    min-width: 140px;
+  }
+}
+
+/* ---------- Thank-you state ---------- */
+.promo-banner__thanks {
+  margin: 0;
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: $font-weight-medium;
+  color: $color-action-primary;
+  letter-spacing: 0.01em;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner__form button,
+  .promo-banner__form {
+    transition: none;
+  }
+}
+
+/* ========================================================================== */
+/* Private-sale promo: a restrained editorial composition, not a glass card. */
+/* ========================================================================== */
+.promo-banner {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: clamp($space-4, 3vw, $space-7);
+  isolation: isolate;
+}
+
+
+.promo-banner__texture {
+  position: absolute;
+  z-index: 1;
+  top: -20%;
+  right: 4%;
+  width: clamp(18rem, 33vw, 32rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba($color-border-inverse, 0.38);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-text-inverse, 0.055);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.promo-banner__texture::after {
+  position: absolute;
+  top: 22%;
+  right: 22%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $color-bg-brand-soft;
+  box-shadow: 36px 28px 0 rgba($color-bg-brand-soft, 0.7), -24px 52px 0 rgba($color-bg-brand-soft, 0.5);
+  content: '';
+}
+
+.promo-banner__panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(100%, 690px);
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 3.4vw, 3.25rem);
+  color: $color-text-inverse;
+}
+
+.promo-banner__panel::before,
+.promo-banner__panel::after {
+  display: none;
+}
+
+.promo-banner__panel::before {
+  top: -4rem;
+  right: -4rem;
+  width: 13rem;
+  height: 13rem;
+  border: 1px solid rgba($color-border-brand, 0.23);
+  border-radius: 50%;
+}
+
+.promo-banner__panel::after {
+  right: 1.35rem;
+  bottom: 1.35rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-bg-brand-soft 1.4px, transparent 1.7px);
+  background-size: 10px 10px;
+}
+
+.promo-banner__panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-banner__masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid rgba($color-border-inverse, 0.32);
+  color: rgba($color-text-inverse, 0.78);
+  font-size: 10px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.promo-banner__masthead span:last-child {
+  color: $color-text-brand-soft;
+}
+
+.promo-banner__main {
+  max-width: 34rem;
+  padding: clamp(1.5rem, 4.5vh, 3.75rem) 0;
+}
+
+.promo-banner__offer {
+  width: fit-content;
+  margin: 0 0 $space-4;
+  padding: 6px $space-3;
+  border: 1px solid rgba($color-border-brand-soft, 0.58);
+  border-radius: $radius-round;
+  background: rgba($color-bg-brand-soft, 0.16);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-banner__heading {
+  max-width: 13ch;
+  margin: 0;
+  color: $color-text-inverse;
+  font-size: clamp(2rem, 4.4vw, 4.25rem);
+  font-weight: $font-weight-extrabold;
+  // letter-spacing: -0.055em;
+  line-height: 1.04;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: 0 3px 22px rgba($color-text-heading, 0.36);
+}
+
+.promo-banner__sub {
+  max-width: 41ch;
+  margin: $space-4 0 0;
+  color: rgba($color-text-inverse, 0.86);
+  text-shadow: 0 2px 12px rgba($color-text-heading, 0.22);
+  font-size: $font-size-sm;
+  line-height: 1.65;
+}
+
+.promo-banner__note {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin: $space-5 0 0;
+  color: rgba($color-text-inverse, 0.78);
+  font-size: $font-size-xs;
+}
+
+.promo-banner__note span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $color-action-primary;
+  box-shadow: 0 0 0 5px rgba($color-action-primary, 0.14);
+}
+
+.promo-banner__utility {
+  display: grid;
+  gap: $space-4;
+}
+
+.promo-banner__countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba($color-border-inverse, 0.32);
+  border-bottom: 1px solid rgba($color-border-inverse, 0.32);
+}
+
+.promo-banner__time-unit {
+  display: flex;
+  min-height: 60px;
+  flex-direction: column;
+  justify-content: center;
+  padding: $space-2 $space-3;
+  border-right: 1px solid rgba($color-border-inverse, 0.24);
+}
+
+.promo-banner__time-unit:last-child {
+  border-right: 0;
+}
+
+.promo-banner__time-unit strong {
+  color: $color-text-inverse;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.promo-banner__time-unit span {
+  margin-top: 5px;
+  color: rgba($color-text-brand-soft, 0.92);
+  font-size: 9px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo-banner__form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: none;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid rgba($color-border-brand, 0.25);
+  border-radius: $radius-round;
+  background: rgba($color-bg-card, 0.75);
+  box-shadow: none;
+}
+
+.promo-banner__form:focus-within {
+  border-color: rgba($color-border-brand, 0.75);
+  box-shadow: 0 0 0 3px rgba($color-action-primary, 0.17);
+}
+
+.promo-banner__form input {
+  min-height: 42px;
+  padding: 0 $space-4;
+  border-radius: $radius-round;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+}
+
+.promo-banner__form input::placeholder {
+  color: $color-text-subtle;
+}
+
+.promo-banner__form button {
+  display: inline-flex;
+  width: auto;
+  min-height: 42px;
+  align-items: center;
+  gap: $space-2;
+  padding: 0 $space-4;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  box-shadow: none;
+
+  @include cta-velvet-reveal;
+}
+
+.promo-banner__thanks {
+  min-height: 42px;
+  color: $color-text-brand;
+  font-size: $font-size-xs;
+}
+
+.promo-banner__side-mark {
+  position: absolute;
+  z-index: 2;
+  right: clamp(2rem, 7vw, 8rem);
+  bottom: clamp(4rem, 11vh, 7rem);
+  display: flex;
+  align-items: flex-end;
+  gap: $space-3;
+  color: $color-text-brand-soft;
+  pointer-events: none;
+}
+
+.promo-banner__side-mark strong {
+  font-size: clamp(3rem, 8vw, 8rem);
+  background: transparent;
+  letter-spacing: -0.08em;
+  line-height: 0.75;
+  // background: linear-gradient(135deg, $color-bg-brand-soft 0%, $color-text-inverse 52%, $color-action-primary 100%);
+  // background-clip: text;
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  text-shadow: 0 6px 28px rgba($color-text-heading, 0.28);
+}
+
+.promo-banner__side-mark span {
+  padding-bottom: 3px;
+  padding-left: $space-2;
+  border-left: 1px solid rgba($color-border-brand-soft, 0.72);
+  color: $color-text-brand-soft;
+  font-size: 10px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.15em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .promo-banner__sub {
+    font-size: $font-size-base;
+  }
+}
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .promo-banner {
+    align-items: flex-end;
+    padding: 6rem $space-4 $space-4;
+  }
+
+  .promo-banner__panel {
+    min-height: auto;
+    padding: $space-5;
+  }
+
+  .promo-banner__side-mark {
+    right: $space-5;
+    bottom: $space-6;
+    opacity: 0.3 !important;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .promo-banner {
+    padding: 7rem $space-3 $space-3;
+  }
+
+  .promo-banner__panel {
+    padding: $space-4;
+    border-radius: 20px;
+  }
+
+  .promo-banner__masthead {
+    font-size: 8px;
+  }
+
+  .promo-banner__main {
+    padding: $space-4 0;
+  }
+
+  .promo-banner__heading {
+    font-size: 2rem;
+  }
+
+  .promo-banner__sub {
+    margin-top: $space-3;
+    font-size: $font-size-sm;
+    line-height: 1.5;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-4;
+  }
+
+  .promo-banner__time-unit {
+    min-height: 53px;
+    padding: $space-2;
+  }
+
+  .promo-banner__form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $space-2;
+    border-radius: $radius-md;
+  }
+
+  .promo-banner__form input,
+  .promo-banner__form button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .promo-banner__form button {
+    justify-content: center;
+  }
+
+  .promo-banner__side-mark,
+  .promo-banner__texture {
+    display: none;
+  }
+}
+
+/* Small shared finishing details for the non-promo carousel slides. */
+.default-banner__copy {
+  isolation: isolate;
+}
+
+.default-banner__copy::after {
+  position: absolute;
+  z-index: -1;
+  top: 22%;
+  left: $space-3;
+  width: 46px;
+  height: 46px;
+  opacity: 0.5;
+  background-image: radial-gradient(circle at 1.5px 1.5px, $color-bg-brand-soft 1.3px, transparent 1.6px);
+  background-size: 9px 9px;
+  content: '';
+}
+
+.default-banner__kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 $space-3;
+  border: 1px solid rgba($color-border-brand-soft, 0.34);
+  border-radius: $radius-round;
+  background: rgba($color-bg-brand-soft, 0.1);
+}
+
+.default-banner__cta,
+.ad-banner__cta {
+  box-shadow: 0 10px 22px rgba($color-action-primary, 0.25);
+}
+
+.default-banner__cta::after,
+.ad-banner__cta::after {
+  margin-left: $space-2;
+  content: '\2197';
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform $transition-default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .default-banner__cta:not(:disabled):not([aria-disabled='true']):hover::after,
+  .ad-banner__cta:not(:disabled):not([aria-disabled='true']):hover::after {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .default-banner__cta::after,
+  .ad-banner__cta::after {
+    transition: none;
+  }
+}
+
+.ad-banner::before {
+  position: absolute;
+  z-index: -1;
+  top: -15%;
+  left: -6rem;
+  width: 23rem;
+  height: 23rem;
+  border: 1px solid rgba($color-border-brand-soft, 0.28);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.5rem rgba($color-bg-brand-soft, 0.055);
+  content: '';
+}
+
+
+.ad-banner__media {
+  border: 5px solid rgba($color-border-inverse, 0.9);
+  outline: 1px solid rgba($color-border-brand-soft, 0.5);
+  outline-offset: 4px;
+}
+
+.ad-banner__media img {
+  transition: transform $transition-slow;
+}
+
+.ad-banner__media:hover img,
+.ad-banner__media:focus-visible img {
+  transform: scale(1.04);
+}
+
+.showcase-banner__inner {
+  isolation: isolate;
+}
+
+.showcase-banner__inner::before {
+  position: absolute;
+  z-index: -1;
+  top: 18%;
+  left: -9rem;
+  width: 23rem;
+  height: 23rem;
+  border: 1px solid rgba($color-border-brand-soft, 0.28);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.5rem rgba($color-bg-brand-soft, 0.055);
+  content: '';
+}
+
+.showcase-banner__heading {
+  max-width: 14ch;
+}
+
+.showcase-banner__card {
+  border: 1px solid rgba($color-border-inverse, 0.65);
+  transition: transform $transition-fast, box-shadow $transition-fast, background $transition-fast;
+}
+
+.showcase-banner__card:hover,
+.showcase-banner__card:focus-visible {
+  background: $color-bg-card;
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .ad-banner__meta {
+    position: relative;
+    padding-left: $space-6;
+  }
+
+  .ad-banner__meta::before {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 0;
+    width: 1px;
+    background: rgba($color-bg-brand-soft, 0.55);
+    content: '';
+  }
+}
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .default-banner__copy::before {
+    width: 92%;
+  }
+
+  .ad-banner__panel {
+    border-radius: $radius-lg;
+  }
+}
+
+/* Promo slide: private-sale layout based on the supplied campaign reference. */
+.promo-banner {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.promo-banner__veil {
+  background:
+    linear-gradient(90deg, rgba($color-text-heading, 0.48) 0%, rgba($color-text-heading, 0.28) 48%, rgba($color-text-heading, 0.08) 100%),
+    linear-gradient(180deg, transparent 58%, rgba($color-text-heading, 0.22) 100%);
+}
+
+.promo-banner__texture {
+  top: -28%;
+  right: 13%;
+  width: clamp(18rem, 31vw, 30rem);
+  border-color: rgba($color-border-brand-soft, 0.28);
+  box-shadow: inset 0 0 0 clamp(1.2rem, 3vw, 3rem) rgba($color-bg-brand-soft, 0.05);
+}
+
+.promo-banner__layout {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: clamp(2rem, 5vw, 4.75rem) clamp(2.5rem, 8vw, 8.75rem);
+}
+
+.promo-banner__masthead {
+  position: absolute;
+  top: clamp(1.25rem, 4vh, 2.5rem);
+  left: clamp(2.5rem, 8vw, 8.75rem);
+  display: flex;
+  width: min(50%, 680px);
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  padding: 0 0 $space-3;
+  border-bottom: 1px solid rgba($color-border-brand-soft, 0.5);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.promo-banner__masthead span:last-child {
+  color: $color-text-brand-soft;
+}
+
+.promo-banner__main {
+  position: absolute;
+  top: clamp(5.5rem, 15vh, 7.5rem);
+  left: clamp(2.5rem, 8vw, 8.75rem);
+  width: min(44%, 610px);
+  max-width: none;
+  padding: 0;
+}
+
+.promo-banner__offer {
+  margin: 0 0 $space-3;
+  border-color: rgba($color-border-brand-soft, 0.78);
+  background: rgba($color-bg-inverse, 0.3);
+  color: $color-text-brand-soft;
+}
+
+.promo-banner__heading {
+  max-width: 12ch;
+  color: $color-text-inverse;
+  font-size: clamp(2.5rem, 4.45vw, 4.75rem);
+  line-height: 0.98;
+  text-shadow: 0 4px 20px rgba($color-text-heading, 0.36);
+}
+
+.promo-banner__sub {
+  max-width: 39ch;
+  margin-top: $space-3;
+  color: rgba($color-text-inverse, 0.92);
+  font-size: clamp($font-size-sm, 1.25vw, $font-size-lg);
+  line-height: 1.45;
+}
+
+.promo-banner__note {
+  margin-top: $space-3;
+  color: rgba($color-text-brand-soft, 0.95);
+  font-size: $font-size-sm;
+}
+
+.promo-banner__form {
+  position: absolute;
+  top: clamp(8.5rem, 27vh, 13.5rem);
+  right: clamp(2.5rem, 8vw, 8.75rem);
+  display: block;
+  width: min(38%, 570px);
+  margin: 0;
+  padding: clamp($space-4, 2vw, $space-5);
+  border: 1px solid rgba($color-border-brand, 0.58);
+  border-radius: $radius-md;
+  background: $color-bg-card;
+  box-shadow: 0 18px 42px rgba($color-text-heading, 0.24);
+}
+
+.promo-banner__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.promo-banner__fields label {
+  display: grid;
+  gap: $space-2;
+  color: $color-text-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.promo-banner__fields input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 $space-3;
+  border: 1px solid rgba($color-border-brand, 0.65);
+  border-radius: $radius-sm;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  font-size: $font-size-base;
+  outline: 0;
+}
+
+.promo-banner__fields input::placeholder {
+  color: $color-text-subtle;
+}
+
+.promo-banner__fields input:focus {
+  border-color: $color-border-brand;
+  box-shadow: 0 0 0 3px rgba($color-action-primary, 0.16);
+}
+
+.promo-banner__form button {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  margin-top: $space-4;
+  border-radius: $radius-sm;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+
+  @include cta-velvet-reveal;
+}
+
+.promo-banner__thanks {
+  display: grid;
+  min-height: 140px;
+  margin: 0;
+  color: $color-text-brand;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  place-items: center;
+  text-align: center;
+}
+
+.promo-banner__countdown {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: $space-4;
+  border: 1px solid rgba($color-border-brand-soft, 0.48);
+}
+
+.promo-banner__time-unit {
+  min-height: 56px;
+  padding: $space-2 $space-3;
+  border-right-color: rgba($color-border-brand-soft, 0.38);
+}
+
+.promo-banner__time-unit strong {
+  color: $color-text-inverse;
+  font-size: clamp(1.3rem, 2.1vw, 2rem);
+  text-shadow: 0 2px 12px rgba($color-text-heading, 0.3);
+}
+
+.promo-banner__time-unit span {
+  color: $color-text-brand-soft;
+  font-size: 9px;
+}
+
+.promo-banner__side-mark {
+  z-index: 2;
+  right: clamp(2.5rem, 8vw, 8.75rem);
+  bottom: clamp(4.5rem, 12vh, 7rem);
+  gap: $space-4;
+  color: $color-text-brand-soft;
+}
+
+.promo-banner__side-mark strong {
+  background: linear-gradient(135deg, $color-bg-brand-soft 0%, $color-bg-card 58%, $color-bg-brand-soft 100%);
+  font-size: clamp(4.5rem, 9vw, 9rem);
+  text-shadow: 0 6px 28px rgba($color-text-heading, 0.28);
+}
+
+.promo-banner__side-mark span {
+  padding: 0 0 5px $space-3;
+  border-left-color: rgba($color-border-brand-soft, 0.84);
+  color: $color-text-brand-soft;
+  font-size: $font-size-xs;
+}
+
+/* Keep carousel indicators clear of the promo copy and timer. */
+.feature-banner:has(.promo-banner) .feature-banner__dots {
+  right: $space-6;
+  bottom: $space-5;
+  left: auto;
+  transform: none;
+}
+
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .promo-banner__masthead,
+  .promo-banner__main {
+    left: $space-6;
+  }
+
+  .promo-banner__form {
+    right: $space-6;
+  }
+
+  .promo-banner__masthead {
+    width: 48%;
+  }
+
+  .promo-banner__main {
+    width: 45%;
+  }
+
+  .promo-banner__form {
+    width: 42%;
+  }
+}
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .feature-banner:has(.promo-banner) .feature-banner__dots {
+    right: auto;
+    bottom: $space-2;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .promo-banner {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .promo-banner__veil {
+    background: linear-gradient(180deg, rgba($color-bg-inverse, 0.16) 0%, rgba($color-bg-inverse, 0.68) 100%);
+  }
+
+  .promo-banner__texture,
+  .promo-banner__side-mark {
+    display: none;
+  }
+
+  .promo-banner__layout {
+    display: grid;
+    height: auto;
+    gap: $space-3;
+    padding: clamp(3.25rem, 12vh, 5rem) $space-4 $space-7;
+  }
+
+  .promo-banner__masthead,
+  .promo-banner__main,
+  .promo-banner__form {
+    position: static;
+    width: 100%;
+  }
+
+  .promo-banner__masthead {
+    padding-bottom: $space-3;
+    font-size: 10px;
+  }
+
+  .promo-banner__main {
+    padding: $space-2 0;
+  }
+
+  .promo-banner__heading {
+    max-width: 16ch;
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .promo-banner__sub {
+    max-width: 46ch;
+    margin-top: $space-3;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-3;
+  }
+
+  .promo-banner__form {
+    padding: $space-4;
+  }
+
+  .promo-banner__countdown {
+    margin-top: $space-4;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .promo-banner__layout {
+    gap: $space-2;
+    padding: clamp(1.75rem, 7vh, 3.25rem) $space-3 $space-7;
+  }
+
+  .promo-banner__masthead {
+    font-size: 8px;
+  }
+
+  .promo-banner__offer {
+    margin-bottom: $space-2;
+  }
+
+  .promo-banner__heading {
+    font-size: clamp(1.65rem, 8.5vw, 2.2rem);
+  }
+
+  .promo-banner__sub {
+    font-size: $font-size-sm;
+    line-height: 1.45;
+  }
+
+  .promo-banner__note {
+    margin-top: $space-2;
+    font-size: $font-size-xs;
+  }
+
+  .promo-banner__form {
+    padding: $space-3;
+  }
+
+  .promo-banner__fields {
+    gap: $space-2;
+  }
+
+  .promo-banner__fields label {
+    gap: $space-1;
+    font-size: $font-size-xs;
+  }
+
+  .promo-banner__fields input,
+  .promo-banner__form button {
+    min-height: 42px;
+    font-size: $font-size-sm;
+  }
+
+  .promo-banner__form button {
+    margin-top: $space-3;
+  }
+
+  .promo-banner__time-unit {
+    min-height: 48px;
+    padding: $space-2;
+  }
+
+  .promo-banner__time-unit strong {
+    font-size: 1.2rem;
+  }
+}
+
