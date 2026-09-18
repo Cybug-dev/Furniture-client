@@ -1,11 +1,7 @@
 @use '../styles/variables' as *;
 @use '../styles/mixins' as *;
 
-/* =========================================================
-   Auth page
-   Shared shell for Sign in + Create account
-   ========================================================= */
-
+// Auth Layout
 .auth {
   min-height: 100vh;
   background: $color-bg-page;
@@ -16,11 +12,10 @@
 .auth__wrap {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  min-height: calc(100vh - #{$header-height});
-  margin-top: $header-height;
+  min-height: 100vh;
 }
 
-/* ---- Photo ---- */
+// Visual Section
 .auth__visual {
   position: relative;
   overflow: hidden;
@@ -72,7 +67,7 @@
   font-weight: $font-weight-semibold;
 }
 
-/* ---- Form column ---- */
+// Form Section
 .auth__panel {
   display: flex;
   align-items: center;
@@ -98,7 +93,7 @@
   line-height: $line-height-normal;
 }
 
-/* ---- Tabs ---- */
+// Tabs
 .auth__tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -119,7 +114,10 @@
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
   cursor: pointer;
-  transition: background-color $transition-fast, color $transition-fast, box-shadow $transition-fast;
+  transition:
+    background-color $transition-fast,
+    color $transition-fast,
+    box-shadow $transition-fast;
 
   &.is-active {
     background: $color-bg-card;
@@ -128,7 +126,7 @@
   }
 }
 
-/* ---- Fields ---- */
+// Form Fields
 .auth__field {
   margin-bottom: $space-4;
 
@@ -152,7 +150,9 @@
   font-family: $font-primary;
   font-size: $font-size-sm;
   outline: none;
-  transition: border-color $transition-fast, box-shadow $transition-fast;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast;
 
   &::placeholder {
     color: $color-text-subtle;
@@ -199,6 +199,7 @@
   }
 }
 
+// Buttons
 .auth__btn {
   width: 100%;
   min-height: $control-size-lg;
@@ -209,7 +210,25 @@
   color: $color-action-primary-text;
 }
 
-/* ---- Social ---- */
+.auth__guest {
+  width: 100%;
+  margin-top: $space-3;
+  padding: $space-2 0;
+  border: 0;
+  background: transparent;
+  color: $color-text-muted;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-text-brand;
+    text-decoration: underline;
+  }
+}
+
+// Social Login
 .auth__divider {
   display: flex;
   align-items: center;
@@ -245,12 +264,11 @@
   }
 }
 
-/* =============== Responsive ============= */
+// Responsive
 @media (max-width: #{$breakpoint-desktop - 1px}) {
   .auth__wrap {
     grid-template-columns: 1fr;
-    margin-top: $header-height-mobile;
-    min-height: calc(100vh - #{$header-height-mobile});
+    min-height: 100vh;
   }
 
   .auth__visual {
