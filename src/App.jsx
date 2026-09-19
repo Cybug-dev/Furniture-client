@@ -5,6 +5,8 @@ import ShareSetup from './textcomponents/ShareSetup/ShareSetup'
 import FeatureBanner from "./components/FeatureBanner/FeatureBanner"
 import FlashSale from './components/FlashSale'
 import Carousel from './components/Carousel/Carousel'
+import Footer from './components/Footer/Footer';
+import Products from './components/Products/Products'
 import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import { Routes, Route } from 'react-router'
@@ -23,6 +25,7 @@ function App() {
               <Hero />
               <Browse />
               <Carousel />
+              <Products />
               <FeatureBanner />
               <ShareSetup />
               <FlashSale />
