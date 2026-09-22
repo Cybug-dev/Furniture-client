@@ -1,86 +1,208 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
-/* ========= Browse Section ============ */
 .browse {
-  padding: 4.375rem 0 2.5rem; // closest token: $space-8 and $space-6
-  text-align: center;
-  overflow-x: hidden;
-}
-
-.browse-heading {
+  padding: $space-8 $space-page-gutter $space-7;
+  background: $color-bg-section;
   text-align: center;
 }
 
-.browse-heading h2 {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  margin: 0 0 0;
+.browse__heading {
+  margin-bottom: $space-6;
+
+  h2 {
+    @include section-heading;
+  }
+
+  p {
+    margin: $space-2 auto 0;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+    line-height: $line-height-normal;
+  }
 }
 
-.browse-heading p {
-  font-size: $font-size-sm;
-  color: $color-text-muted;
-  max-width: 520px;
-  margin: 0 auto;
+.browse__carousel-wrap {
+  position: relative;
+  width: min(100%, $content-width);
+  margin-inline: auto;
 }
 
-.browse-grid {
+.browse__carousel {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-auto-columns: calc((100% - 4 * #{$space-5}) / 4.25);
+  grid-auto-flow: column;
   gap: $space-5;
-  max-width: 1100px;
-  margin: $space-5 auto;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding-block: $space-2;
+  margin-block: -#{$space-2};
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
 }
 
-.browse-item {
-  text-align: center;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-}
-
-.browse-item img {
+.browse__card {
   display: block;
-  width: 100%;
-  max-width: 100%;
-  height: 400px;
-  aspect-ratio: auto;
-  object-fit: cover;
-  border-radius: $radius-md;
-  margin-bottom: $space-4;
-  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: $shadow-card;
+  color: $color-text-heading;
+  scroll-snap-align: start;
+  text-decoration: none;
+  transition: box-shadow $transition-default, transform $transition-default;
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+
+  &:hover {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-2px);
+  }
 }
 
-.browse-label {
+.browse__image {
   display: block;
-  font-size: $font-size-base;
+  overflow: hidden;
+  aspect-ratio: $image-ratio-category;
+  background: $color-bg-section-soft;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+}
+
+.browse__card:hover .browse__image img,
+.browse__card:focus-visible .browse__image img {
+  transform: scale(1.03);
+}
+
+.browse__label {
+  display: grid;
+  min-height: $space-8;
+  place-items: center;
+  padding: $space-2;
+  font-size: $font-size-lg;
   font-weight: $font-weight-medium;
-  text-align: center;
+  line-height: $line-height-tight;
 }
 
-@media (max-width: #{$breakpoint-tablet - 1px}) and (min-width: #{$breakpoint-mobile + 1px}) {
-  .browse-grid {
-    grid-template-columns: repeat(2, 1fr);
+.browse__arrow {
+  position: absolute;
+  z-index: 1;
+  top: calc((100% - #{$space-8}) / 2);
+  display: grid;
+  width: $control-size-lg;
+  height: $control-size-lg;
+  place-items: center;
+  padding: 0;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  box-shadow: $shadow-card;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: border-color $transition-default, color $transition-default;
+
+  &:hover {
+    border-color: $color-border-brand;
+    color: $color-text-brand;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+.browse__arrow--previous {
+  left: -#{$space-5};
+}
+
+.browse__arrow--next {
+  right: -#{$space-5};
+}
+
+.browse__more {
+  @include button-general;
+  margin-top: $space-7;
+}
+
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .browse__carousel {
+    grid-auto-columns: calc((100% - 2 * #{$space-4}) / 2.6);
     gap: $space-4;
   }
+
+  .browse__arrow--previous {
+    left: $space-2;
+  }
+
+  .browse__arrow--next {
+    right: $space-2;
+  }
 }
 
-@media (max-width: #{$breakpoint-mobile}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .browse__arrow {
+    display: none;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
   .browse {
-    padding-left: $space-4;
-    padding-right: $space-4;
+    padding-block: $space-7;
   }
 
-  .browse-grid {
-    grid-template-columns: 1fr;
-    gap: $space-5;
-  }
-
-  .browse-item {
+  .browse__heading {
     margin-bottom: $space-5;
+
+    p {
+      font-size: $font-size-sm;
+    }
   }
 
-  .browse-item:last-child {
-    margin-bottom: 0;
+  .browse__carousel {
+    grid-auto-columns: calc((100% - #{$space-4}) / 1.35);
+  }
+
+  .browse__label {
+    min-height: $space-7;
+    font-size: $font-size-base;
+  }
+
+  .browse__more {
+    margin-top: $space-6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .browse__carousel {
+    scroll-behavior: auto;
+  }
+
+  .browse__card,
+  .browse__image img {
+    transition: none;
+  }
+
+  .browse__card:hover {
+    transform: none;
   }
 }

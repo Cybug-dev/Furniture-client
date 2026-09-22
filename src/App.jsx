@@ -19,6 +19,19 @@ function App() {
         <Route path="/auth" element={<AuthPage />} />
 
         <Route
+          path="/shop"
+          element={
+            <div className="app-shell">
+              <Header />
+              <main className="main-content">
+                <Products />
+              </main>
+              <Footer />
+            </div>
+          }
+        />
+
+        <Route
           path="/"
           element={
             <div className="app-shell">

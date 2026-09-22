@@ -32,9 +32,13 @@
   color: $color-text-heading;
   font-family: $font-primary;
   font-size: $size;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-bold;
   line-height: $line-height-tight;
   letter-spacing: -0.02em;
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: $font-size-xl;
+  }
 }
 
 @mixin button-base {
@@ -61,6 +65,26 @@
     background: $color-action-disabled-bg;
     color: $color-action-disabled-text;
     cursor: not-allowed;
+  }
+}
+
+@mixin button-general {
+  @include button-base;
+  min-width: 168px;
+  min-height: $control-size-lg;
+  border-color: $color-border-brand;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  color: $color-text-heading;
+
+  &:not(:disabled):not([aria-disabled='true']):hover {
+    border-color: $color-action-hover;
+    background: $color-bg-brand-soft;
+    color: $color-action-active;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 

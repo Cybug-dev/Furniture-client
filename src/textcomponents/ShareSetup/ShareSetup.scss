@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .share-setup {
   overflow: hidden;
@@ -24,9 +25,7 @@
 }
 
 .share-setup__heading h2 {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
-  line-height: $line-height-tight;
+  @include section-heading;
 }
 
 .share-setup__desktop-gallery {
@@ -126,9 +125,5 @@
   .share-setup {
     padding-top: 3.5rem;
     padding-bottom: 4rem;
-  }
-
-  .share-setup__heading h2 {
-    font-size: $font-size-lg;
   }
 }

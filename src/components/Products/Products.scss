@@ -1,4 +1,5 @@
-         @use '../../styles/variables' as *;
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .products {
   padding: $space-7 $space-6;
@@ -12,10 +13,7 @@
 }
 
 .products__header h2 {
-  margin: 0;
-  color: $color-text-heading;
-  font-size: clamp(1.625rem, 2.3vw, 2.25rem);
-  font-weight: $font-weight-extrabold;
+  @include section-heading;
 }
 
 .products__header p {
@@ -108,7 +106,6 @@
 
 .products-card__cart,
 .products-card__actions button,
-.products__show-more,
 .products__message button {
   border: 0;
   font-family: inherit;
@@ -189,24 +186,13 @@
 }
 
 .products__show-more {
+  @include button-general;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-  min-height: 42px;
   margin: $space-7 auto 0;
-  border: 1px solid $color-border-brand;
-  border-radius: $radius-sm;
-  background: transparent;
-  color: $color-text-brand;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  transition: background $transition-fast, color $transition-fast;
 }
 
 .products__show-more:disabled {
   border-color: $color-border-default;
-  color: $color-action-disabled-text;
   cursor: wait;
 }
 
@@ -281,11 +267,6 @@
     color: $color-text-heading;
   }
 
-  .products__show-more:not(:disabled):hover,
-  .products__show-more:not(:disabled):focus-visible {
-    background: $color-action-primary;
-    color: $color-action-primary-text;
-  }
 }
 
 @media (max-width: #{$breakpoint-tablet - 1px}) and (min-width: #{$breakpoint-mobile + 1px}) {
