@@ -48,6 +48,7 @@ border-radius: 24px 0 0 24px;
 }
 
 .mobile-nav-avatar {
+  position: relative;
   display: grid;
   width: 3.1rem;
   height: 3.1rem;
@@ -68,6 +69,19 @@ border-radius: 24px 0 0 24px;
   font-size: 1.0625rem;
   font-weight: $font-weight-semibold;
   text-decoration: none;
+}
+
+.mobile-nav-avatar--attention::after {
+  content: '';
+  position: absolute;
+  top: $space-2;
+  right: $space-2;
+  width: 6px;
+  height: 6px;
+  border: 1px solid $color-bg-card;
+  border-radius: $radius-round;
+  background: $color-bg-brand;
+  box-sizing: content-box;
 }
 
 .mobile-nav-close {

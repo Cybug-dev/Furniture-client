@@ -132,6 +132,23 @@
   position: relative;
 }
 
+.header-account {
+  position: relative;
+}
+
+.header-account--attention::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid $color-border-inverse;
+  border-radius: $radius-round;
+  background: $color-bg-brand;
+  box-sizing: content-box;
+}
+
 .header-cart-badge {
   position: absolute;
   top: -0.15rem;

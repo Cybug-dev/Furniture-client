@@ -9,6 +9,7 @@ import Products from './components/Products/Products'
 import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import { AuthSessionGate } from './auth/AuthSessionGate'
+import FirstVisitExperience from './components/FirstVisit/FirstVisitExperience'
 import { Routes, Route } from 'react-router'
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           }
         />
       </Routes>
+      <FirstVisitExperience />
     </AuthSessionGate>
   )
 }

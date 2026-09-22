@@ -67,6 +67,7 @@ const overlayVariants = {
  */
 export default function MobileNav({
   isOpen,
+  showAccountAttention,
   onClose,
   openDropdown,
   onToggleDropdown,
@@ -98,11 +99,16 @@ export default function MobileNav({
           >
             {/* 1. Avatar + Sign In + close */}
             <div className="mobile-nav-top">
-              <div className="mobile-nav-avatar">
+              <div className={`mobile-nav-avatar${showAccountAttention ? ' mobile-nav-avatar--attention' : ''}`}>
                 <UserIcon />
               </div>
-              <Link to="/auth" className="mobile-nav-signin" onClick={onClose}>
-                Sign In
+              <Link
+                to="/auth"
+                className="mobile-nav-signin"
+                onClick={onClose}
+                aria-label={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
+              >
+                {showAccountAttention ? 'Sign in' : 'Your account'}
               </Link>
               <button
                 type="button"

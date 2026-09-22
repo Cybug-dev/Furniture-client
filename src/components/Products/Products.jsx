@@ -191,7 +191,7 @@ export default function Products() {
   const canShowMore = page < pages;
 
   return (
-    <section className="products" aria-labelledby="products-title">
+    <section id="products" className="products" aria-labelledby="products-title">
       <div className="products__header">
         <h2 id="products-title">Products</h2>
         {total > 0 ? <p>{total} curated pieces available</p> : null}

@@ -5,6 +5,7 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
+import { useCurrentUser } from '../../auth/auth.hooks.js';
 
 /* Icons used only by the header shell / actions */
 function UserIcon() {
@@ -134,6 +135,8 @@ const itemVariants = {
  * All state & side-effects live in useHeader.
  */
 export default function Header() {
+  const { data: currentUser, isPending: isAuthPending } = useCurrentUser();
+  const showAccountAttention = !isAuthPending && !currentUser;
   const {
     isMenuOpen,
     toggleMenu,
@@ -184,8 +187,9 @@ export default function Header() {
           <motion.div className="header-actions" variants={itemVariants}>
             <Link
               to="/auth"
-              className="header-icon-btn header-desktop-only"
-              aria-label="Account"
+              className={`header-icon-btn header-desktop-only header-account${showAccountAttention ? ' header-account--attention' : ''}`}
+              aria-label={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
+              title={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
             >
               <UserIcon />
             </Link>
@@ -240,6 +244,7 @@ export default function Header() {
       {/* Mobile drawer – completely outside header flow */}
       <MobileNav
         isOpen={isMenuOpen}
+        showAccountAttention={showAccountAttention}
         onClose={closeMenu}
         openDropdown={openDropdown}
         onToggleDropdown={toggleDropdown}
