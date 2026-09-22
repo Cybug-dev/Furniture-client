@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router';
 import { NAV_LINKS, ChevronIcon } from './DesktopNav';
 import './MobileNav.scss';
 
@@ -100,7 +101,9 @@ export default function MobileNav({
               <div className="mobile-nav-avatar">
                 <UserIcon />
               </div>
-              <span className="mobile-nav-signin">Sign In</span>
+              <Link to="/auth" className="mobile-nav-signin" onClick={onClose}>
+                Sign In
+              </Link>
               <button
                 type="button"
                 className="mobile-nav-close"

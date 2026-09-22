@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router';
 import { useHeader } from './useHeader';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
@@ -181,13 +182,13 @@ export default function Header() {
 
           {/* Actions */}
           <motion.div className="header-actions" variants={itemVariants}>
-            <button
-              type="button"
+            <Link
+              to="/auth"
               className="header-icon-btn header-desktop-only"
               aria-label="Account"
             >
               <UserIcon />
-            </button>
+            </Link>
 
             <button
               type="button"
