@@ -6,6 +6,7 @@ import FeatureBanner from "./components/FeatureBanner/FeatureBanner"
 import FlashSale from './components/FlashSale'
 import Carousel from './components/Carousel/Carousel'
 import Products from './components/Products/Products'
+import ProductDetail from './components/ProductsDetails/ProductDetail'
 import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import { AuthSessionGate } from './auth/AuthSessionGate'
@@ -30,6 +31,8 @@ function App() {
             </div>
           }
         />
+
+        <Route path="/products/:id" element={<ProductDetail />} />
 
         <Route
           path="/"

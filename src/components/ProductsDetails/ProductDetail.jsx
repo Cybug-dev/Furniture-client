@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -29,7 +29,7 @@ function formatMoney(value) {
   if (value === null || value === undefined || value === '') return '';
   const amount = Number(value);
   if (Number.isNaN(amount)) return String(value);
-  return `Rs. ${amount.toLocaleString('en-IN', {
+  return `$ ${amount.toLocaleString('en-IN', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
@@ -37,6 +37,11 @@ function formatMoney(value) {
 
 export default function ProductDetail() {
   const { id } = useParams();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [id]);
+
   const productQuery = useProduct(id);
   const product = unwrap(productQuery.data);
 
@@ -57,11 +62,15 @@ export default function ProductDetail() {
     return list.length ? list : primary ? [primary] : [];
   }, [product]);
 
-  const sizes = product?.sizes || [];
-  const colors = product?.colors || [];
-  const tags = product?.tags || [];
-  const specs = product?.specifications || [];
-  const reviews = product?.reviews || [];
+  const sizes = Array.isArray(product?.sizes) ? product.sizes : [];
+  const colors = Array.isArray(product?.colors) ? product.colors : [];
+  const tags = Array.isArray(product?.tags) ? product.tags : [];
+  const specs = Array.isArray(product?.specifications) ? product.specifications : [];
+  const reviews = Array.isArray(product?.reviews) ? product.reviews : [];
+  const brandName = product?.brand?.name || product?.brandName || product?.manufacturer || '—';
+  const categoryName = product?.category?.name || product?.category || '—';
+  const sku = product?.sku || product?.slug || product?.id || '—';
+  const stockQuantity = Number(product?.stockQuantity ?? product?.stock ?? product?.inventory ?? 0);
 
   const [activeImage, setActiveImage] = useState(0);
   const [qty, setQty] = useState(1);
@@ -112,9 +121,10 @@ export default function ProductDetail() {
 
   const gallerySrc = images[activeImage] || images[0] || '';
   const rating = Number(product.rating ?? product.averageRating ?? 0);
-  const reviewCount = product.reviewCount ?? reviews.length ?? 0;
+  const reviewCount = Number(product.reviewCount ?? reviews.length ?? 0);
   const selectedSize = size || sizes[0];
   const selectedColor = color || colors[0];
+  const showRating = rating > 0 || reviewCount > 0;
 
   function handleAddToCart() {
     console.log('add-to-cart', { id: product.id, qty, size: selectedSize, color: selectedColor });
@@ -157,25 +167,29 @@ export default function ProductDetail() {
           <h1>{product.name}</h1>
           <p className="product-detail__price">{formatMoney(product.price)}</p>
 
-          <div className="product-detail__rating">
-            <span className="product-detail__stars">
-              {Array.from({ length: 5 }, (_, i) => (
-                <span
-                  key={i}
-                  className={
-                    i < Math.floor(rating)
-                      ? 'is-on'
-                      : i === Math.floor(rating) && rating % 1 >= 0.5
-                        ? 'is-half'
-                        : ''
-                  }
-                >
-                  ★
-                </span>
-              ))}
-            </span>
-            <span>{reviewCount} Customer Review</span>
-          </div>
+          {showRating && (
+            <div className="product-detail__rating">
+              <span className="product-detail__stars">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span
+                    key={i}
+                    className={
+                      i < Math.floor(rating)
+                        ? 'is-on'
+                        : i === Math.floor(rating) && rating % 1 >= 0.5
+                          ? 'is-half'
+                          : ''
+                    }
+                  >
+                    ★
+                  </span>
+                ))}
+              </span>
+              <span>
+                {reviewCount} Customer {reviewCount === 1 ? 'Review' : 'Reviews'}
+              </span>
+            </div>
+          )}
 
           <p className="product-detail__lead">{product.shortDescription || product.description}</p>
 
@@ -227,8 +241,10 @@ export default function ProductDetail() {
           </div>
 
           <dl className="product-detail__meta">
-            <div><dt>SKU</dt><dd>: {product.sku || product.id}</dd></div>
-            <div><dt>Category</dt><dd>: {product.category?.name || product.category || '—'}</dd></div>
+            <div><dt>SKU</dt><dd>: {sku}</dd></div>
+            <div><dt>Brand</dt><dd>: {brandName}</dd></div>
+            <div><dt>Category</dt><dd>: {categoryName}</dd></div>
+            <div><dt>Stock</dt><dd>: {stockQuantity > 0 ? 'In stock' : 'Out of stock'}</dd></div>
             {tags.length > 0 && <div><dt>Tags</dt><dd>: {tags.join(', ')}</dd></div>}
           </dl>
         </div>
@@ -243,57 +259,89 @@ export default function ProductDetail() {
 
         {tab === 'description' && (
           <div className="product-detail__copy">
-            {String(product.description || '').split('\n').map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
-            <div className="product-detail__scenes">
-              {images.slice(0, 2).map((src) => (
-                <figure key={src}><img src={src} alt="" /></figure>
-              ))}
-            </div>
+            {product.description ? (
+              String(product.description || '').split('\n').map((para, i) => (
+                <p key={i}>{para}</p>
+              ))
+            ) : (
+              <div className="product-detail__empty-state" role="status" aria-live="polite">
+                <h3>Product description coming soon</h3>
+                <p>We’re preparing the full product details for this item. Check back soon for the complete overview.</p>
+              </div>
+            )}
+            {images.length > 0 && (
+              <div className="product-detail__scenes">
+                {images.slice(0, 2).map((src) => (
+                  <figure key={src}><img src={src} alt="" /></figure>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {tab === 'additional' && (
           <div className="product-detail__copy">
-            {specs.map((spec) => (
-              <p key={spec.name || spec.key}><strong>{spec.name || spec.key}:</strong> {spec.value}</p>
-            ))}
+            {specs.length === 0 ? (
+              <div className="product-detail__empty-state" role="status" aria-live="polite">
+                <h3>Additional information unavailable</h3>
+                <p>More technical details for this product will be added soon.</p>
+              </div>
+            ) : (
+              specs.map((spec) => (
+                <p key={spec.name || spec.key}><strong>{spec.name || spec.key}:</strong> {spec.value}</p>
+              ))
+            )}
           </div>
         )}
 
         {tab === 'reviews' && (
           <div className="product-detail__copy">
-            {reviews.map((review) => (
-              <article key={review.id || review.author}>
-                <strong>{review.author || review.userName || 'Customer'}</strong>
-                <p>{review.comment || review.body}</p>
-              </article>
-            ))}
+            {reviews.length === 0 ? (
+              <div className="product-detail__empty-state" role="status" aria-live="polite">
+                <h3>No reviews yet</h3>
+                <p>Be the first to share your experience with this product and help other customers make an informed choice.</p>
+              </div>
+            ) : (
+              reviews.map((review) => (
+                <article key={review.id || review.author}>
+                  <strong>{review.author || review.userName || 'Customer'}</strong>
+                  <p>{review.comment || review.body}</p>
+                </article>
+              ))
+            )}
           </div>
         )}
       </section>
 
       <section className="product-detail__related">
         <h2>Related Products</h2>
-        <div className="product-detail__grid">
-          {related.map((item) => {
-            const src = imageUrl(item.primaryImage || item.image || item.images?.[0]);
-            return (
-              <Link key={item.id} to={`/products/${item.id}`} className="product-detail__card">
-                <div className="product-detail__card-media">
-                  {src ? <img src={src} alt={item.name} /> : null}
-                </div>
-                <div className="product-detail__card-body">
-                  <h3>{item.name}</h3>
-                  <p>{item.category?.name || ''}</p>
-                  <strong>{formatMoney(item.price)}</strong>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-        <Link to="/shop" className="product-detail__more">Show More</Link>
+        {related.length === 0 ? (
+          <div className="product-detail__empty-state product-detail__empty-state--compact" role="status" aria-live="polite">
+            <h3>No related products available</h3>
+            <p>Explore more pieces from the collection to discover similar styles.</p>
+          </div>
+        ) : (
+          <>
+            <div className="product-detail__grid">
+              {related.map((item) => {
+                const src = imageUrl(item.primaryImage || item.image || item.images?.[0]);
+                return (
+                  <Link key={item.id} to={`/products/${item.id}`} className="product-detail__card">
+                    <div className="product-detail__card-media">
+                      {src ? <img src={src} alt={item.name} /> : null}
+                    </div>
+                    <div className="product-detail__card-body">
+                      <h3>{item.name}</h3>
+                      <p>{item.category?.name || ''}</p>
+                      <strong>{formatMoney(item.price)}</strong>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+            <Link to="/shop" className="product-detail__more">Show More</Link>
+          </>
+        )}
       </section>
 
       <Footer />
