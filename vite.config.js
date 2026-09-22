@@ -20,5 +20,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    server: {
+      host: 'localhost',
+      port: 5173,
+      strictPort: true,
+      open: '/auth',
+    },
   }
 })
