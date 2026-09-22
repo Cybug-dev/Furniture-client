@@ -32,11 +32,7 @@ $carousel-sonar-duration: 1500ms;
 }
 
 .inspiration__title {
-  color: $color-text-heading;
-  font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
-  line-height: $line-height-tight;
-  margin: 0;
+  @include section-heading;
   max-width: 360px;
 }
 
@@ -385,10 +381,6 @@ $carousel-sonar-duration: 1500ms;
     gap: $space-5;
     min-height: 0;
     padding: $space-6 $space-4;
-  }
-
-  .inspiration__title {
-    font-size: $font-size-2xl;
   }
 
   .inspiration__copy,

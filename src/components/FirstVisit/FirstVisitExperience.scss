@@ -1,0 +1,274 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.first-visit__backdrop {
+  position: fixed;
+  z-index: $z-modal + 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: $space-5;
+  background: $color-bg-overlay;
+}
+
+.first-visit__dialog {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: min(100%, 620px);
+  max-height: calc(100svh - 2 * #{$space-5});
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-xl;
+  background: $color-bg-card;
+  box-shadow: $shadow-floating;
+}
+
+.first-visit__sr-only {
+  @include visually-hidden;
+}
+
+.first-visit__close {
+  position: absolute;
+  z-index: 3;
+  top: $space-3;
+  right: $space-3;
+  display: grid;
+  width: $control-size-md;
+  height: $control-size-md;
+  place-items: center;
+  padding: 0;
+  border: 1px solid $color-border-strong;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  box-shadow: $shadow-floating;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $color-border-brand;
+    color: $color-text-brand;
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+.first-visit__carousel {
+  position: relative;
+  z-index: 0;
+}
+
+.first-visit__carousel,
+.first-visit__swiper {
+  width: 100%;
+  min-width: 0;
+}
+
+.first-visit__slide {
+  display: flex;
+  height: auto;
+}
+
+.first-visit__campaign {
+  display: flex;
+  width: 100%;
+  height: min(68svh, 640px);
+  align-items: center;
+  justify-content: center;
+  padding: $space-3;
+  background: $color-bg-brand-soft;
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  &:focus-visible {
+    @include focus-visible(0);
+  }
+}
+
+.first-visit__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  background: $color-bg-card;
+}
+
+.first-visit__dot {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    width: $space-2;
+    height: $space-2;
+    border-radius: $radius-round;
+    background: $color-border-strong;
+    transition: width $transition-fast, background-color $transition-fast;
+  }
+
+  &.is-active::after {
+    width: $space-5;
+    background: $color-action-primary;
+  }
+
+  &:focus-visible {
+    @include focus-visible(0);
+    border-radius: $radius-round;
+  }
+}
+
+.first-visit__account-prompt {
+  margin: 0;
+  padding: $space-3 $space-4;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+  text-align: center;
+
+  a {
+    color: $color-action-active;
+    font-weight: $font-weight-semibold;
+    text-underline-offset: 3px;
+
+    &:focus-visible {
+      @include focus-visible(1px);
+    }
+  }
+}
+
+.first-visit__cookie {
+  position: fixed;
+  z-index: $z-toast;
+  right: $space-5;
+  bottom: $space-5;
+  display: flex;
+  width: min(520px, calc(100vw - 2 * #{$space-5}));
+  align-items: center;
+  gap: $space-4;
+  padding: $space-4;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: $shadow-floating;
+
+  p {
+    flex: 1;
+    margin: 0;
+    color: $color-text-body;
+    font-size: $font-size-xs;
+    line-height: $line-height-normal;
+  }
+}
+
+.first-visit__cookie-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: $space-2;
+
+  button {
+    @include button-base;
+    min-height: $control-size-md;
+    padding-inline: $space-3;
+
+    &:focus-visible {
+      @include focus-visible(1px);
+    }
+  }
+}
+
+.first-visit__cookie-primary {
+  background: $color-action-primary;
+  color: $color-action-primary-text;
+
+  &:hover {
+    background: $color-action-hover;
+  }
+}
+
+.first-visit__cookie-actions .first-visit__cookie-secondary {
+  border-color: $color-border-default;
+  background: $color-bg-section-soft;
+  color: $color-text-body;
+
+  &:hover {
+    border-color: $color-border-strong;
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .first-visit__backdrop {
+    padding: $space-4;
+  }
+
+  .first-visit__dialog {
+    max-height: calc(100svh - 2 * #{$space-4});
+  }
+
+  .first-visit__campaign {
+    height: min(70svh, 620px);
+  }
+
+  .first-visit__cookie {
+    right: $space-4;
+    bottom: $space-4;
+    width: calc(100vw - 2 * #{$space-4});
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .first-visit__backdrop {
+    padding: $space-3;
+  }
+
+  .first-visit__dialog {
+    max-height: calc(100svh - 2 * #{$space-3});
+    border-radius: $radius-lg;
+  }
+
+  .first-visit__campaign {
+    padding: $space-2;
+    height: min(72svh, 560px);
+  }
+
+  .first-visit__close {
+    top: $space-2;
+    right: $space-2;
+  }
+
+  .first-visit__cookie {
+    right: $space-3;
+    bottom: $space-3;
+    width: calc(100vw - 2 * #{$space-3});
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .first-visit__cookie-actions button {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .first-visit * {
+    @include reduced-motion;
+  }
+}

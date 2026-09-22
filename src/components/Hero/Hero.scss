@@ -1,63 +1,78 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-/* =========================================================
-   Hero Section
-   Full-bleed image + floating content card
-   ========================================================= */
-
 .hero {
-    position: relative; 
-    width: 100%;
-    min-height: 95vh; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  width: 100%;
+  min-height: 95vh;
+  overflow: hidden;
+  background: $color-bg-section-soft;
 }
 
-/* ---- Background image ---- */
+.hero__swiper,
+.hero__swiper .swiper-wrapper,
+.hero__swiper-slide,
+.hero__slide {
+  width: 100%;
+  height: 100%;
+}
+
+.hero__swiper {
+  position: absolute;
+  inset: 0;
+  --swiper-wrapper-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.hero__slide {
+  position: relative;
+  overflow: hidden;
+}
+
 .hero__media {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .hero__image {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  // will-change: transform;
 }
 
-/* ---- Content card ---- */
 .hero__content {
   position: absolute;
   z-index: 2;
   top: 25.2%;
   right: 3.9%;
+  display: flex;
   width: 44.65%;
   min-height: 61.7%;
-  padding: 3.75rem 2.6rem 2.25rem;
-  background: rgba($color-bg-brand, 0.17);
-  border-radius: $radius-sm;
-  box-shadow: 0 12px 40px rgba($color-text-heading, 0.08);
-  display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 3.75rem 2.6rem 2.25rem;
+  border-radius: $radius-sm;
+  background: rgba($color-bg-brand, 0.17);
+  box-shadow: 0 12px 40px rgba($color-text-heading, 0.08);
 }
 
-/* ---- Typography ---- */
 .hero__eyebrow {
+  display: flex;
+  max-width: 18rem;
+  align-items: center;
+  gap: $space-4;
   margin: 0 0 $space-2;
   color: $color-text-heading;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   letter-spacing: 0.24em;
   text-transform: uppercase;
+}
+
+.hero__eyebrow-line {
+  width: clamp(2.5rem, 6vw, 5.5rem);
+  height: 1px;
+  background: rgba($color-text-heading, 0.4);
 }
 
 .hero__heading {
@@ -79,13 +94,12 @@
   line-height: 1.45;
 }
 
-/* ---- CTA button ---- */
 .hero__cta {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 14rem;
   min-height: $control-size-lg;
+  align-items: center;
+  justify-content: center;
   padding: $space-3 $space-5;
   border-radius: 0;
   background: $color-action-primary;
@@ -100,7 +114,182 @@
   @include cta-velvet-reveal;
 }
 
-/* =============== Responsive mobile priority ============= */
+.hero__counter {
+  position: absolute;
+  z-index: 4;
+  top: 34%;
+  left: $space-7;
+  display: grid;
+  justify-items: center;
+  gap: $space-2;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.08em;
+}
+
+.hero__counter-line {
+  width: 1px;
+  height: $space-6;
+  background: $color-text-heading;
+}
+
+.hero__nav {
+  position: absolute;
+  z-index: 5;
+  top: 58%;
+  display: grid;
+  width: $control-size-lg;
+  height: $control-size-lg;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba($color-border-default, 0.92);
+  border-radius: $radius-round;
+  background: rgba($color-bg-card, 0.9);
+  color: $color-text-heading;
+  box-shadow: $shadow-card;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color $transition-default, color $transition-default, transform $transition-default;
+
+  &:hover {
+    background: $color-action-primary;
+    color: $color-text-inverse;
+    transform: translateY(-50%) scale(1.04);
+  }
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+}
+
+.hero__nav--previous {
+  left: $space-6;
+}
+
+.hero__nav--next {
+  right: $space-6;
+}
+
+.hero__dots {
+  position: absolute;
+  z-index: 5;
+  right: 6%;
+  bottom: $space-5;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.hero__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: $radius-round;
+  background: rgba($color-text-muted, 0.48);
+  cursor: pointer;
+  transition: width $transition-default, background-color $transition-default;
+
+  &.is-active {
+    width: $space-5;
+    background: $color-action-primary;
+  }
+
+  &:focus-visible {
+    @include focus-visible(2px);
+  }
+}
+
+.hero__status {
+  @include visually-hidden;
+}
+
+.hero-benefits {
+  border-bottom: 1px solid $color-border-default;
+  background: $color-bg-card;
+}
+
+.hero-benefits__inner {
+  display: grid;
+  max-width: $content-width;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-inline: auto;
+  padding: $space-5 $space-page-gutter;
+}
+
+.hero-benefits__item {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  color: $color-text-heading;
+
+  &:not(:last-child)::after {
+    position: absolute;
+    top: 10%;
+    right: 0;
+    width: 1px;
+    height: 80%;
+    background: $color-border-strong;
+    content: '';
+  }
+
+  span {
+    display: grid;
+    min-width: 0;
+    gap: $space-1;
+    text-align: left;
+  }
+
+  strong {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+  }
+
+  small {
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+    line-height: $line-height-normal;
+  }
+}
+
+.hero-benefits__icon {
+  width: $icon-size-xl;
+  height: $icon-size-xl;
+  flex: 0 0 auto;
+  color: $color-action-active;
+  stroke-width: 1.7;
+}
+
+@media (max-width: #{$breakpoint-desktop - 1px}) and (min-width: $breakpoint-tablet) {
+  .hero__content {
+    top: 22%;
+    right: 4%;
+    width: 51%;
+    min-height: 64%;
+    padding: $space-7 $space-6;
+  }
+
+  .hero__heading {
+    font-size: $font-size-3xl;
+  }
+
+  .hero__counter {
+    left: $space-5;
+  }
+
+  .hero__nav--previous {
+    left: $space-4;
+  }
+
+  .hero__nav--next {
+    right: $space-4;
+  }
+}
+
 @media (max-width: #{$breakpoint-tablet - 1px}) {
   .hero {
     height: 100dvh;
@@ -115,8 +304,8 @@
     width: 88vw;
     min-height: 0;
     padding: $space-7 $space-5;
-    transform: translateY(-50%);
     box-shadow: 0 16px 48px rgba($color-text-heading, 0.12);
+    transform: translateY(-50%);
   }
 
   .hero__heading {
@@ -132,13 +321,63 @@
     width: 100%;
     min-height: 3.5rem;
   }
+
+  .hero__counter,
+  .hero__nav {
+    display: none;
+  }
+
+  .hero__dots {
+    right: 50%;
+    bottom: $space-4;
+    transform: translateX(50%);
+  }
+
+  .hero-benefits__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-block: $space-3;
+  }
+
+  .hero-benefits__item {
+    justify-content: flex-start;
+    padding: $space-3 $space-2;
+
+    &:not(:last-child)::after {
+      top: auto;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+    }
+  }
 }
 
-/* Extra small phones */
 @media (max-width: 380px) {
   .hero__content {
     left: 4vw;
     width: 92vw;
     padding: $space-6 $space-3;
+  }
+
+  .hero__eyebrow {
+    gap: $space-2;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__swiper {
+    --swiper-wrapper-transition-timing-function: linear;
+  }
+
+  .hero__nav,
+  .hero__dot {
+    transition: none;
+  }
+
+  .hero__nav:hover {
+    transform: translateY(-50%);
   }
 }
