@@ -1,9 +1,10 @@
 import axios from "axios";
+import { getAccessToken } from "../auth/auth.client.js";
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
 
 const api = axios.create({
-  baseURL: configuredApiUrl.replace(/\/+$/, ""),
+  baseURL: configuredApiUrl?.replace(/\/+$/, ""),
   timeout: 15_000,
   withCredentials: true,
   headers: {
@@ -12,29 +13,17 @@ const api = axios.create({
   },
 });
 
-let refreshPromise = null;
-
-const shouldRefreshSession = (error) => {
-  const request = error.config;
-
-  return (
-    error.response?.status === 401 &&
-    request?.requiresAuth === true &&
-    request?._sessionRefreshAttempted !== true
-  );
-};
-
-const refreshSession = () => {
-  if (!refreshPromise) {
-    refreshPromise = api
-      .post("/auth/refresh")
-      .finally(() => {
-        refreshPromise = null;
-      });
+api.interceptors.request.use(async (config) => {
+  if (config.requiresAuth === true) {
+    // Only our API receives the token; public catalogue requests need no session.
+    const target = new URL(config.url, `${config.baseURL}/`);
+    if (target.origin !== new URL(configuredApiUrl).origin) {
+      throw new Error("Refusing to send account credentials to another origin.");
+    }
+    config.headers.set('Authorization', `Bearer ${await getAccessToken()}`);
   }
-
-  return refreshPromise;
-};
+  return config;
+});
 
 const toApiError = (error) => {
   const isAxiosError = axios.isAxiosError(error);
@@ -88,21 +77,7 @@ const toApiError = (error) => {
 
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    if (shouldRefreshSession(error)) {
-      error.config._sessionRefreshAttempted = true;
-
-      try {
-        await refreshSession();
-        return api(error.config);
-      } catch {
-        // The refresh request is normalized by this interceptor. Return the
-        // original protected-request error so callers retain useful context.
-      }
-    }
-
-    return Promise.reject(toApiError(error));
-  },
+  (error) => Promise.reject(error.name === 'AuthError' ? error : toApiError(error)),
 );
 
 export default api;
