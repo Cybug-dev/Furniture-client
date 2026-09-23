@@ -10,8 +10,8 @@
   right: 0;
   left: 0;
   z-index: $z-header;
-  background: transparent;
-  box-shadow: none;
+  background: rgba($color-bg-section, 0.98);
+  box-shadow: 0 1px 0 rgba($color-text-heading, 0.07);
   border-radius: 0;
   border: 1px solid transparent;
 
@@ -26,18 +26,17 @@
     backdrop-filter $transition-default;
 
   &--scrolled {
-    --blur-effect: blur(20px) saturate(140%);
-    top: 12px;
-    left: 16px;
-    right: 16px;
-    border-radius: 14px;
-    background: rgba($color-bg-brand-soft, 0.55);
+    --blur-effect: blur(16px) saturate(125%);
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    background: rgba($color-bg-section, 0.95);
     -webkit-backdrop-filter: var(--blur-effect);
     backdrop-filter: var(--blur-effect);
-    border: 1px solid rgba($color-border-inverse, 0.6);
-    box-shadow:
-      0 8px 32px rgba($color-bg-inverse, 0.18),
-      0 2px 8px rgba($color-bg-inverse, 0.08);
+    border: 1px solid transparent;
+    border-bottom-color: $color-border-default;
+    box-shadow: 0 6px 24px rgba($color-bg-inverse, 0.06);
 
     @supports (-webkit-backdrop-filter: none) {
       -webkit-backdrop-filter: var(--blur-effect);

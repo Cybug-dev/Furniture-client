@@ -14,6 +14,7 @@ import {
   validateRegistration,
 } from './auth.validation.js';
 import './Auth.scss';
+import { VerifyEmailForm } from './VerifyEmailForm.jsx';
 
 const getSafeReturnPath = (state) => {
   const requestedPath =
@@ -26,6 +27,7 @@ const getSafeReturnPath = (state) => {
 
 export function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
   const [loginFields, setLoginFields] = useState({ email: '', password: '' });
   const [registrationFields, setRegistrationFields] = useState({
     fullName: '',
@@ -47,6 +49,7 @@ export function AuthPage() {
   const currentUser = currentUserQuery.data;
 
   const selectMode = (nextIsSignIn) => {
+    setVerificationEmail('');
     setIsSignIn(nextIsSignIn);
     setLoginErrors({});
     setRegistrationErrors({});
@@ -86,6 +89,10 @@ export function AuthPage() {
       });
       navigate(getSafeReturnPath(location.state), { replace: true });
     } catch (error) {
+      if (error.code === 'EMAIL_NOT_VERIFIED') {
+        setVerificationEmail(loginFields.email.trim().toLowerCase());
+        setLoginFields((current) => ({ ...current, password: '' }));
+      }
       setLoginErrors(getServerFieldErrors(error));
       setFormMessage({ type: 'error', text: error.message });
     }
@@ -117,9 +124,10 @@ export function AuthPage() {
       });
       setRegistrationFields((current) => ({ ...current, password: '' }));
       setIsSignIn(true);
+      setVerificationEmail(registrationFields.email.trim().toLowerCase());
       setFormMessage({
         type: 'success',
-        text: 'Account created. Sign in to continue.',
+        text: 'Account created. Verify your email to continue.',
       });
     } catch (error) {
       setRegistrationErrors(getServerFieldErrors(error));
@@ -226,7 +234,20 @@ export function AuthPage() {
                   </div>
                 )}
 
-                {isSignIn ? (
+                {verificationEmail ? (
+                  <VerifyEmailForm
+                    email={verificationEmail}
+                    onBack={() => selectMode(true)}
+                    onVerified={(user) => {
+                      setVerificationEmail('');
+                      if (user) navigate(getSafeReturnPath(location.state), { replace: true });
+                      else {
+                        setIsSignIn(true);
+                        setFormMessage({ type: 'success', text: 'Email verified. Sign in to continue.' });
+                      }
+                    }}
+                  />
+                ) : isSignIn ? (
                   <>
                     <h1 className="auth__title">Welcome back</h1>
                     <p className="auth__sub">
