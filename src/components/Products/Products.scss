@@ -36,6 +36,7 @@
   background: $color-bg-section-soft;
   box-shadow: none;
   transition: box-shadow $transition-default, transform $transition-default;
+  text-decoration: none;
 }
 
 .products-card__media {

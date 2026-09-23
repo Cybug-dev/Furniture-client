@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import { Heart, Repeat2, Share2 } from 'lucide-react';
 import { getProducts } from '../../api/api.js';
 import './Products.scss';
@@ -84,50 +85,84 @@ function ProductCard({ product }) {
   };
 
   return (
-    <article className="products-card">
-      <div className="products-card__media">
-        {hasDiscount ? <span className="products-card__badge">-{discountPercent}%</span> : null}
+    <Link to={`/products/${product.id}`} className="products-card products-card--link" aria-label={`View details for ${product.name}`}>
+      <article className="products-card__article">
+        <div className="products-card__media">
+          {hasDiscount ? <span className="products-card__badge">-{discountPercent}%</span> : null}
 
-        {hasImage ? (
-          <img
-            src={primaryImage.url}
-            alt={primaryImage.altText || product.name}
-            loading="lazy"
-            decoding="async"
-            onError={() => setImageFailed(true)}
-          />
-        ) : (
-          <div className="products-card__placeholder" aria-label={`${product.name} image unavailable`} role="img" />
-        )}
+          {hasImage ? (
+            <img
+              src={primaryImage.url}
+              alt={primaryImage.altText || product.name}
+              loading="lazy"
+              decoding="async"
+              onError={() => setImageFailed(true)}
+            />
+          ) : (
+            <div className="products-card__placeholder" aria-label={`${product.name} image unavailable`} role="img" />
+          )}
 
-        <div className="products-card__overlay">
-          <button className="products-card__cart" type="button" onClick={handleAddToCart}>
-            Add to cart
-          </button>
-          <div className="products-card__actions" aria-label={`${product.name} quick actions`}>
-            <button type="button" onClick={handleShare} aria-label={`Share ${product.name}`}>
-              <Share2 size={18} aria-hidden="true" />
+          <div className="products-card__overlay">
+            <button
+              className="products-card__cart"
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                handleAddToCart();
+              }}
+            >
+              Add to cart
             </button>
-            <button type="button" onClick={handleCompare} aria-label={`Compare ${product.name}`}>
-              <Repeat2 size={18} aria-hidden="true" />
-            </button>
-            <button type="button" onClick={handleLike} aria-label={`Like ${product.name}`}>
-              <Heart size={18} aria-hidden="true" />
-            </button>
+            <div className="products-card__actions" aria-label={`${product.name} quick actions`}>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  handleShare();
+                }}
+                aria-label={`Share ${product.name}`}
+              >
+                <Share2 size={18} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  handleCompare();
+                }}
+                aria-label={`Compare ${product.name}`}
+              >
+                <Repeat2 size={18} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  handleLike();
+                }}
+                aria-label={`Like ${product.name}`}
+              >
+                <Heart size={18} aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="products-card__body">
-        {/* New badge intentionally omitted pending a backend field. */}
-        <h3>{product.name}</h3>
-        <p>{product.shortDescription}</p>
-        <div className="products-card__prices">
-          <span className="products-card__price">{formatPrice(product.price)}</span>
-          {hasDiscount ? <span className="products-card__compare">{formatPrice(product.compareAtPrice)}</span> : null}
+        <div className="products-card__body">
+          {/* New badge intentionally omitted pending a backend field. */}
+          <h3>{product.name}</h3>
+          <p>{product.shortDescription}</p>
+          <div className="products-card__prices">
+            <span className="products-card__price">{formatPrice(product.price)}</span>
+            {hasDiscount ? <span className="products-card__compare">{formatPrice(product.compareAtPrice)}</span> : null}
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
 
