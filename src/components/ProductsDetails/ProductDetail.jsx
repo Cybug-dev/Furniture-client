@@ -237,11 +237,9 @@ export default function ProductDetail() {
             <button type="button" className="product-detail__cart" onClick={handleAddToCart}>
               Add To Cart
             </button>
-            <button type="button" className="product-detail__compare">+ Compare</button>
           </div>
 
           <dl className="product-detail__meta">
-            <div><dt>SKU</dt><dd>: {sku}</dd></div>
             <div><dt>Brand</dt><dd>: {brandName}</dd></div>
             <div><dt>Category</dt><dd>: {categoryName}</dd></div>
             <div><dt>Stock</dt><dd>: {stockQuantity > 0 ? 'In stock' : 'Out of stock'}</dd></div>
