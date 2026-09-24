@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isPrivateQuery } from '../commerce/commerce.utils.js';
 import {
   getCurrentUser,
   loginUser,
@@ -21,12 +22,16 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: loginUser,
-    onSuccess: async () => {
-      await queryClient.fetchQuery({
-        queryKey: AUTH_USER_QUERY_KEY,
-        queryFn: getCurrentUser,
-        staleTime: 0,
-      });
+    onSuccess: async (user) => {
+      await queryClient.cancelQueries({ queryKey: AUTH_USER_QUERY_KEY });
+      await queryClient.cancelQueries({ predicate: isPrivateQuery });
+      queryClient.removeQueries({ predicate: isPrivateQuery });
+      queryClient.setQueryData(AUTH_USER_QUERY_KEY, user);
+      // UI-only reminder flag; no account data or tokens are persisted here.
+      try {
+        const key = `furniture:checkout-reminder:${user?.id}`;
+        if (!sessionStorage.getItem(key)) sessionStorage.setItem(key, 'pending');
+      } catch { /* Optional UI storage can be disabled. */ }
     },
   });
 };
@@ -44,6 +49,8 @@ export const useLogout = () => {
     onSettled: async () => {
       await queryClient.cancelQueries({ queryKey: AUTH_USER_QUERY_KEY });
       queryClient.setQueryData(AUTH_USER_QUERY_KEY, null);
+      await queryClient.cancelQueries({ predicate: isPrivateQuery });
+      queryClient.removeQueries({ predicate: isPrivateQuery });
     },
   });
 };

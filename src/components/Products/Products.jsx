@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { Heart, Repeat2, Share2 } from 'lucide-react';
 import { getProducts } from '../../api/api.js';
 import './Products.scss';
+import { useAddToCart } from '../../commerce/commerce.hooks.js';
+import { money } from '../../commerce/commerce.utils.js';
 
 const PAGE_SIZE = 8;
 
@@ -35,14 +37,10 @@ function formatPrice(value) {
   const amount = Number(value);
 
   if (!Number.isFinite(amount)) {
-    return '$0';
+    return 'Price unavailable';
   }
 
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(amount);
+  return money(amount, 'NGN');
 }
 
 // Pick the most intentional image first, then fall back through the API's
@@ -56,6 +54,7 @@ function getPrimaryImage(images = []) {
 }
 
 function ProductCard({ product }) {
+  const cart = useAddToCart();
   const [imageFailed, setImageFailed] = useState(false);
   const primaryImage = useMemo(() => getPrimaryImage(product.images), [product.images]);
   const hasImage = primaryImage?.url && !imageFailed;
@@ -69,7 +68,7 @@ function ProductCard({ product }) {
   const discountPercent = hasDiscount ? Math.round((1 - currentPrice / originalPrice) * 100) : 0;
 
   const handleAddToCart = () => {
-    // TODO: wire to cart endpoint once available.
+    cart.add(product.id, 1);
   };
 
   const handleShare = () => {
@@ -85,11 +84,12 @@ function ProductCard({ product }) {
   };
 
   return (
-    <Link to={`/products/${product.id}`} className="products-card products-card--link" aria-label={`View details for ${product.name}`}>
+    <div className="products-card products-card--link">
       <article className="products-card__article">
         <div className="products-card__media">
           {hasDiscount ? <span className="products-card__badge">-{discountPercent}%</span> : null}
 
+          <Link className="products-card__image-link" to={`/products/${product.id}`} aria-label={`View ${product.name}`}>
           {hasImage ? (
             <img
               src={primaryImage.url}
@@ -101,18 +101,20 @@ function ProductCard({ product }) {
           ) : (
             <div className="products-card__placeholder" aria-label={`${product.name} image unavailable`} role="img" />
           )}
+          </Link>
 
           <div className="products-card__overlay">
             <button
               className="products-card__cart"
               type="button"
+              disabled={cart.isPending || product.stockQuantity === 0}
               onClick={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
                 handleAddToCart();
               }}
             >
-              Add to cart
+              {cart.isPending ? 'Adding…' : cart.isSuccess ? 'Added to cart' : 'Add to cart'}
             </button>
             <div className="products-card__actions" aria-label={`${product.name} quick actions`}>
               <button
@@ -154,7 +156,9 @@ function ProductCard({ product }) {
 
         <div className="products-card__body">
           {/* New badge intentionally omitted pending a backend field. */}
-          <h3>{product.name}</h3>
+          <h3><Link to={`/products/${product.id}`}>{product.name}</Link></h3>
+          {cart.error && <p role="alert">{cart.error.message}</p>}
+          {cart.isSuccess && <Link to="/cart" role="status">View cart →</Link>}
           <p>{product.shortDescription}</p>
           <div className="products-card__prices">
             <span className="products-card__price">{formatPrice(product.price)}</span>
@@ -162,7 +166,7 @@ function ProductCard({ product }) {
           </div>
         </div>
       </article>
-    </Link>
+    </div>
   );
 }
 
