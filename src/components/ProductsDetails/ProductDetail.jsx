@@ -69,7 +69,6 @@ export default function ProductDetail() {
   const reviews = Array.isArray(product?.reviews) ? product.reviews : [];
   const brandName = product?.brand?.name || product?.brandName || product?.manufacturer || '—';
   const categoryName = product?.category?.name || product?.category || '—';
-  const sku = product?.sku || product?.slug || product?.id || '—';
   const rawStock = product?.stockQuantity ?? product?.stock ?? product?.inventory;
   const hasKnownStock = rawStock !== undefined && rawStock !== null && Number.isFinite(Number(rawStock));
   const stockQuantity = hasKnownStock ? Number(rawStock) : null;
@@ -246,7 +245,6 @@ export default function ProductDetail() {
           {cart.isSuccess && <p role="status">Added to your cart. <Link to="/cart">View cart →</Link></p>}
           {(sizes.length > 0 || colors.length > 0) && <p>Size and colour selections are previews only; this checkout saves the listed product.</p>}
           <dl className="product-detail__meta">
-            <div><dt>SKU</dt><dd>: {sku}</dd></div>
             <div><dt>Brand</dt><dd>: {brandName}</dd></div>
             <div><dt>Category</dt><dd>: {categoryName}</dd></div>
             <div><dt>Stock</dt><dd>: {hasKnownStock ? (stockQuantity > 0 ? `${stockQuantity} available` : 'Out of stock') : 'Confirmed when added to cart'}</dd></div>

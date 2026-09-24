@@ -61,3 +61,19 @@ export const verifyEmail = async ({ email, otp }) => {
 export const resendVerification = ({ email }) => authResult(
   getAuthClient().emailOtp.sendVerificationOtp({ email, type: 'email-verification' }),
 );
+
+export const requestPasswordReset = ({ email }) => authResult(
+  getAuthClient().emailOtp.requestPasswordReset({
+    email: email.trim().toLowerCase(),
+  }),
+);
+
+export const resetPassword = async ({ email, otp, password }) => {
+  const result = await authResult(getAuthClient().emailOtp.resetPassword({
+    email: email.trim().toLowerCase(),
+    otp: otp.trim(),
+    password,
+  }));
+  invalidateAuthRequests();
+  return result;
+};

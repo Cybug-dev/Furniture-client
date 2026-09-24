@@ -37,6 +37,8 @@ globalThis.fetch = async (url, init) => {
   }
   if (path.endsWith('/email-otp/verify-email')) { signedIn = true; return Response.json({ status: true, ...session }); }
   if (path.endsWith('/email-otp/send-verification-otp')) return Response.json({ success: true });
+  if (path.endsWith('/email-otp/request-password-reset')) return Response.json({ success: true });
+  if (path.endsWith('/email-otp/reset-password')) return Response.json({ success: true });
   if (path.endsWith('/get-session')) return Response.json(signedIn ? session : null);
   if (path.endsWith('/sign-out')) { signedIn = false; return Response.json({ success: true }); }
   throw new Error(`Unexpected auth request: ${path}`);
@@ -121,6 +123,19 @@ try {
     await auth.resendVerification({ email: user.email });
     assert.deepEqual(JSON.parse(calls.at(-1).init.body), { email: user.email, type: 'email-verification' });
     assert.deepEqual(await auth.verifyEmail({ email: user.email, otp: '123456' }), profile);
+  });
+  await test('password recovery requests and completes the Neon email OTP flow', async () => {
+    await auth.requestPasswordReset({ email: ' ADA@EXAMPLE.TEST ' });
+    assert.equal(calls.at(-1).path.endsWith('/email-otp/request-password-reset'), true);
+    assert.deepEqual(JSON.parse(calls.at(-1).init.body), { email: user.email });
+
+    await auth.resetPassword({ email: ' ADA@EXAMPLE.TEST ', otp: ' 654321 ', password: 'Maple!River92' });
+    assert.equal(calls.at(-1).path.endsWith('/email-otp/reset-password'), true);
+    assert.deepEqual(JSON.parse(calls.at(-1).init.body), {
+      email: user.email,
+      otp: '654321',
+      password: 'Maple!River92',
+    });
   });
   await test('login and concurrent protected requests use the Neon JWT without legacy refresh', async () => {
     assert.deepEqual(await auth.loginUser({ email: user.email, password: 'Long test password 123' }), profile);

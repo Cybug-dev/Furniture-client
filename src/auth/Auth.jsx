@@ -15,6 +15,7 @@ import {
 } from './auth.validation.js';
 import './Auth.scss';
 import { VerifyEmailForm } from './VerifyEmailForm.jsx';
+import { PasswordResetForm } from './PasswordResetForm.jsx';
 import { getPasswordStrength, PASSWORD_POLICY } from './password.policy.js';
 
 const getSafeReturnPath = (state) => {
@@ -28,6 +29,7 @@ const getSafeReturnPath = (state) => {
 
 export function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState('');
   const [verificationCodeSentAt, setVerificationCodeSentAt] = useState(null);
   const [loginFields, setLoginFields] = useState({ email: '', password: '' });
@@ -54,6 +56,7 @@ export function AuthPage() {
   const selectMode = (nextIsSignIn) => {
     setVerificationEmail('');
     setVerificationCodeSentAt(null);
+    setIsResettingPassword(false);
     setIsSignIn(nextIsSignIn);
     setLoginErrors({});
     setRegistrationErrors({});
@@ -99,7 +102,12 @@ export function AuthPage() {
         setLoginFields((current) => ({ ...current, password: '' }));
       }
       setLoginErrors(getServerFieldErrors(error));
-      setFormMessage({ type: 'error', text: error.message });
+      setFormMessage({
+        type: 'error',
+        text: error.code === 'INVALID_EMAIL_OR_PASSWORD'
+          ? 'Email or password is incorrect. Reset your password, or create an account if you have not registered.'
+          : error.message,
+      });
     }
   };
 
@@ -255,6 +263,17 @@ export function AuthPage() {
                       }
                     }}
                   />
+                ) : isResettingPassword ? (
+                  <PasswordResetForm
+                    initialEmail={loginFields.email}
+                    onBack={() => selectMode(true)}
+                    onComplete={(email) => {
+                      setLoginFields({ email, password: '' });
+                      setIsResettingPassword(false);
+                      setIsSignIn(true);
+                      setFormMessage({ type: 'success', text: 'Password reset. Sign in with your new password.' });
+                    }}
+                  />
                 ) : isSignIn ? (
                   <>
                     <h1 className="auth__title">Welcome back</h1>
@@ -321,9 +340,17 @@ export function AuthPage() {
                         )}
                       </div>
 
-                      <p className="auth__unavailable">
-                        Password recovery is not available yet.
-                      </p>
+                      <button
+                        className="auth__guest auth__guest--inline"
+                        type="button"
+                        onClick={() => {
+                          setFormMessage(null);
+                          setLoginErrors({});
+                          setIsResettingPassword(true);
+                        }}
+                      >
+                        Forgot your password?
+                      </button>
 
                       <button
                         className="auth__btn"
@@ -331,6 +358,20 @@ export function AuthPage() {
                         disabled={loginMutation.isPending}
                       >
                         {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
+                      </button>
+                      <button
+                        className="auth__guest auth__guest--inline"
+                        type="button"
+                        onClick={() => {
+                          setRegistrationFields((current) => ({
+                            ...current,
+                            email: loginFields.email.trim().toLowerCase(),
+                            password: '',
+                          }));
+                          selectMode(false);
+                        }}
+                      >
+                        Email not registered? Create an account
                       </button>
                     </form>
                   </>
