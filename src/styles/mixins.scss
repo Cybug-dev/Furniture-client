@@ -1,0 +1,285 @@
+@use 'variables' as *;
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: $breakpoint-mobile) { @content; }
+  } @else if $breakpoint == tablet {
+    @media (max-width: #{$breakpoint-tablet - 1px}) { @content; }
+  } @else if $breakpoint == desktop {
+    @media (max-width: #{$breakpoint-desktop - 1px}) { @content; }
+  } @else if $breakpoint == wide {
+    @media (min-width: $breakpoint-wide) { @content; }
+  }
+}
+
+@mixin page-container($max-width: $content-width) {
+  width: min(100% - (2 * #{$space-page-gutter}), $max-width);
+  margin-inline: auto;
+}
+
+@mixin section-spacing($spacing: $space-section) {
+  padding-block: $spacing;
+}
+
+@mixin responsive-grid($minimum-column-width: 240px, $gap: $space-grid-gap) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, $minimum-column-width), 1fr));
+  gap: $gap;
+}
+
+@mixin section-heading($size: $font-size-2xl) {
+  margin: 0;
+  color: $color-text-heading;
+  font-family: $font-primary;
+  font-size: $size;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  letter-spacing: -0.02em;
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: $font-size-xl;
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  min-height: $control-size-md;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: 0 $space-5;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  text-decoration: none;
+  transition: background-color $transition-default, border-color $transition-default, color $transition-default, box-shadow $transition-default;
+
+  &:focus-visible { @include focus-visible; }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    background: $color-action-disabled-bg;
+    color: $color-action-disabled-text;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-general {
+  @include button-base;
+  min-width: 168px;
+  min-height: $control-size-lg;
+  border-color: $color-border-brand;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  color: $color-text-heading;
+
+  &:not(:disabled):not([aria-disabled='true']):hover {
+    border-color: $color-action-hover;
+    background: $color-bg-brand-soft;
+    color: $color-action-active;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@mixin cta-velvet-reveal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  color: $color-text-inverse;
+  background-color: $color-action-primary;
+  border: 1px solid $color-action-primary;
+
+  box-shadow: 0 8px 18px rgba($color-action-active, 0.16);
+
+  transition:
+    transform $transition-default,
+    border-color $transition-default,
+    box-shadow $transition-default;
+
+  // Dark-green layer rising into the button.
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    inset: -30% -8%;
+
+    background: linear-gradient(
+      118deg,
+      $color-action-active 8%,
+      $color-action-hover 62%,
+      $color-action-active 100%
+    );
+
+    transform: translateY(92%) rotate(-3deg);
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  // Single light reflection.
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -70%;
+    bottom: -70%;
+    left: -20%;
+    width: 30%;
+
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($color-text-inverse, 0.28),
+      transparent
+    );
+
+    transform: translateX(-250%) rotate(16deg);
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color-focus-ring;
+    outline-offset: 3px;
+  }
+
+  &:active:not(:disabled):not([aria-disabled='true']) {
+    transform: translateY(0);
+    box-shadow: 0 5px 12px rgba($color-action-active, 0.16);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:not(:disabled):not([aria-disabled='true']):hover {
+      transform: translateY(-2px);
+      border-color: $color-action-active;
+      box-shadow: 0 14px 28px rgba($color-action-active, 0.24);
+
+      &::before {
+        transform: translateY(0) rotate(-3deg);
+      }
+
+      &::after {
+        animation: velvet-cta-sheen 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition: none;
+    }
+
+    &::before {
+      transition: none;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+@mixin cta-standard {
+  transition: background-color $transition-slow, border-color $transition-slow, box-shadow $transition-slow, transform $transition-slow;
+
+  &:focus-visible {
+    @include focus-visible;
+  }
+
+  &:active:not(:disabled):not([aria-disabled='true']) {
+    background-color: $color-action-active;
+    border-color: $color-action-active;
+    box-shadow: $shadow-card;
+    transform: translateY(0);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  @media (hover: hover) {
+    &:not(:disabled):not([aria-disabled='true']):hover {
+      background-color: $color-action-hover;
+      border-color: $color-action-hover;
+      box-shadow: $shadow-card-hover;
+      transform: translateY(-1px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition: none;
+    }
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+@mixin card-base($padding: $space-5) {
+  overflow: hidden;
+  padding: $padding;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: $shadow-card;
+  transition: border-color $transition-default, box-shadow $transition-default, transform $transition-default;
+}
+
+@mixin focus-visible($offset: 3px) {
+  outline: 2px solid $color-focus-ring;
+  outline-offset: $offset;
+}
+
+@mixin reduced-motion {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin aspect-ratio($ratio) {
+  aspect-ratio: $ratio;
+  overflow: hidden;
+
+  > img,
+  > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

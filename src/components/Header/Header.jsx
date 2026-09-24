@@ -1,23 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router';
 import { useHeader } from './useHeader';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
+import { useCurrentUser } from '../../auth/auth.hooks.js';
+import AccountActions from '../../commerce/components/AccountActions';
+import { useCart } from '../../commerce/commerce.hooks.js';
+import { cartCount } from '../../commerce/commerce.utils.js';
 
 /* Icons used only by the header shell / actions */
-function UserIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8c0-3.314 3.134-6 7-6s7 2.686 7 6"
-      />
-    </svg>
-  );
-}
 
 function SearchIcon() {
   return (
@@ -133,6 +126,10 @@ const itemVariants = {
  * All state & side-effects live in useHeader.
  */
 export default function Header() {
+  const { data: currentUser, isPending: isAuthPending } = useCurrentUser();
+  const showAccountAttention = !isAuthPending && !currentUser;
+  const cart = useCart();
+  const cartItemCount = currentUser ? cartCount(cart.data) : 0;
   const {
     isMenuOpen,
     toggleMenu,
@@ -149,7 +146,6 @@ export default function Header() {
     toggleDropdown,
     closeDropdown,
     isScrolled,
-    cartItemCount,
   } = useHeader();
 
   return (
@@ -181,13 +177,7 @@ export default function Header() {
 
           {/* Actions */}
           <motion.div className="header-actions" variants={itemVariants}>
-            <button
-              type="button"
-              className="header-icon-btn header-desktop-only"
-              aria-label="Account"
-            >
-              <UserIcon />
-            </button>
+            <AccountActions />
 
             <button
               type="button"
@@ -208,18 +198,18 @@ export default function Header() {
               <HeartIcon />
             </button>
 
-            <button
-              type="button"
+            <Link
+              to="/cart"
               className="header-icon-btn header-cart-btn"
               aria-label={`Cart, ${cartItemCount} items`}
             >
               <CartIcon />
               {cartItemCount > 0 && (
                 <span className="header-cart-badge" aria-hidden="true">
-                  {cartItemCount}
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
-            </button>
+            </Link>
 
             {/* Hamburger – mobile only */}
             <button
@@ -239,6 +229,7 @@ export default function Header() {
       {/* Mobile drawer – completely outside header flow */}
       <MobileNav
         isOpen={isMenuOpen}
+        showAccountAttention={showAccountAttention}
         onClose={closeMenu}
         openDropdown={openDropdown}
         onToggleDropdown={toggleDropdown}

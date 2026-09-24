@@ -14,9 +14,6 @@ export function useHeader() {
   const searchInputRef = useRef(null);
   const searchBarRef = useRef(null);
   const searchToggleRef = useRef(null);
-
-  const cartItemCount = 0; // replace with real cart state later
-
   // Auto-focus search input when it opens
   useEffect(() => {
     if (isSearchOpen) searchInputRef.current?.focus();
@@ -119,7 +116,5 @@ useEffect(() => {
     closeDropdown,
     // scroll
     isScrolled,
-    // misc
-    cartItemCount,
   };
 }

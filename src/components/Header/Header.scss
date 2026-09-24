@@ -1,4 +1,4 @@
-@use "../../styles/variable.scss" as *;
+@use '../../styles/variables' as *;
 
 /* =======================
    Header bar only
@@ -10,34 +10,33 @@
   right: 0;
   left: 0;
   z-index: $z-header;
-  background: transparent;
-  box-shadow: none;
+  background: rgba($color-bg-section, 0.98);
+  box-shadow: 0 1px 0 rgba($color-text-heading, 0.07);
   border-radius: 0;
   border: 1px solid transparent;
 
   transition:
-    top $transition-base,
-    left $transition-base,
-    right $transition-base,
-    background $transition-base,
-    box-shadow $transition-base,
-    border-radius $transition-base,
-    border-color $transition-base,
-    backdrop-filter $transition-base;
+    top $transition-default,
+    left $transition-default,
+    right $transition-default,
+    background $transition-default,
+    box-shadow $transition-default,
+    border-radius $transition-default,
+    border-color $transition-default,
+    backdrop-filter $transition-default;
 
   &--scrolled {
-    --blur-effect: blur(20px) saturate(140%);
-    top: 12px;
-    left: 16px;
-    right: 16px;
-    border-radius: 14px;
-    background: rgba(235, 245, 240, 0.55);
+    --blur-effect: blur(16px) saturate(125%);
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    background: rgba($color-bg-section, 0.95);
     -webkit-backdrop-filter: var(--blur-effect);
     backdrop-filter: var(--blur-effect);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.18),
-      0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid transparent;
+    border-bottom-color: $color-border-default;
+    box-shadow: 0 6px 24px rgba($color-bg-inverse, 0.06);
 
     @supports (-webkit-backdrop-filter: none) {
       -webkit-backdrop-filter: var(--blur-effect);
@@ -62,9 +61,9 @@
   align-items: center;
   flex-shrink: 0;
   gap: 0.45rem;
-  color: $color-primary;
-  font-family: $font-secondary;
-  font-size: $font-size-h4;
+  color: $color-text-brand;
+  font-family: $font-logo;
+  font-size: $font-size-2xl;
   font-weight: $font-weight-bold;
   letter-spacing: -0.035em;
   text-decoration: none;
@@ -110,7 +109,8 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: $color-text-primary;
+  color: $color-text-heading;
+  text-decoration: none;
   cursor: pointer;
   transition:
     color $transition-fast,
@@ -118,7 +118,7 @@
 
   &:hover,
   &:focus-visible {
-    color: $color-primary;
+    color: $color-text-brand;
     transform: translateY(-1px);
   }
 }
@@ -131,6 +131,23 @@
   position: relative;
 }
 
+.header-account {
+  position: relative;
+}
+
+.header-account--attention::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid $color-border-inverse;
+  border-radius: $radius-round;
+  background: $color-bg-brand;
+  box-sizing: content-box;
+}
+
 .header-cart-badge {
   position: absolute;
   top: -0.15rem;
@@ -140,13 +157,12 @@
   height: $space-4;
   padding-inline: $space-1;
   place-items: center;
-  border: 2px solid $color-surface;
-  border-radius: $radius-full;
-  background: $color-primary;
-  color: $color-surface;
-  font-family: $font-primary;
-  font-size: $font-size-caption-sm;
-  font-weight: $font-weight-bold;
+  border: 2px solid $color-border-inverse;
+  border-radius: $radius-round;
+  background: $color-action-primary;
+  color: $color-text-inverse;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
   line-height: $line-height-tight;
 }
 
@@ -192,12 +208,11 @@
   width: 100%;
   height: 3rem;
   padding: 0 3rem 0 2.6rem;
-  border: 1.5px solid $color-border;
-  border-radius: $radius-full;
-  background: $color-background;
-  color: $color-text-primary;
-  font-family: $font-primary;
-  font-size: $font-size-body;
+  border: 1.5px solid $color-border-default;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+  color: $color-text-heading;
+  font-size: $font-size-base;
   outline: none;
   transition:
     border-color $transition-fast,
@@ -213,9 +228,9 @@
   }
 
   &:focus {
-    border-color: $color-primary;
-    background: $color-surface;
-    box-shadow: 0 0 0 3px rgba($color-primary, 0.12);
+    border-color: $color-border-brand;
+    background: $color-bg-card;
+    box-shadow: 0 0 0 3px rgba($color-action-primary, 0.12);
   }
 }
 
@@ -231,7 +246,7 @@
   height: 2rem;
   padding: 0;
   border: none;
-  border-radius: $radius-full;
+  border-radius: $radius-round;
   background: transparent;
   color: $color-text-muted;
   cursor: pointer;
@@ -240,13 +255,13 @@
     transform $transition-fast;
 
   &:hover {
-    color: $color-primary;
+    color: $color-text-brand;
     transform: translateY(-50%) scale(1.08);
   }
 }
 
 /* Mobile adjustments for the header bar itself */
-@media (max-width: #{$bp-tablet - 1px}) {
+@media (max-width: #{$breakpoint-tablet - 1px}) {
   .header-container {
     position: relative;
     height: 4.75rem;

@@ -1,4 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router';
+import { useCurrentUser, useLogout } from '../../auth/auth.hooks.js';
 import { NAV_LINKS, ChevronIcon } from './DesktopNav';
 import './MobileNav.scss';
 
@@ -66,11 +68,15 @@ const overlayVariants = {
  */
 export default function MobileNav({
   isOpen,
+  showAccountAttention,
   onClose,
   openDropdown,
   onToggleDropdown,
   onCloseDropdown,
 }) {
+  const { data: user } = useCurrentUser();
+  const logout = useLogout();
+  const navigate = useNavigate();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -97,10 +103,17 @@ export default function MobileNav({
           >
             {/* 1. Avatar + Sign In + close */}
             <div className="mobile-nav-top">
-              <div className="mobile-nav-avatar">
+              <div className={`mobile-nav-avatar${showAccountAttention ? ' mobile-nav-avatar--attention' : ''}`}>
                 <UserIcon />
               </div>
-              <span className="mobile-nav-signin">Sign In</span>
+              <Link
+                to={showAccountAttention ? '/auth' : '/profile'}
+                className="mobile-nav-signin"
+                onClick={onClose}
+                aria-label={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
+              >
+                {showAccountAttention ? 'Sign in' : 'Your account'}
+              </Link>
               <button
                 type="button"
                 className="mobile-nav-close"
@@ -170,6 +183,12 @@ export default function MobileNav({
                   )}
                 </li>
               ))}
+              {user && <>
+                <li className="mobile-nav-item"><Link className="mobile-nav-link" to="/profile" onClick={onClose}>Profile</Link></li>
+                <li className="mobile-nav-item"><Link className="mobile-nav-link" to="/orders" onClick={onClose}>My orders</Link></li>
+                <li className="mobile-nav-item"><Link className="mobile-nav-link" to="/notifications" onClick={onClose}>Notifications</Link></li>
+                <li className="mobile-nav-item"><button className="mobile-nav-link" disabled={logout.isPending} onClick={async () => { try { await logout.mutateAsync(); onClose(); navigate('/auth'); } catch { onClose(); } }}>Logout</button></li>
+              </>}
             </ul>
 
             {/* 3. Favourites (bottom) */}
