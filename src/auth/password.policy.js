@@ -50,14 +50,13 @@ export const getPasswordStrength = (password = '') => {
   if (isCommon) score -= 4;
 
   const meetsPolicy = checks.length && checks.letter && checks.number && checks.special && checks.maximum;
-  let level = 1;
-  if (meetsPolicy && score >= 6) level = 2;
+  let level = meetsPolicy ? 2 : 1;
   if (meetsPolicy && password.length >= 12 && score >= 8) level = 3;
   if (meetsPolicy && password.length >= 16 && score >= 10 && !hasLongRun && !hasSequence && !isCommon) level = 4;
 
   return {
     level,
-    label: ['Enter a password', 'Weak', 'Fair', 'Strong', 'Very strong'][level],
+    label: ['Enter a password', 'Weak', 'Meets requirements', 'Strong', 'Very strong'][level],
     checks,
   };
 };

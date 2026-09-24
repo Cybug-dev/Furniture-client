@@ -29,6 +29,7 @@ const getSafeReturnPath = (state) => {
 export function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState('');
+  const [verificationCodeSentAt, setVerificationCodeSentAt] = useState(null);
   const [loginFields, setLoginFields] = useState({ email: '', password: '' });
   const [registrationFields, setRegistrationFields] = useState({
     fullName: '',
@@ -52,6 +53,7 @@ export function AuthPage() {
 
   const selectMode = (nextIsSignIn) => {
     setVerificationEmail('');
+    setVerificationCodeSentAt(null);
     setIsSignIn(nextIsSignIn);
     setLoginErrors({});
     setRegistrationErrors({});
@@ -93,6 +95,7 @@ export function AuthPage() {
     } catch (error) {
       if (error.code === 'EMAIL_NOT_VERIFIED') {
         setVerificationEmail(loginFields.email.trim().toLowerCase());
+        setVerificationCodeSentAt(null);
         setLoginFields((current) => ({ ...current, password: '' }));
       }
       setLoginErrors(getServerFieldErrors(error));
@@ -127,6 +130,7 @@ export function AuthPage() {
       setRegistrationFields((current) => ({ ...current, password: '' }));
       setIsSignIn(true);
       setVerificationEmail(registrationFields.email.trim().toLowerCase());
+      setVerificationCodeSentAt(Date.now());
       setFormMessage({
         type: 'success',
         text: 'Account created. Verify your email to continue.',
@@ -239,9 +243,11 @@ export function AuthPage() {
                 {verificationEmail ? (
                   <VerifyEmailForm
                     email={verificationEmail}
+                    codeSentAt={verificationCodeSentAt}
                     onBack={() => selectMode(true)}
                     onVerified={(user) => {
                       setVerificationEmail('');
+                      setVerificationCodeSentAt(null);
                       if (user) navigate(getSafeReturnPath(location.state), { replace: true });
                       else {
                         setIsSignIn(true);
