@@ -9,6 +9,11 @@ const server = await createServer({ server: { middlewareMode: true, hmr: false, 
 const load = (path) => server.ssrLoadModule(`/src/${path}`);
 const auth = await load('auth/auth.api.js');
 const { getPasswordPolicyError, getPasswordStrength } = await load('auth/password.policy.js');
+const {
+  getVerificationResendState,
+  noteInitialVerificationCode,
+  recordVerificationResend,
+} = await load('auth/verification-resend.policy.js');
 const { validateLogin, validateRegistration } = await load('auth/auth.validation.js');
 const { authResult, getAccessToken, invalidateAuthRequests } = await load('auth/auth.client.js');
 const { default: api } = await load('api/client.js');
@@ -52,9 +57,39 @@ try {
   await test('password strength progresses without replacing the policy checks', () => {
     assert.equal(getPasswordStrength('').level, 0);
     assert.equal(getPasswordStrength('Pass1!').label, 'Weak');
-    assert.equal(getPasswordStrength('Maple!92').label, 'Fair');
+    assert.equal(getPasswordStrength('Maple!92').label, 'Meets requirements');
+    assert.equal(getPasswordStrength('cedar1!x').label, 'Meets requirements');
     assert.equal(getPasswordStrength('Maple!River92').label, 'Strong');
     assert.equal(getPasswordStrength('Maple!River92#Cedar').label, 'Very strong');
+  });
+  await test('verification resends enforce cooldown and a rolling three-request limit', () => {
+    const values = new Map();
+    const storage = {
+      getItem: (key) => values.get(key) ?? null,
+      setItem: (key, value) => values.set(key, value),
+      removeItem: (key) => values.delete(key),
+    };
+    const email = ' ADA@EXAMPLE.TEST ';
+    const start = 1_000_000;
+
+    noteInitialVerificationCode(email, { sentAt: start, storage });
+    assert.equal(getVerificationResendState(email, { now: start, storage }).remaining, 3);
+    assert.equal(getVerificationResendState(email, { now: start, storage }).canResend, false);
+
+    for (const offset of [61_000, 122_000, 183_000]) {
+      const before = getVerificationResendState(email, { now: start + offset, storage });
+      assert.equal(before.canResend, true);
+      recordVerificationResend(email, { now: start + offset, storage });
+    }
+
+    const limited = getVerificationResendState(email, { now: start + 244_000, storage });
+    assert.equal(limited.canResend, false);
+    assert.equal(limited.remaining, 0);
+    assert.ok(limited.retryAfterSeconds > 0);
+
+    const reopened = getVerificationResendState(email, { now: start + 362_000, storage });
+    assert.equal(reopened.canResend, true);
+    assert.equal(reopened.remaining, 1);
   });
   await test('guests and public catalogue requests do not need bearer credentials', async () => {
     assert.equal(await auth.getCurrentUser(), null);
