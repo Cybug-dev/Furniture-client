@@ -15,6 +15,7 @@ import {
 } from './auth.validation.js';
 import './Auth.scss';
 import { VerifyEmailForm } from './VerifyEmailForm.jsx';
+import { getPasswordStrength, PASSWORD_POLICY } from './password.policy.js';
 
 const getSafeReturnPath = (state) => {
   const requestedPath =
@@ -47,6 +48,7 @@ export function AuthPage() {
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
   const currentUser = currentUserQuery.data;
+  const passwordStrength = getPasswordStrength(registrationFields.password);
 
   const selectMode = (nextIsSignIn) => {
     setVerificationEmail('');
@@ -400,9 +402,9 @@ export function AuthPage() {
                             name="password"
                             type={showRegistrationPassword ? 'text' : 'password'}
                             autoComplete="new-password"
-                            minLength={12}
-                            maxLength={128}
-                            placeholder="12–128 characters"
+                            minLength={PASSWORD_POLICY.minLength}
+                            maxLength={PASSWORD_POLICY.maxLength}
+                            placeholder={`${PASSWORD_POLICY.minLength}–${PASSWORD_POLICY.maxLength} characters`}
                             value={registrationFields.password}
                             onChange={(event) =>
                               updateRegistrationField('password', event.target.value)
@@ -411,7 +413,7 @@ export function AuthPage() {
                             aria-describedby={
                               registrationErrors.password
                                 ? 'register-password-error'
-                                : 'register-password-hint'
+                                : 'register-password-strength register-password-requirements'
                             }
                           />
                           <button
@@ -425,15 +427,32 @@ export function AuthPage() {
                             {showRegistrationPassword ? 'Hide' : 'Show'}
                           </button>
                         </div>
-                        {registrationErrors.password ? (
+                        {registrationErrors.password && (
                           <p className="auth__field-error" id="register-password-error">
                             {registrationErrors.password}
                           </p>
-                        ) : (
-                          <p className="auth__field-hint" id="register-password-hint">
-                            Use 12–128 characters with a letter and a number.
-                          </p>
                         )}
+                        <div
+                          className={`auth__password-strength auth__password-strength--${passwordStrength.level}`}
+                          id="register-password-strength"
+                          aria-live="polite"
+                        >
+                          <div className="auth__strength-heading">
+                            <span>Password strength</span>
+                            <strong>{passwordStrength.label}</strong>
+                          </div>
+                          <div className="auth__strength-bars" aria-hidden="true">
+                            {[1, 2, 3, 4].map((level) => (
+                              <span key={level} className={level <= passwordStrength.level ? 'is-active' : ''} />
+                            ))}
+                          </div>
+                        </div>
+                        <ul className="auth__password-requirements" id="register-password-requirements">
+                          <li className={passwordStrength.checks.length ? 'is-met' : ''}>At least {PASSWORD_POLICY.minLength} characters</li>
+                          <li className={passwordStrength.checks.letter ? 'is-met' : ''}>One letter</li>
+                          <li className={passwordStrength.checks.number ? 'is-met' : ''}>One number</li>
+                          <li className={passwordStrength.checks.special ? 'is-met' : ''}>One special character</li>
+                        </ul>
                       </div>
 
                       <div className="auth__row">
