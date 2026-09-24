@@ -24,7 +24,7 @@ const getSafeReturnPath = (state) => {
 
   return requestedPath?.startsWith('/') && !requestedPath.startsWith('//')
     ? requestedPath
-    : '/';
+    : null;
 };
 
 export function AuthPage() {
@@ -94,7 +94,8 @@ export function AuthPage() {
         email: loginFields.email.trim().toLowerCase(),
         password: loginFields.password,
       });
-      navigate(getSafeReturnPath(location.state), { replace: true });
+      const returnPath = getSafeReturnPath(location.state);
+      if (returnPath) navigate(returnPath, { replace: true });
     } catch (error) {
       if (error.code === 'EMAIL_NOT_VERIFIED') {
         setVerificationEmail(loginFields.email.trim().toLowerCase());
@@ -256,8 +257,9 @@ export function AuthPage() {
                     onVerified={(user) => {
                       setVerificationEmail('');
                       setVerificationCodeSentAt(null);
-                      if (user) navigate(getSafeReturnPath(location.state), { replace: true });
-                      else {
+                      const returnPath = getSafeReturnPath(location.state);
+                      if (user && returnPath) navigate(returnPath, { replace: true });
+                      else if (!user) {
                         setIsSignIn(true);
                         setFormMessage({ type: 'success', text: 'Email verified. Sign in to continue.' });
                       }

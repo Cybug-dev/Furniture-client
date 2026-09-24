@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Bell, UserRound } from 'lucide-react';
 import { useCurrentUser, useLogout } from '../../auth/auth.hooks.js';
 import { useNotifications } from '../commerce.hooks.js';
@@ -10,7 +10,6 @@ export default function AccountActions() {
   const notifications = useNotifications();
   const logout = useLogout();
   const navigate = useNavigate();
-  const location = useLocation();
   const [open, setOpen] = useState(false);
   const container = useRef(null);
   const trigger = useRef(null);
@@ -24,7 +23,7 @@ export default function AccountActions() {
     document.addEventListener('pointerdown', close);
     return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
   }, [open]);
-  if (!user) return <Link to="/auth" state={{ from: location.pathname }} className="header-icon-btn header-desktop-only header-account header-account--attention" aria-label="Sign in or create an account"><UserRound size={20} /></Link>;
+  if (!user) return <Link to="/auth" className="header-icon-btn header-desktop-only header-account header-account--attention" aria-label="Sign in or create an account"><UserRound size={20} /></Link>;
   const count = notifications.data?.unreadCount || 0;
   return <>
     <div className="account-actions header-desktop-only" ref={container} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }}>
