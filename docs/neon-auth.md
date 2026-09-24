@@ -28,6 +28,8 @@ The stable develop frontend is `https://furniture-client-git-develop-cybug-devs-
 
 Account creation sends one six-digit verification code and shows the verification form. Codes expire after five minutes and Neon invalidates a code after three failed verification attempts. Sign-in does not automatically send another code; an unverified user can request one explicitly. The client allows three successful resend requests in a rolling five-minute window with a one-minute cooldown between requests, while Neon's service-level limiter remains the protection against direct API abuse. A successful login also loads `/api/auth/me`; backend outages are shown as failures rather than falsely reporting a completed login. Logout clears private React Query data. Password recovery and social sign-in UI remain outside this change.
 
+Develop and production use Neon's shared email delivery provider for managed OTP messages. The backend Gmail provider remains available for the separate legacy authentication fallback and is not called by Managed Neon Auth.
+
 Neon uses Secure, HttpOnly session cookies. Browser third-party-cookie restrictions still need testing, especially Safari. For production, configure a supported same-site Auth proxy/custom domain before claiming cross-browser session reliability. A JWT already issued before sign-out remains valid until it expires.
 
 Checks: `npm run test:auth`, `npm run test:commerce`, `npm run build`. Tests mock transport using the actual installed Neon SDK, including its thrown error behavior and session cache. They do not prove inbox delivery or browser cookie persistence; verify those with a real account before release.
