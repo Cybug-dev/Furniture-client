@@ -8,6 +8,8 @@ process.env.VITE_NEON_AUTH_URL = 'https://auth.example.test/neondb/auth';
 const server = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom', logLevel: 'error' });
 const load = (path) => server.ssrLoadModule(`/src/${path}`);
 const auth = await load('auth/auth.api.js');
+const { getPasswordPolicyError, getPasswordStrength } = await load('auth/password.policy.js');
+const { validateLogin, validateRegistration } = await load('auth/auth.validation.js');
 const { authResult, getAccessToken, invalidateAuthRequests } = await load('auth/auth.client.js');
 const { default: api } = await load('api/client.js');
 const realFetch = globalThis.fetch;
@@ -39,6 +41,21 @@ api.defaults.adapter = async (config) => {
   return { status: 200, headers: {}, config, data: { success: true, data: { user: profile } } };
 };
 try {
+  await test('registration password policy requires length, letters, numbers, and special characters', () => {
+    assert.equal(getPasswordPolicyError('Ab1!cdef'), null);
+    assert.match(getPasswordPolicyError('Ab1!'), /8–128/);
+    assert.match(getPasswordPolicyError('Abcdef12'), /special character/);
+    assert.equal(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Ab1!cdef', acceptedTerms: true }).password, undefined);
+    assert.ok(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Abcdef12', acceptedTerms: true }).password);
+    assert.deepEqual(validateLogin({ email: user.email, password: 'old' }), {});
+  });
+  await test('password strength progresses without replacing the policy checks', () => {
+    assert.equal(getPasswordStrength('').level, 0);
+    assert.equal(getPasswordStrength('Pass1!').label, 'Weak');
+    assert.equal(getPasswordStrength('Maple!92').label, 'Fair');
+    assert.equal(getPasswordStrength('Maple!River92').label, 'Strong');
+    assert.equal(getPasswordStrength('Maple!River92#Cedar').label, 'Very strong');
+  });
   await test('guests and public catalogue requests do not need bearer credentials', async () => {
     assert.equal(await auth.getCurrentUser(), null);
     const before = calls.length;

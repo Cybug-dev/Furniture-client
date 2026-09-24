@@ -1,3 +1,5 @@
+import { getPasswordPolicyError } from './password.policy.js';
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const splitFullName = (fullName) => {
@@ -36,13 +38,8 @@ export const validateRegistration = ({ fullName, email, password, acceptedTerms 
     errors.fullName = 'Your last name must be 100 characters or fewer.';
   }
 
-  if (password && password.length < 12) {
-    errors.password = 'Use at least 12 characters.';
-  } else if (password.length > 128) {
-    errors.password = 'Use no more than 128 characters.';
-  } else if (password && (!/[A-Za-z]/.test(password) || !/\d/.test(password))) {
-    errors.password = 'Include at least one letter and one number.';
-  }
+  const passwordError = password ? getPasswordPolicyError(password) : null;
+  if (passwordError) errors.password = passwordError;
 
   if (!acceptedTerms) {
     errors.acceptedTerms = 'You must agree before creating an account.';
