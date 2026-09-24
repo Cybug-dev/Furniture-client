@@ -29,6 +29,11 @@ export const validateLogin = ({ email, password }) => {
 
 export const validateRegistration = ({ fullName, email, password, acceptedTerms }) => {
   const errors = validateLogin({ email, password });
+  const normalizedEmail = email.trim();
+
+  if (!normalizedEmail || normalizedEmail.length > 254 || !EMAIL_PATTERN.test(normalizedEmail)) {
+    errors.email = 'Enter a valid email address you can access so we can send your verification code.';
+  }
 
   if (!fullName.trim()) {
     errors.fullName = 'Enter your full name.';

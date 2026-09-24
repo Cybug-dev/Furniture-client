@@ -338,7 +338,7 @@ export function AuthPage() {
                   <>
                     <h1 className="auth__title">Create your account</h1>
                     <p className="auth__sub">
-                      Join Furniture to save inspiration and shop your favorite rooms.
+                      Enter an email address you can access. We will send a six-digit verification code to complete your account.
                     </p>
 
                     <form
@@ -382,6 +382,7 @@ export function AuthPage() {
                           type="email"
                           inputMode="email"
                           autoComplete="email"
+                          maxLength={254}
                           placeholder="you@example.com"
                           value={registrationFields.email}
                           onChange={(event) =>
@@ -490,7 +491,7 @@ export function AuthPage() {
                         type="submit"
                         disabled={registerMutation.isPending}
                       >
-                        {registerMutation.isPending ? 'Creating account…' : 'Create account'}
+                        {registerMutation.isPending ? 'Sending verification code…' : 'Create account'}
                       </button>
                     </form>
                   </>
