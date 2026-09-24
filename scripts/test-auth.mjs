@@ -53,6 +53,10 @@ try {
     assert.equal(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Ab1!cdef', acceptedTerms: true }).password, undefined);
     assert.ok(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Abcdef12', acceptedTerms: true }).password);
     assert.deepEqual(validateLogin({ email: user.email, password: 'old' }), {});
+    assert.match(
+      validateRegistration({ fullName: 'Ada Test', email: 'not-an-email', password: 'Ab1!cdef', acceptedTerms: true }).email,
+      /verification code/,
+    );
   });
   await test('password strength progresses without replacing the policy checks', () => {
     assert.equal(getPasswordStrength('').level, 0);
