@@ -5,6 +5,8 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  requestPasswordReset,
+  resetPassword,
 } from './auth.api.js';
 
 export const AUTH_USER_QUERY_KEY = ['auth', 'me'];
@@ -39,6 +41,16 @@ export const useLogin = () => {
 export const useRegister = () =>
   useMutation({
     mutationFn: registerUser,
+  });
+
+export const useRequestPasswordReset = () =>
+  useMutation({
+    mutationFn: requestPasswordReset,
+  });
+
+export const useResetPassword = () =>
+  useMutation({
+    mutationFn: resetPassword,
   });
 
 export const useLogout = () => {

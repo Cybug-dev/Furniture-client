@@ -390,6 +390,15 @@
   }
 }
 
+.auth__guest--inline {
+  align-self: flex-start;
+  width: auto;
+  min-height: auto;
+  margin-top: 0;
+  padding: $space-1 0;
+  text-align: left;
+}
+
 .auth__divider {
   display: flex;
   align-items: center;

@@ -36,6 +36,8 @@ export async function authResult(request) {
         ? 'EMAIL_NOT_VERIFIED' : error.code ?? null;
       const message = code === 'EMAIL_NOT_VERIFIED'
         ? 'Verify your email using the code in your inbox before signing in.'
+        : code === 'INVALID_EMAIL_OR_PASSWORD'
+          ? 'Email or password is incorrect.'
         : status === 429 ? 'Too many attempts. Please wait before trying again.'
           : status >= 500 ? 'Account access is temporarily unavailable. Please try again.'
             : error.message || 'Unable to complete the account request.';
