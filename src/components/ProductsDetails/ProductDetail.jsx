@@ -330,7 +330,7 @@ export default function ProductDetail() {
           </div>
         ) : (
           <>
-            <div className="products__grid">
+            <div className="products__grid products__grid--recommendations">
               {related.map((item) => <ProductCard key={item.id} product={item} onNotice={showProductNotice} />)}
             </div>
             <Link to="/shop" className="products__show-more">Show More</Link>
