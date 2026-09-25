@@ -17,6 +17,8 @@ export const useCurrentUser = () =>
     queryFn: getCurrentUser,
     retry: false,
     staleTime: 60_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
 export const useLogin = () => {

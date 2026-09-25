@@ -1,28 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router';
+import { NAV_LINKS } from './navLinks.js';
 import './DesktopNav.scss';
 
 /* ───────────────────────────────────────────
    Shared navigation data + icons
    (exported so MobileNav can reuse the same source of truth)
    ─────────────────────────────────────────── */
-export const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-  {
-    label: 'Shop',
-    href: '/shop',
-    hasDropdown: true,
-    submenu: [
-      { label: 'Living Room', href: '/shop/living-room' },
-      { label: 'Bedroom', href: '/shop/bedroom' },
-      { label: 'Dining', href: '/shop/dining' },
-      { label: 'Office', href: '/shop/office' },
-      { label: 'Outdoor', href: '/shop/outdoor' },
-    ],
-  },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-];
-
 export function ChevronIcon() {
   return (
     <svg
@@ -127,14 +111,14 @@ export default function DesktopNav({
                     >
                       {link.submenu.map((item) => (
                         <li key={item.href} role="none">
-                          <a
-                            href={item.href}
+                          <Link
+                            to={item.href}
                             className="desktop-nav-dropdown-link"
                             role="menuitem"
                             onClick={onCloseDropdown}
                           >
                             {item.label}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </motion.ul>
@@ -142,9 +126,9 @@ export default function DesktopNav({
                 </AnimatePresence>
               </>
             ) : (
-              <a href={link.href} className="desktop-nav-link">
+              <Link to={link.href} className="desktop-nav-link">
                 {link.label}
-              </a>
+              </Link>
             )}
           </motion.li>
         ))}

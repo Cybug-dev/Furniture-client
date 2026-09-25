@@ -13,7 +13,9 @@ export function useAccountQuery(resource, queryFn, { key = [], enabled = true, .
     enabled: Boolean(user?.id) && enabled,
     meta: { private: true },
     staleTime: 30_000,
-    retry: (count, error) => ![400, 401, 403, 404, 409].includes(error.status) && count < 1,
+    // Account screens expose an explicit retry control. Avoid multiplying a
+    // temporary Worker failure across every private query on the page.
+    retry: false,
     ...options,
   });
 }
@@ -66,11 +68,15 @@ export function useAddToCart() {
   const add = async (productId, quantity = 1) => {
     if (!user) {
       navigate('/auth', { state: { from: `/products/${encodeURIComponent(productId)}` } });
-      return;
+      return null;
     }
-    try { await mutation.run({ productId, quantity }); }
+    try { return await mutation.run({ productId, quantity }); }
     catch (error) {
-      if (error.status === 401) navigate('/auth', { state: { from: location.pathname } });
+      if (error.status === 401) {
+        navigate('/auth', { state: { from: location.pathname } });
+        return null;
+      }
+      throw error;
     }
   };
   return { ...mutation, add };

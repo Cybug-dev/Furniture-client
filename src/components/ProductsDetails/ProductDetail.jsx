@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -6,6 +6,8 @@ import { useProduct, useProducts } from '../../hooks/apiHooks';
 import './ProductDetail.scss';
 import { useAddToCart } from '../../commerce/commerce.hooks.js';
 import { money } from '../../commerce/commerce.utils.js';
+import ProductCard from '../Products/ProductCard.jsx';
+import ProductNotice from '../Products/ProductNotice.jsx';
 
 function unwrap(payload) {
   if (!payload) return null;
@@ -79,6 +81,9 @@ export default function ProductDetail() {
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [tab, setTab] = useState('description');
+  const [productNotice, setProductNotice] = useState(null);
+  const showProductNotice = useCallback((notice) => setProductNotice({ ...notice, id: Date.now() }), []);
+  const closeProductNotice = useCallback(() => setProductNotice(null), []);
 
   if (!id) {
     return (
@@ -326,26 +331,14 @@ export default function ProductDetail() {
         ) : (
           <>
             <div className="product-detail__grid">
-              {related.map((item) => {
-                const src = imageUrl(item.primaryImage || item.image || item.images?.[0]);
-                return (
-                  <Link key={item.id} to={`/products/${item.id}`} className="product-detail__card">
-                    <div className="product-detail__card-media">
-                      {src ? <img src={src} alt={item.name} /> : null}
-                    </div>
-                    <div className="product-detail__card-body">
-                      <h3>{item.name}</h3>
-                      <p>{item.category?.name || ''}</p>
-                      <strong>{formatMoney(item.price)}</strong>
-                    </div>
-                  </Link>
-                );
-              })}
+              {related.map((item) => <ProductCard key={item.id} product={item} onNotice={showProductNotice} />)}
             </div>
             <Link to="/shop" className="product-detail__more">Show More</Link>
           </>
         )}
       </section>
+
+      <ProductNotice notice={productNotice} onClose={closeProductNotice} />
 
       <Footer />
     </div>

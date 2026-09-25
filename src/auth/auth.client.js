@@ -3,7 +3,18 @@ import { BetterAuthVanillaAdapter } from '@neondatabase/neon-js/auth/vanilla/ada
 
 let client;
 let tokenRequest;
+let cachedAccessToken;
 let sessionVersion = 0;
+
+function tokenIsFresh(token) {
+  try {
+    const encoded = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(encoded.padEnd(Math.ceil(encoded.length / 4) * 4, '=')));
+    return Number(payload.exp) * 1000 > Date.now() + 30_000;
+  } catch {
+    return false;
+  }
+}
 
 export function getAuthClient() {
   if (!client) {
@@ -56,9 +67,26 @@ export async function authResult(request) {
 export function invalidateAuthRequests() {
   sessionVersion += 1;
   tokenRequest = null;
+  cachedAccessToken = null;
 }
 
 export function getAccessToken() {
+  if (cachedAccessToken && tokenIsFresh(cachedAccessToken)) {
+    if (!tokenRequest) {
+      const version = sessionVersion;
+      const pending = Promise.resolve().then(() => {
+        if (version !== sessionVersion) {
+          throw Object.assign(new Error('Please sign in to continue.'), {
+            name: 'AuthError', status: 401, type: 'unauthorized',
+          });
+        }
+        return cachedAccessToken;
+      }).finally(() => { if (tokenRequest === pending) tokenRequest = null; });
+      tokenRequest = pending;
+    }
+    return tokenRequest;
+  }
+  cachedAccessToken = null;
   if (!tokenRequest) {
     const version = sessionVersion;
     const pending = authResult(getAuthClient().getSession())
@@ -71,7 +99,8 @@ export function getAccessToken() {
             name: 'AuthError', status: 401, type: 'unauthorized',
           });
         }
-        return token;
+        cachedAccessToken = token;
+        return cachedAccessToken;
       })
       .finally(() => { if (tokenRequest === pending) tokenRequest = null; });
     tokenRequest = pending;
