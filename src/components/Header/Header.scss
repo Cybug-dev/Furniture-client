@@ -131,6 +131,13 @@
   display: none;
 }
 
+.header-menu-icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 .header-cart-btn,
 .header-badged-action {
   position: relative;
@@ -156,8 +163,8 @@
 .header-cart-badge,
 .header-action-badge {
   position: absolute;
-  top: -3px;
-  right: -3px;
+  top: -7px;
+  right: -8px;
   display: grid;
   min-width: 16px;
   height: 16px;

@@ -5,6 +5,7 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
+import menuIconImg from '../../assets/images/menu-icon.png';
 import { useCurrentUser } from '../../auth/auth.hooks.js';
 import AccountActions from '../../commerce/components/AccountActions';
 import { useCart } from '../../commerce/commerce.hooks.js';
@@ -61,26 +62,12 @@ function CartIcon() {
 }
 
 function MenuIcon({ open }) {
-  return (
+  return open ? (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-      {open ? (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M5 5l14 14M19 5 5 19"
-        />
-      ) : (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M4 7h16M4 12h16M4 17h16"
-        />
-      )}
+      <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M5 5l14 14M19 5 5 19" />
     </svg>
+  ) : (
+    <img className="header-menu-icon" src={menuIconImg} alt="" aria-hidden="true" />
   );
 }
 

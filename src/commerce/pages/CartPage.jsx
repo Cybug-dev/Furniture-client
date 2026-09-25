@@ -15,14 +15,14 @@ function listProducts(payload) {
   return [];
 }
 function EmptyCart() {
-  const products = useProducts({ page: 1, limit: 3 });
-  const suggestions = listProducts(products.data).slice(0, 3);
+  const products = useProducts({ page: 1, limit: 4 });
+  const suggestions = listProducts(products.data).slice(0, 4);
   const [notice, setNotice] = useState(null);
   const showNotice = useCallback((next) => setNotice({ ...next, id: Date.now() }), []);
   const closeNotice = useCallback(() => setNotice(null), []);
   return <><div className="empty-cart-layout">
     <EmptyState title="Your cart is empty" text="Discover our furniture collection and find something you'll love." icon={ShoppingCart} orders />
-    {suggestions.length > 0 && <section className="cart-suggestions" aria-labelledby="cart-suggestions-title"><h2 id="cart-suggestions-title">You might like</h2><div className="products__grid products__grid--compact">{suggestions.map((product) => <ProductCard product={product} onNotice={showNotice} key={product.id} />)}</div></section>}
+    {suggestions.length > 0 && <section className="cart-suggestions" aria-labelledby="cart-suggestions-title"><h2 id="cart-suggestions-title">You might like</h2><div className="products__grid">{suggestions.map((product) => <ProductCard product={product} onNotice={showNotice} key={product.id} />)}</div><Link to="/shop" className="products__show-more">Show More</Link></section>}
   </div><ProductNotice notice={notice} onClose={closeNotice} /></>;
 }
 
