@@ -23,7 +23,10 @@ export default function AccountActions() {
     document.addEventListener('pointerdown', close);
     return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
   }, [open]);
-  if (!user) return <Link to="/auth" className="header-icon-btn header-desktop-only header-account header-account--attention" aria-label="Sign in or create an account"><UserRound size={20} /></Link>;
+  if (!user) return <>
+    <Link to="/auth" className="header-icon-btn header-desktop-only header-account header-account--attention" aria-label="Sign in or create an account"><UserRound size={20} /></Link>
+    <Link to="/notifications" className="header-icon-btn" aria-label="Notifications"><Bell size={20} /></Link>
+  </>;
   const count = notifications.data?.unreadCount || 0;
   return <>
     <div className="account-actions header-desktop-only" ref={container} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }}>
@@ -33,6 +36,6 @@ export default function AccountActions() {
         <button disabled={logout.isPending} onClick={async () => { try { await logout.mutateAsync(); setOpen(false); navigate('/auth'); } catch { setOpen(false); } }}>Logout</button>
       </nav>}
     </div>
-    <Link to="/notifications" className="header-icon-btn header-cart-btn" aria-label={`Notifications${count ? `, ${count} unread` : ''}`}><Bell size={20} />{count > 0 && <span className="header-cart-badge" aria-hidden="true">{count > 99 ? '99+' : count}</span>}</Link>
+    <Link to="/notifications" className="header-icon-btn header-badged-action" aria-label={`Notifications${count ? `, ${count} unread` : ''}`}><Bell size={20} />{count > 0 && <span className="header-action-badge" aria-hidden="true">{count > 99 ? '99+' : count}</span>}</Link>
   </>;
 }

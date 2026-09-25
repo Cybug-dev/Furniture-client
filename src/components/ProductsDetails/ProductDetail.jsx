@@ -330,10 +330,10 @@ export default function ProductDetail() {
           </div>
         ) : (
           <>
-            <div className="product-detail__grid">
+            <div className="products__grid">
               {related.map((item) => <ProductCard key={item.id} product={item} onNotice={showProductNotice} />)}
             </div>
-            <Link to="/shop" className="product-detail__more">Show More</Link>
+            <Link to="/shop" className="products__show-more">Show More</Link>
           </>
         )}
       </section>

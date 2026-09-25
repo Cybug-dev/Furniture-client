@@ -1,6 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
-.account-actions { position: relative;
+.account-actions { position: relative; display: flex; align-items: center; justify-content: center;
   &__popover { position: absolute; top: calc(100% + #{$space-2}); right: 0; width: 190px; padding: $space-2; background: $color-bg-card; border: 1px solid $color-border-default; border-radius: $radius-md; box-shadow: $shadow-floating;
     a, button { display: flex; align-items: center; width: 100%; min-height: $control-size-md; padding: $space-3; font: inherit; font-size: $font-size-sm; color: $color-text-heading; background: transparent; border: 0; text-decoration: none; cursor: pointer;
       &:hover { background: $color-bg-brand-soft; } &:focus-visible { @include focus-visible; }

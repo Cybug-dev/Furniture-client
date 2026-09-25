@@ -5,6 +5,7 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
+import menuIconImg from '../../assets/images/menu-icon.png';
 import { useCurrentUser } from '../../auth/auth.hooks.js';
 import AccountActions from '../../commerce/components/AccountActions';
 import { useCart } from '../../commerce/commerce.hooks.js';
@@ -43,20 +44,6 @@ function CloseIcon() {
   );
 }
 
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        d="M12 20s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9Z"
-      />
-    </svg>
-  );
-}
-
 function CartIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -75,26 +62,12 @@ function CartIcon() {
 }
 
 function MenuIcon({ open }) {
-  return (
+  return open ? (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-      {open ? (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M5 5l14 14M19 5 5 19"
-        />
-      ) : (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M4 7h16M4 12h16M4 17h16"
-        />
-      )}
+      <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M5 5l14 14M19 5 5 19" />
     </svg>
+  ) : (
+    <img className="header-menu-icon" src={menuIconImg} alt="" aria-hidden="true" />
   );
 }
 
@@ -157,6 +130,17 @@ export default function Header() {
         animate="visible"
       >
         <div className="header-container">
+          <button
+            type="button"
+            className="header-menu-toggle"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="primary-navigation"
+            onClick={toggleMenu}
+          >
+            <MenuIcon open={isMenuOpen} />
+          </button>
+
           {/* Logo */}
           <motion.a
             href="/"
@@ -177,8 +161,6 @@ export default function Header() {
 
           {/* Actions */}
           <motion.div className="header-actions" variants={itemVariants}>
-            <AccountActions />
-
             <button
               type="button"
               className="header-icon-btn"
@@ -190,13 +172,7 @@ export default function Header() {
               <SearchIcon />
             </button>
 
-            <button
-              type="button"
-              className="header-icon-btn header-desktop-only"
-              aria-label="Wishlist"
-            >
-              <HeartIcon />
-            </button>
+            <AccountActions />
 
             <Link
               to="/cart"
@@ -212,16 +188,6 @@ export default function Header() {
             </Link>
 
             {/* Hamburger – mobile only */}
-            <button
-              type="button"
-              className="header-menu-toggle"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="primary-navigation"
-              onClick={toggleMenu}
-            >
-              <MenuIcon open={isMenuOpen} />
-            </button>
           </motion.div>
         </div>
       </motion.header>
