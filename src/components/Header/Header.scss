@@ -36,7 +36,9 @@
     backdrop-filter: var(--blur-effect);
     border: 1px solid transparent;
     border-bottom-color: $color-border-default;
-    box-shadow: 0 6px 24px rgba($color-bg-inverse, 0.06);
+    box-shadow:
+      0 1px 0 rgba($color-bg-inverse, 0.08),
+      0 10px 28px rgba($color-bg-inverse, 0.13);
 
     @supports (-webkit-backdrop-filter: none) {
       -webkit-backdrop-filter: var(--blur-effect);
@@ -96,7 +98,7 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 1.35rem;
+  gap: $space-5;
 }
 
 .header-icon-btn,
@@ -116,6 +118,8 @@
     color $transition-fast,
     transform $transition-fast;
 
+  svg { display: block; flex: 0 0 auto; }
+
   &:hover,
   &:focus-visible {
     color: $color-text-brand;
@@ -127,7 +131,8 @@
   display: none;
 }
 
-.header-cart-btn {
+.header-cart-btn,
+.header-badged-action {
   position: relative;
 }
 
@@ -148,22 +153,25 @@
   box-sizing: content-box;
 }
 
-.header-cart-badge {
+.header-cart-badge,
+.header-action-badge {
   position: absolute;
-  top: -0.15rem;
-  right: -0.25rem;
+  top: -3px;
+  right: -3px;
   display: grid;
-  min-width: $space-4;
-  height: $space-4;
-  padding-inline: $space-1;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 3px;
   place-items: center;
-  border: 2px solid $color-border-inverse;
+  border: 0;
   border-radius: $radius-round;
   background: $color-action-primary;
   color: $color-text-inverse;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  line-height: $line-height-tight;
+  box-shadow: 0 0 0 2px $color-bg-section;
+  font-size: 9px;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  pointer-events: none;
 }
 
 /* Search bar */
@@ -264,6 +272,7 @@
 @media (max-width: #{$breakpoint-tablet - 1px}) {
   .header-container {
     position: relative;
+    justify-content: flex-start;
     height: 4.75rem;
     gap: $space-2;
     padding-inline: $space-3;
@@ -271,12 +280,13 @@
 
   .header-logo {
     gap: 0.35rem;
+    margin-left: 3rem;
   }
 
   .header-actions {
     position: absolute;
     right: $space-3;
-    gap: 0;
+    gap: 2px;
   }
 
   .header-desktop-only {
@@ -291,5 +301,14 @@
 
   .header-menu-toggle {
     display: inline-flex;
+    position: absolute;
+    left: 0;
   }
+
+  .header-cart-badge,
+  .header-action-badge { top: 5px; right: 5px; }
+}
+
+@media (max-width: 359px) {
+  .header-logo-text { display: none; }
 }
