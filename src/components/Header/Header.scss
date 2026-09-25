@@ -316,6 +316,9 @@
   .header-action-badge { top: 5px; right: 5px; }
 }
 
-@media (max-width: 359px) {
-  .header-logo-text { display: none; }
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .header-actions .header-account,
+  .header-actions .account-actions {
+    display: none;
+  }
 }
