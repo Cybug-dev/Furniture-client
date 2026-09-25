@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Truck } from 'lucide-react';
 import { Link } from 'react-router';
 import { useHeader } from './useHeader';
 import DesktopNav from './DesktopNav';
@@ -129,6 +130,19 @@ export default function Header() {
         initial="hidden"
         animate="visible"
       >
+        <div className="header-utility">
+          <div className="header-utility__inner">
+            <p className="header-utility__shipping">
+              <Truck size={14} strokeWidth={1.8} aria-hidden="true" />
+              <span>Free shipping on orders over ₦100,000</span>
+            </p>
+            <nav className="header-utility__links" aria-label="Customer assistance">
+              <Link to="/orders">Track Order</Link>
+              <Link to="/contact">Help</Link>
+              {!currentUser && <Link to="/auth">Login / Sign Up</Link>}
+            </nav>
+          </div>
+        </div>
         <div className="header-container">
           <button
             type="button"

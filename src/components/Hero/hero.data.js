@@ -24,7 +24,7 @@ export const heroSlides = [
   {
     id: 'timeless-comfort',
     eyebrow: 'Timeless Comfort',
-    heading: 'Gather beautifully, every day',
+    heading: 'Built for coming together',
     description: 'Warm materials and lasting craftsmanship create an inviting place for every shared moment.',
     ctaLabel: 'Shop now',
     ctaHref: '/shop',

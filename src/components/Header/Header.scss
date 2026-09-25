@@ -57,6 +57,54 @@
   padding-inline: clamp($space-5, 4.45vw, $space-6);
 }
 
+.header-utility {
+  border-bottom: 1px solid $color-border-default;
+  background: $color-bg-section-soft;
+  color: $color-text-heading;
+}
+
+.header-utility__inner {
+  display: flex;
+  min-height: 2rem;
+  max-width: $container-max-width;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  margin-inline: auto;
+  padding-inline: clamp($space-5, 4.45vw, $space-6);
+  font-size: $font-size-xs;
+}
+
+.header-utility__shipping {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin: 0;
+  font-weight: $font-weight-medium;
+
+  svg {
+    flex: 0 0 auto;
+    color: $color-text-brand;
+  }
+}
+
+.header-utility__links {
+  display: flex;
+  align-items: center;
+
+  a {
+    padding-inline: $space-3;
+    color: $color-text-heading;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    & + a { border-left: 1px solid $color-border-default; }
+
+    &:hover,
+    &:focus-visible { color: $color-text-brand; }
+  }
+}
+
 /* Logo */
 .header-logo {
   display: inline-flex;
@@ -184,7 +232,7 @@
 /* Search bar */
 .header-search-bar {
   position: fixed;
-  top: 90px;
+  top: calc(#{$header-height} + 2rem);
   left: 0;
   right: 0;
   z-index: $z-dropdown;
@@ -277,6 +325,14 @@
 
 /* Mobile adjustments for the header bar itself */
 @media (max-width: #{$breakpoint-tablet - 1px}) {
+  .header-utility__inner {
+    min-height: 2.25rem;
+    padding-inline: $space-3;
+    font-size: .65rem;
+  }
+
+  .header-utility__links a { padding-inline: $space-2; }
+
   .header-container {
     position: relative;
     justify-content: flex-start;
@@ -314,6 +370,24 @@
 
   .header-cart-badge,
   .header-action-badge { top: 5px; right: 5px; }
+
+  .header-search-bar { top: 7rem; }
+}
+
+@media (max-width: 480px) {
+  .header-utility__inner {
+    display: grid;
+    min-height: 3.5rem;
+    justify-content: center;
+    gap: 2px;
+    padding-block: $space-1;
+    text-align: center;
+  }
+
+  .header-utility__shipping,
+  .header-utility__links { justify-content: center; }
+
+  .header-search-bar { top: 8.25rem; }
 }
 
 @media (max-width: #{$breakpoint-desktop - 1px}) {
