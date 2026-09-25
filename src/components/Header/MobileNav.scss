@@ -1,210 +1,172 @@
 @use '../../styles/variables' as *;
 
-/* Mobile navigation drawer */
-
 .mobile-nav-overlay {
   position: fixed;
-  inset: 0;
   z-index: $z-overlay;
-  background: $color-bg-overlay;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: rgba($color-bg-inverse, .58);
   cursor: pointer;
 }
 
 .mobile-nav {
   position: fixed;
-  top: 0;
-  right: 0;
   z-index: $z-modal;
+  top: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
-  flex-direction: column;
-  width: min(86vw, 22rem);
-  height: 100dvh;
-  padding: $space-5 $space-4 $space-6;
+  width: min(78vw, 22.5rem);
+  min-width: 17rem;
   overflow-y: auto;
- background: 
-    radial-gradient(circle at 50% 20%, rgba($color-bg-card, 0.6) 0%, transparent 60%),
-    linear-gradient(to bottom, $color-bg-card 0%, $color-bg-section-soft 45%, $color-bg-brand-muted 75%, $color-action-primary 100%);
-  background-attachment: fixed;
-
-border: 1px solid rgba($color-border-inverse, 0.6);
-border-color: rgba($color-border-inverse, 0.6) rgba($color-border-inverse, 0.2) rgba($color-border-inverse, 0.2);
-border-radius: 24px 0 0 24px;
-
-  box-shadow: 
-    -14px 0 48px rgba($color-bg-inverse, 0.08),
-    0 16px 32px rgba($color-bg-inverse, 0.06);
-    
+  flex-direction: column;
+  padding: $space-6 $space-5;
+  border: 0;
+  border-radius: 0 24px 24px 0;
+  background: linear-gradient(180deg, $color-bg-card 0 76%, $color-bg-brand-soft 100%);
+  box-shadow: 14px 0 38px rgba($color-bg-inverse, .16);
+  contain: layout paint;
+  overscroll-behavior: contain;
+  will-change: transform;
 }
 
-/* Top avatar, sign-in, and close control */
 .mobile-nav-top {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: $space-3;
-  min-height: 3.5rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid rgba($color-border-dark, 0.07);
+  min-height: 4rem;
+  padding-bottom: $space-5;
+  border-bottom: 1px solid $color-border-default;
 }
 
 .mobile-nav-avatar {
   position: relative;
   display: grid;
-  width: 3.1rem;
-  height: 3.1rem;
-  place-items: center;
-  border-radius: $radius-round;
-  background: rgba($color-bg-brand, 0.12);
-  color: $color-text-brand;
+  width: 3.4rem;
+  height: 3.4rem;
   flex-shrink: 0;
-  transition: transform $transition-fast;
-
-  &:active {
-    transform: scale(0.96);
-  }
-}
-
-.mobile-nav-signin {
-  color: $color-text-heading;
-  font-size: 1.0625rem;
-  font-weight: $font-weight-semibold;
-  text-decoration: none;
+  border-radius: $radius-round;
+  background: $color-bg-brand-soft;
+  color: $color-action-active;
+  place-items: center;
 }
 
 .mobile-nav-avatar--attention::after {
-  content: '';
   position: absolute;
-  top: $space-2;
-  right: $space-2;
-  width: 6px;
-  height: 6px;
-  border: 1px solid $color-bg-card;
+  top: 8px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid $color-bg-card;
   border-radius: $radius-round;
-  background: $color-bg-brand;
-  box-sizing: content-box;
+  background: $color-action-active;
+  content: '';
+}
+
+.mobile-nav-signin {
+  overflow: hidden;
+  color: $color-text-heading;
+  font-size: clamp(1rem, 4.5vw, 1.2rem);
+  font-weight: $font-weight-semibold;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mobile-nav-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-left: auto;
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
   padding: 0;
   border: 0;
   border-radius: $radius-round;
-  background: rgba($color-bg-inverse, 0.045);
+  background: $color-bg-section-soft;
   color: $color-text-heading;
   cursor: pointer;
-  transition:
-    color $transition-fast,
-    background $transition-fast,
-    transform $transition-fast;
-
-  &:hover,
-  &:focus-visible {
-    color: $color-text-brand;
-    background: rgba($color-bg-brand, 0.1);
-    transform: scale(1.06);
-  }
+  place-items: center;
+  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
 }
+.mobile-nav-close:hover,
+.mobile-nav-close:focus-visible { background: $color-bg-brand-soft; color: $color-action-active; transform: rotate(4deg); }
 
-/* 2. Links */
 .mobile-nav-list {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 2px;
   margin: 0;
-  padding: 0.5rem 0 0;
+  padding: $space-4 0;
   list-style: none;
-  flex: 1;
 }
-
-.mobile-nav-item {
-  width: 100%;
-}
+.mobile-nav-list--account { border-top: 1px solid $color-border-default; }
+.mobile-nav-item,
+.mobile-nav-list li { width: 100%; list-style: none; }
 
 .mobile-nav-link {
   display: flex;
+  width: 100%;
+  min-height: 3.35rem;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  min-height: 3.5rem;
-  padding: 0 $space-4;
-  border-radius: 12px;
+  padding: 0 $space-3;
+  border: 0;
+  border-radius: $radius-md;
+  background: transparent;
   color: $color-text-heading;
-  font-size: 1.05rem;
+  font: inherit;
+  font-size: 1rem;
   font-weight: $font-weight-medium;
+  text-align: left;
   text-decoration: none;
-  background: none;
-  border: none;
   cursor: pointer;
-  transition:
-    color $transition-fast,
-    background $transition-fast,
-    transform $transition-fast;
-
-  &:hover,
-  &:focus-visible {
-    color: $color-text-brand;
-    background: rgba($color-bg-brand, 0.09);
-    transform: translateX(3px);
-  }
-
-  &:active {
-    transform: translateX(1px) scale(0.99);
-  }
-
-  &.has-dropdown .desktop-nav-chevron {
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  &.has-dropdown.is-open .desktop-nav-chevron {
-    transform: rotate(180deg);
-  }
+  transition: color 150ms ease, background 150ms ease, transform 150ms ease;
 }
 
-/* Accordion submenu */
+.mobile-nav-link__label { display: inline-flex; min-width: 0; align-items: center; gap: $space-4; }
+.mobile-nav-link__label svg { flex: 0 0 auto; color: $color-action-active; stroke-width: 1.8; }
+.mobile-nav-link:hover,
+.mobile-nav-link:focus-visible,
+.mobile-nav-link.is-active { background: $color-bg-brand-soft; color: $color-action-active; transform: translateX(2px); }
+.mobile-nav-link:disabled { opacity: .55; cursor: wait; }
+
+.mobile-nav-chevron { flex: 0 0 auto; transition: transform 160ms ease; }
+.mobile-nav-link.is-open .mobile-nav-chevron { transform: rotate(180deg); }
+
 .mobile-nav-submenu {
   overflow: hidden;
   margin: 0;
-  padding: 0.1rem 0 0.4rem;
+  padding: 0 0 $space-2;
   list-style: none;
 }
-
 .mobile-nav-sublink {
   display: flex;
+  min-height: 2.5rem;
   align-items: center;
-  min-height: 2.9rem;
-  padding: 0.45rem $space-5 0.45rem 2.5rem;
-  margin: 1px 0;
-  border-radius: 10px;
-  color: $color-text-heading;
-  font-size: $font-size-base;
-  font-weight: $font-weight-medium;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
   text-decoration: none;
-  transition:
-    color $transition-fast,
-    background $transition-fast,
-    transform $transition-fast;
-
-  &:hover,
-  &:focus-visible {
-    color: $color-text-brand;
-    background: rgba($color-bg-brand, 0.07);
-    transform: translateX(3px);
-  }
+  transition: color 140ms ease, background 140ms ease;
 }
+.mobile-nav-sublink:hover,
+.mobile-nav-sublink:focus-visible { background: $color-bg-brand-soft; color: $color-action-active; }
 
-/* 3. Favourites footer */
 .mobile-nav-footer {
   margin-top: auto;
   padding-top: $space-4;
-  border-top: 1px solid rgba($color-border-dark, 0.07);
+  border-top: 1px solid $color-border-default;
 }
 
-.mobile-nav-fav {
-  gap: 0.65rem;
-  justify-content: flex-start;
+@media (max-width: 359px) {
+  .mobile-nav { width: 86vw; min-width: 0; padding-inline: $space-4; }
+  .mobile-nav-link__label { gap: $space-3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav,
+  .mobile-nav-overlay,
+  .mobile-nav * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }

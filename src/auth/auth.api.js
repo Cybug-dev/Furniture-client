@@ -1,4 +1,5 @@
 import api from '../api/client.js';
+import { authResult, getAccessToken, getAuthClient, invalidateAuthRequests } from './auth.client.js';
 
 const readUser = (response) => {
   const user = response.data?.data?.user;
@@ -11,24 +12,25 @@ const readUser = (response) => {
 };
 
 export const registerUser = async ({ email, password, firstName, lastName }) => {
-  const response = await api.post('/auth/register', {
-    email,
+  const result = await authResult(getAuthClient().signUp.email({
+    email: email.trim().toLowerCase(),
     password,
-    ...(firstName ? { firstName } : {}),
-    ...(lastName ? { lastName } : {}),
-  });
-
-  return readUser(response);
+    name: [firstName, lastName].filter(Boolean).join(' ').trim(),
+  }));
+  invalidateAuthRequests();
+  return result?.user;
 };
 
 export const loginUser = async ({ email, password }) => {
-  const response = await api.post('/auth/login', { email, password });
-
-  return readUser(response);
+  await authResult(getAuthClient().signIn.email({ email: email.trim().toLowerCase(), password }));
+  invalidateAuthRequests();
+  // Do not report login success until the backend accepts the Neon identity.
+  return readUser(await api.get('/auth/me', { requiresAuth: true }));
 };
 
 export const getCurrentUser = async () => {
   try {
+    await getAccessToken();
     const response = await api.get('/auth/me', { requiresAuth: true });
 
     return readUser(response);
@@ -42,7 +44,35 @@ export const getCurrentUser = async () => {
 };
 
 export const logoutUser = async () => {
-  const response = await api.post('/auth/logout');
+  try {
+    return await authResult(getAuthClient().signOut());
+  } finally {
+    invalidateAuthRequests();
+  }
+};
 
-  return response.data;
+export const verifyEmail = async ({ email, otp }) => {
+  await authResult(getAuthClient().emailOtp.verifyEmail({ email, otp }));
+  invalidateAuthRequests();
+  return getCurrentUser();
+};
+
+export const resendVerification = ({ email }) => authResult(
+  getAuthClient().emailOtp.sendVerificationOtp({ email, type: 'email-verification' }),
+);
+
+export const requestPasswordReset = ({ email }) => authResult(
+  getAuthClient().emailOtp.requestPasswordReset({
+    email: email.trim().toLowerCase(),
+  }),
+);
+
+export const resetPassword = async ({ email, otp, password }) => {
+  const result = await authResult(getAuthClient().emailOtp.resetPassword({
+    email: email.trim().toLowerCase(),
+    otp: otp.trim(),
+    password,
+  }));
+  invalidateAuthRequests();
+  return result;
 };

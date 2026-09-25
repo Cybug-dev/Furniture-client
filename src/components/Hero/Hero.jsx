@@ -1,18 +1,12 @@
 import { useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Leaf, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Headset, ShieldCheck, Truck } from 'lucide-react';
 import { Link } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Autoplay, Keyboard } from 'swiper/modules';
 import 'swiper/css';
-import { heroBenefits, heroSlides } from './hero.data.js';
+import { heroSlides } from './hero.data.js';
 import './Hero.scss';
-
-const benefitIcons = {
-  delivery: Truck,
-  materials: Leaf,
-  payment: ShieldCheck,
-};
 
 const contentVariants = {
   hidden: { opacity: 0 },
@@ -21,6 +15,25 @@ const contentVariants = {
     transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
   },
 };
+
+const heroServices = [
+  { id: 'shipping', title: 'Free Shipping', description: 'Over ₦100,000', icon: Truck },
+  { id: 'payments', title: 'Secure Payments', description: '100% Safe', icon: ShieldCheck },
+  { id: 'support', title: 'Dedicated Support', description: "We're here to help", icon: Headset },
+];
+
+function HeroServices({ className = '' }) {
+  return (
+    <div className={`hero__services ${className}`} aria-label="Store services">
+      {heroServices.map(({ id, title, description, icon: Icon }) => (
+        <div className="hero__service" key={id}>
+          <span className="hero__service-icon"><Icon size={20} aria-hidden="true" /></span>
+          <span><strong>{title}</strong><small>{description}</small></span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function HeroSlide({ slide, index, isActive, reducedMotion }) {
   const Heading = index === 0 ? 'h1' : 'h2';
@@ -48,8 +61,8 @@ function HeroSlide({ slide, index, isActive, reducedMotion }) {
         animate={isActive || reducedMotion ? 'visible' : 'hidden'}
       >
         <p className="hero__eyebrow">
+          <ShieldCheck size={15} aria-hidden="true" />
           <span>{slide.eyebrow}</span>
-          <span className="hero__eyebrow-line" aria-hidden="true" />
         </p>
 
         <Heading id={`hero-heading-${slide.id}`} className="hero__heading">
@@ -58,9 +71,16 @@ function HeroSlide({ slide, index, isActive, reducedMotion }) {
 
         <p className="hero__description">{slide.description}</p>
 
-        <Link to={slide.ctaHref} className="hero__cta" tabIndex={isActive ? 0 : -1}>
-          {slide.ctaLabel}
-        </Link>
+        <div className="hero__actions">
+          <Link to={slide.ctaHref} className="hero__cta hero__cta--primary" tabIndex={isActive ? 0 : -1}>
+            {slide.ctaLabel}<ArrowRight size={19} aria-hidden="true" />
+          </Link>
+          <Link to="/shop" className="hero__cta hero__cta--secondary" tabIndex={isActive ? 0 : -1}>
+            Explore Collections
+          </Link>
+        </div>
+
+        <HeroServices className="hero__services--desktop" />
       </motion.div>
     </article>
   );
@@ -87,7 +107,6 @@ export default function Hero() {
   };
 
   return (
-    <>
       <section
         className="hero"
         aria-label="Featured furniture collections"
@@ -127,63 +146,32 @@ export default function Hero() {
           ))}
         </Swiper>
 
-        <div className="hero__counter" aria-hidden="true">
-          <span>{String(activeIndex + 1).padStart(2, '0')}</span>
-          <span className="hero__counter-line" />
-          <span>{String(heroSlides.length).padStart(2, '0')}</span>
+        <div className="hero__controls">
+          <button className="hero__nav" type="button" aria-label="Show previous collection" onClick={() => swiperRef.current?.slidePrev()}>
+            <ChevronLeft size={20} aria-hidden="true" />
+          </button>
+          <div className="hero__dots" role="group" aria-label="Choose a featured collection">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.id}
+                className={`hero__dot${activeIndex === index ? ' is-active' : ''}`}
+                type="button"
+                aria-label={`Show slide ${index + 1} of ${heroSlides.length}`}
+                aria-current={activeIndex === index ? 'true' : undefined}
+                onClick={() => goToSlide(index)}
+              />
+            ))}
+          </div>
+          <button className="hero__nav" type="button" aria-label="Show next collection" onClick={() => swiperRef.current?.slideNext()}>
+            <ChevronRight size={20} aria-hidden="true" />
+          </button>
         </div>
 
-        <button
-          className="hero__nav hero__nav--previous"
-          type="button"
-          aria-label="Show previous collection"
-          onClick={() => swiperRef.current?.slidePrev()}
-        >
-          <ChevronLeft aria-hidden="true" />
-        </button>
-        <button
-          className="hero__nav hero__nav--next"
-          type="button"
-          aria-label="Show next collection"
-          onClick={() => swiperRef.current?.slideNext()}
-        >
-          <ChevronRight aria-hidden="true" />
-        </button>
-
-        <div className="hero__dots" role="group" aria-label="Choose a featured collection">
-          {heroSlides.map((slide, index) => (
-            <button
-              key={slide.id}
-              className={`hero__dot${activeIndex === index ? ' is-active' : ''}`}
-              type="button"
-              aria-label={`Show slide ${index + 1} of ${heroSlides.length}`}
-              aria-current={activeIndex === index ? 'true' : undefined}
-              onClick={() => goToSlide(index)}
-            />
-          ))}
-        </div>
+        <HeroServices className="hero__services--mobile" />
 
         <span className="hero__status" aria-live="polite">
           Slide {activeIndex + 1} of {heroSlides.length}
         </span>
       </section>
-
-      <aside className="hero-benefits" aria-label="Shopping benefits">
-        <div className="hero-benefits__inner">
-          {heroBenefits.map((benefit) => {
-            const Icon = benefitIcons[benefit.id];
-            return (
-              <div className="hero-benefits__item" key={benefit.id}>
-                <Icon className="hero-benefits__icon" aria-hidden="true" />
-                <span>
-                  <strong>{benefit.title}</strong>
-                  <small>{benefit.description}</small>
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </aside>
-    </>
   );
 }

@@ -1,273 +1,111 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router';
-import { Heart, Repeat2, Share2 } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { getProducts } from '../../api/api.js';
+import ProductCard from './ProductCard.jsx';
+import ProductNotice from './ProductNotice.jsx';
+import { PRODUCT_CATEGORIES } from './product-categories.js';
 import './Products.scss';
 
-const PAGE_SIZE = 8;
+const MOCK_MATERIAL_FILTERS = ['Wood', 'Fabric', 'Metal', 'Leather'];
 
-// Accept both the originally documented shape and the live API shape from
-// Swagger. The live endpoint returns { data: [...], pagination: {...} }.
 function normalizeProductsResponse(response, requestedPage) {
-  const documentedPayload = response?.data && !Array.isArray(response.data) ? response.data : null;
-  const livePagination = response?.pagination || {};
-
+  const documented = response?.data && !Array.isArray(response.data) ? response.data : null;
+  const pagination = response?.pagination || {};
   if (Array.isArray(response?.data)) {
-    return {
-      items: response.data,
-      page: livePagination.page ?? requestedPage,
-      total: livePagination.totalProducts ?? response.data.length,
-      pages: livePagination.totalPages ?? 1,
-    };
+    return { items: response.data, page: pagination.page ?? requestedPage, total: pagination.totalProducts ?? response.data.length, pages: pagination.totalPages ?? 1 };
   }
-
-  return {
-    items: Array.isArray(documentedPayload?.items) ? documentedPayload.items : [],
-    page: documentedPayload?.page ?? requestedPage,
-    total: documentedPayload?.total ?? 0,
-    pages: documentedPayload?.pages ?? 1,
-  };
+  return { items: Array.isArray(documented?.items) ? documented.items : [], page: documented?.page ?? requestedPage, total: documented?.total ?? 0, pages: documented?.pages ?? 1 };
 }
 
-// Format Decimal-as-string prices for display only. Pricing math should remain
-// on the backend so the UI never becomes the source of truth for money values.
-function formatPrice(value) {
-  const amount = Number(value);
-
-  if (!Number.isFinite(amount)) {
-    return '$0';
-  }
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-// Pick the most intentional image first, then fall back through the API's
-// ordering hints before giving the card a CSS-only placeholder.
-function getPrimaryImage(images = []) {
-  if (!Array.isArray(images) || images.length === 0) {
-    return null;
-  }
-
-  return images.find((image) => image.isPrimary) || images.find((image) => image.position === 0) || images[0];
-}
-
-function ProductCard({ product }) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const primaryImage = useMemo(() => getPrimaryImage(product.images), [product.images]);
-  const hasImage = primaryImage?.url && !imageFailed;
-  const currentPrice = Number(product.price);
-  const originalPrice = Number(product.compareAtPrice);
-  const hasDiscount =
-    product.compareAtPrice &&
-    Number.isFinite(currentPrice) &&
-    Number.isFinite(originalPrice) &&
-    originalPrice > currentPrice;
-  const discountPercent = hasDiscount ? Math.round((1 - currentPrice / originalPrice) * 100) : 0;
-
-  const handleAddToCart = () => {
-    // TODO: wire to cart endpoint once available.
-  };
-
-  const handleShare = () => {
-    // TODO: wire to share/deep-link behavior once product routes are finalized.
-  };
-
-  const handleCompare = () => {
-    // TODO: wire to compare endpoint once available.
-  };
-
-  const handleLike = () => {
-    // TODO: wire to wishlist endpoint once available.
-  };
-
+function FilterContent({ category, selectCategory, includeMocks, unavailable }) {
   return (
-    <Link to={`/products/${product.id}`} className="products-card products-card--link" aria-label={`View details for ${product.name}`}>
-      <article className="products-card__article">
-        <div className="products-card__media">
-          {hasDiscount ? <span className="products-card__badge">-{discountPercent}%</span> : null}
-
-          {hasImage ? (
-            <img
-              src={primaryImage.url}
-              alt={primaryImage.altText || product.name}
-              loading="lazy"
-              decoding="async"
-              onError={() => setImageFailed(true)}
-            />
-          ) : (
-            <div className="products-card__placeholder" aria-label={`${product.name} image unavailable`} role="img" />
-          )}
-
-          <div className="products-card__overlay">
-            <button
-              className="products-card__cart"
-              type="button"
-              onClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                handleAddToCart();
-              }}
-            >
-              Add to cart
-            </button>
-            <div className="products-card__actions" aria-label={`${product.name} quick actions`}>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  handleShare();
-                }}
-                aria-label={`Share ${product.name}`}
-              >
-                <Share2 size={18} aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  handleCompare();
-                }}
-                aria-label={`Compare ${product.name}`}
-              >
-                <Repeat2 size={18} aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  handleLike();
-                }}
-                aria-label={`Like ${product.name}`}
-              >
-                <Heart size={18} aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="products-card__body">
-          {/* New badge intentionally omitted pending a backend field. */}
-          <h3>{product.name}</h3>
-          <p>{product.shortDescription}</p>
-          <div className="products-card__prices">
-            <span className="products-card__price">{formatPrice(product.price)}</span>
-            {hasDiscount ? <span className="products-card__compare">{formatPrice(product.compareAtPrice)}</span> : null}
-          </div>
-        </div>
-      </article>
-    </Link>
+    <div className="products-filters">
+      <section><h3>Categories <ChevronDown size={14} aria-hidden="true" /></h3>{PRODUCT_CATEGORIES.map((item) => <button key={item.label} type="button" className={category === item.value ? 'is-active' : ''} onClick={() => selectCategory(item.value)}>{item.label}</button>)}</section>
+      {includeMocks && <>
+        <section className="products-filters__price"><h3>Price Range <ChevronDown size={14} aria-hidden="true" /></h3><button type="button" onClick={() => unavailable('Price filtering has not been added yet.')} aria-label="Price range filtering is coming soon"><span className="products-filters__range" aria-hidden="true"><i /><i /></span><span className="products-filters__range-labels"><b>₦0</b><b>₦1,500,000+</b></span></button></section>
+        <section><h3>Material <ChevronDown size={14} aria-hidden="true" /></h3>{MOCK_MATERIAL_FILTERS.map((label) => <button className="products-filters__mock" type="button" key={label} onClick={() => unavailable('Material filtering has not been added yet.')}><span aria-hidden="true" />{label}</button>)}</section>
+      </>}
+    </div>
   );
 }
 
-export default function Products() {
+export default function Products({ variant = 'section', initialCategory = '', onCategoryChange }) {
+  const isShop = variant === 'shop';
+  const pageSize = isShop ? 16 : 15;
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(1);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [category, setCategory] = useState(initialCategory);
+  const [sort, setSort] = useState('featured');
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [error, setError] = useState('');
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [notice, setNotice] = useState(null);
 
-  // One loader handles both the initial page and later pagination so the API
-  // response remains the only source for page, total, and pages metadata.
-  const loadProducts = async ({ nextPage = 1, append = false } = {}) => {
-    if (append) {
-      setIsLoadingMore(true);
-    } else {
-      setIsInitialLoading(true);
-    }
+  const showNotice = useCallback((nextNotice) => setNotice({ ...nextNotice, id: Date.now() }), []);
+  const closeNotice = useCallback(() => setNotice(null), []);
+  const unavailable = useCallback((message) => showNotice({ type: 'info', message }), [showNotice]);
 
+  useEffect(() => { setCategory(initialCategory); }, [initialCategory]);
+
+  const selectCategory = useCallback((value) => {
+    setCategory(value);
+    setFiltersOpen(false);
+    onCategoryChange?.(value);
+  }, [onCategoryChange]);
+
+  const loadProducts = useCallback(async ({ nextPage = 1, append = false } = {}) => {
+    if (append) setLoadingMore(true); else setLoading(true);
     setError('');
-
     try {
-      const response = await getProducts({ page: nextPage, limit: PAGE_SIZE });
+      const response = await getProducts({ page: nextPage, limit: pageSize, ...(category ? { category } : {}) });
       const payload = normalizeProductsResponse(response, nextPage);
-
-      setItems((currentItems) => (append ? [...currentItems, ...payload.items] : payload.items));
+      setItems((current) => append ? [...current, ...payload.items] : payload.items);
       setPage(payload.page);
       setTotal(payload.total);
       setPages(payload.pages);
-      setHasLoaded(true);
-    } catch (fetchError) {
-      setError(fetchError?.message || 'Unable to load products. Please try again.');
+    } catch (requestError) {
+      setError(requestError?.message || 'Unable to load products. Please try again.');
     } finally {
-      setIsInitialLoading(false);
-      setIsLoadingMore(false);
+      setLoading(false);
+      setLoadingMore(false);
     }
-  };
+  }, [category, pageSize]);
 
-  useEffect(() => {
-    loadProducts({ nextPage: 1, append: false });
-  }, []);
+  useEffect(() => { loadProducts(); }, [loadProducts]);
 
-  const handleRetry = () => {
-    const hasExistingProducts = items.length > 0;
+  const sortedItems = useMemo(() => {
+    const next = [...items];
+    if (sort === 'price-low') next.sort((a, b) => Number(a.price) - Number(b.price));
+    if (sort === 'price-high') next.sort((a, b) => Number(b.price) - Number(a.price));
+    if (sort === 'name') next.sort((a, b) => a.name.localeCompare(b.name));
+    return next;
+  }, [items, sort]);
 
-    loadProducts({
-      nextPage: hasExistingProducts ? page + 1 : 1,
-      append: hasExistingProducts,
-    });
-  };
-
-  const handleShowMore = () => {
-    if (!isLoadingMore && page < pages) {
-      loadProducts({ nextPage: page + 1, append: true });
-    }
-  };
-
-  const canShowMore = page < pages;
+  const sortControl = <label className="products__sort">Sort by:<select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Best selling</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name</option></select></label>;
+  const grid = <>
+    {loading && <div className="products__grid" aria-label="Loading products">{Array.from({ length: pageSize }).map((_, index) => <div className="products-card products-card--skeleton" key={index} />)}</div>}
+    {!loading && error && <div className="products__message products__message--error" role="alert"><span>{error}</span><button type="button" onClick={() => loadProducts()}>Retry</button></div>}
+    {!loading && !error && sortedItems.length === 0 && <p className="products__message">No products found in this category.</p>}
+    {!loading && sortedItems.length > 0 && <><div className="products__grid">{sortedItems.map((product) => <ProductCard key={product.id || product.slug} product={product} onNotice={showNotice} />)}</div>{page < pages && <button className="products__show-more" type="button" onClick={() => loadProducts({ nextPage: page + 1, append: true })} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Show More'}</button>}</>}
+  </>;
 
   return (
-    <section id="products" className="products" aria-labelledby="products-title">
-      <div className="products__header">
-        <h2 id="products-title">Products</h2>
-        {total > 0 ? <p>{total} curated pieces available</p> : null}
+    <section id="products" className={`products products--${variant}`} aria-labelledby="products-title">
+      <div className="products__inner">
+        {!isShop && <header className="products__heading"><div><h2 id="products-title">Products</h2><p>Discover quality furniture for every space.</p></div>{sortControl}</header>}
+        {!isShop && <div className="products__toolbar"><div className="products__categories" aria-label="Product categories">{PRODUCT_CATEGORIES.map((item) => <button key={item.label} type="button" className={category === item.value ? 'is-active' : ''} onClick={() => selectCategory(item.value)}>{item.label.replace(' Products', '')}</button>)}</div><button className="products__filter" type="button" onClick={() => setFiltersOpen(true)}><SlidersHorizontal size={17} /> Filters</button></div>}
+
+        {isShop ? <div className="products__shop-layout">
+          <aside className="products__sidebar" aria-label="Product filters"><FilterContent category={category} selectCategory={selectCategory} includeMocks unavailable={unavailable} /></aside>
+          <div className="products__catalog"><div className="products__catalog-toolbar"><button className="products__filter products__filter--mobile" type="button" onClick={() => setFiltersOpen(true)}><SlidersHorizontal size={16} /> Filters</button><strong id="products-title">{total} products found</strong>{sortControl}</div>{grid}</div>
+        </div> : <><div className="products__result-row"><strong>{total ? `${total} products found` : 'Products'}</strong></div>{grid}</>}
       </div>
 
-      {isInitialLoading ? (
-        <div className="products__grid" aria-label="Loading products">
-          {Array.from({ length: PAGE_SIZE }).map((_, index) => (
-            <div className="products-card products-card--skeleton" key={index} />
-          ))}
-        </div>
-      ) : null}
-
-      {!isInitialLoading && error ? (
-        <div className="products__message products__message--error" role="alert">
-          <span>{error}</span>
-          <button type="button" onClick={handleRetry}>
-            Retry
-          </button>
-        </div>
-      ) : null}
-
-      {!isInitialLoading && !error && hasLoaded && items.length === 0 ? (
-        <p className="products__message">No products found</p>
-      ) : null}
-
-      {!isInitialLoading && items.length > 0 ? (
-        <>
-          <div className="products__grid">
-            {items.map((product) => (
-              <ProductCard key={product.id || product.slug} product={product} />
-            ))}
-          </div>
-
-          {canShowMore && !error ? (
-            <button className="products__show-more" type="button" onClick={handleShowMore} disabled={isLoadingMore}>
-              {isLoadingMore ? 'Loading...' : 'Show More'}
-            </button>
-          ) : null}
-        </>
-      ) : null}
+      <div className={`products-drawer${filtersOpen ? ' is-open' : ''}`} role="dialog" aria-modal={filtersOpen || undefined} aria-hidden={!filtersOpen} inert={!filtersOpen ? '' : undefined} aria-label="Product filters"><button className="products-drawer__backdrop" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)} /><aside><header><h2>Filters</h2><button type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={20} /></button></header><FilterContent category={category} selectCategory={selectCategory} includeMocks unavailable={unavailable} /></aside></div>
+      <ProductNotice notice={notice} onClose={closeNotice} />
     </section>
   );
 }

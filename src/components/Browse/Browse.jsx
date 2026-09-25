@@ -57,6 +57,19 @@ const categories = [
   },
 ];
 
+const categoryRoutes = {
+  'Living Room': 'sofas',
+  Bedroom: 'beds',
+  Dining: 'tables',
+  Office: 'chairs',
+  Storage: 'storage',
+  Outdoor: 'chairs',
+  Sofas: 'sofas',
+  Chairs: 'chairs',
+  Tables: 'tables',
+  Lighting: 'lamps',
+};
+
 export default function Browse() {
   const carouselRef = useRef(null);
   const [canScroll, setCanScroll] = useState({ previous: false, next: false });
@@ -132,7 +145,7 @@ export default function Browse() {
           tabIndex={0}
         >
           {categories.map((category) => (
-            <Link className="browse__card" to="/shop" key={category.name}>
+            <Link className="browse__card" to={`/shop?category=${categoryRoutes[category.name]}`} key={category.name}>
               <span className="browse__image">
                 <img src={category.image} alt={category.alt} loading="lazy" decoding="async" />
               </span>

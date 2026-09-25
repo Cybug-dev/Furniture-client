@@ -1,25 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Truck } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { useHeader } from './useHeader';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
+import menuIconImg from '../../assets/images/menu-icon.png';
 import { useCurrentUser } from '../../auth/auth.hooks.js';
+import AccountActions from '../../commerce/components/AccountActions';
+import { useCart } from '../../commerce/commerce.hooks.js';
+import { cartCount } from '../../commerce/commerce.utils.js';
 
 /* Icons used only by the header shell / actions */
-function UserIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8c0-3.314 3.134-6 7-6s7 2.686 7 6"
-      />
-    </svg>
-  );
-}
 
 function SearchIcon() {
   return (
@@ -52,20 +46,6 @@ function CloseIcon() {
   );
 }
 
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        d="M12 20s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9Z"
-      />
-    </svg>
-  );
-}
-
 function CartIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
@@ -84,26 +64,12 @@ function CartIcon() {
 }
 
 function MenuIcon({ open }) {
-  return (
+  return open ? (
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-      {open ? (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M5 5l14 14M19 5 5 19"
-        />
-      ) : (
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          d="M4 7h16M4 12h16M4 17h16"
-        />
-      )}
+      <path fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" d="M5 5l14 14M19 5 5 19" />
     </svg>
+  ) : (
+    <img className="header-menu-icon" src={menuIconImg} alt="" aria-hidden="true" />
   );
 }
 
@@ -137,6 +103,15 @@ const itemVariants = {
 export default function Header() {
   const { data: currentUser, isPending: isAuthPending } = useCurrentUser();
   const showAccountAttention = !isAuthPending && !currentUser;
+  const cart = useCart();
+  const cartItemCount = currentUser ? cartCount(cart.data) : 0;
+  const utilityMessages = [
+    { id: 'shipping', label: 'Free shipping on orders over ₦100,000', icon: true },
+    { id: 'tracking', label: 'Track your order', to: '/orders' },
+    { id: 'help', label: 'Need help? Contact us', to: '/contact' },
+    ...(!currentUser ? [{ id: 'auth', label: 'Login / Sign Up', to: '/auth' }] : []),
+  ];
+  const [utilityMessageIndex, setUtilityMessageIndex] = useState(0);
   const {
     isMenuOpen,
     toggleMenu,
@@ -153,8 +128,17 @@ export default function Header() {
     toggleDropdown,
     closeDropdown,
     isScrolled,
-    cartItemCount,
   } = useHeader();
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setUtilityMessageIndex((current) => (current + 1) % utilityMessages.length);
+    }, 3500);
+
+    return () => window.clearInterval(timer);
+  }, [utilityMessages.length]);
+
+  const activeUtilityMessage = utilityMessages[utilityMessageIndex] ?? utilityMessages[0];
 
   return (
     <>
@@ -164,7 +148,52 @@ export default function Header() {
         initial="hidden"
         animate="visible"
       >
+        <div className="header-utility">
+          <div className="header-utility__inner">
+            <p className="header-utility__shipping">
+              <Truck size={14} strokeWidth={1.8} aria-hidden="true" />
+              <span>Free shipping on orders over ₦100,000</span>
+            </p>
+            <nav className="header-utility__links" aria-label="Customer assistance">
+              <Link to="/orders">Track Order</Link>
+              <Link to="/contact">Help</Link>
+              {!currentUser && <Link to="/auth">Login / Sign Up</Link>}
+            </nav>
+            <div className="header-utility__mobile" aria-live="polite">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeUtilityMessage.id}
+                  className="header-utility__mobile-message"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {activeUtilityMessage.icon && (
+                    <Truck size={14} strokeWidth={1.8} aria-hidden="true" />
+                  )}
+                  {activeUtilityMessage.to ? (
+                    <Link to={activeUtilityMessage.to}>{activeUtilityMessage.label}</Link>
+                  ) : (
+                    <span>{activeUtilityMessage.label}</span>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
         <div className="header-container">
+          <button
+            type="button"
+            className="header-menu-toggle"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="primary-navigation"
+            onClick={toggleMenu}
+          >
+            <MenuIcon open={isMenuOpen} />
+          </button>
+
           {/* Logo */}
           <motion.a
             href="/"
@@ -185,15 +214,6 @@ export default function Header() {
 
           {/* Actions */}
           <motion.div className="header-actions" variants={itemVariants}>
-            <Link
-              to="/auth"
-              className={`header-icon-btn header-desktop-only header-account${showAccountAttention ? ' header-account--attention' : ''}`}
-              aria-label={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
-              title={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
-            >
-              <UserIcon />
-            </Link>
-
             <button
               type="button"
               className="header-icon-btn"
@@ -205,38 +225,22 @@ export default function Header() {
               <SearchIcon />
             </button>
 
-            <button
-              type="button"
-              className="header-icon-btn header-desktop-only"
-              aria-label="Wishlist"
-            >
-              <HeartIcon />
-            </button>
+            <AccountActions />
 
-            <button
-              type="button"
+            <Link
+              to="/cart"
               className="header-icon-btn header-cart-btn"
               aria-label={`Cart, ${cartItemCount} items`}
             >
               <CartIcon />
               {cartItemCount > 0 && (
                 <span className="header-cart-badge" aria-hidden="true">
-                  {cartItemCount}
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
                 </span>
               )}
-            </button>
+            </Link>
 
             {/* Hamburger – mobile only */}
-            <button
-              type="button"
-              className="header-menu-toggle"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="primary-navigation"
-              onClick={toggleMenu}
-            >
-              <MenuIcon open={isMenuOpen} />
-            </button>
           </motion.div>
         </div>
       </motion.header>

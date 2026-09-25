@@ -1,0 +1,27 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+.account-actions { position: relative; display: flex; align-items: center; justify-content: center;
+  &__popover { position: absolute; top: calc(100% + #{$space-2}); right: 0; width: 190px; padding: $space-2; background: $color-bg-card; border: 1px solid $color-border-default; border-radius: $radius-md; box-shadow: $shadow-floating;
+    a, button { display: flex; align-items: center; width: 100%; min-height: $control-size-md; padding: $space-3; font: inherit; font-size: $font-size-sm; color: $color-text-heading; background: transparent; border: 0; text-decoration: none; cursor: pointer;
+      &:hover { background: $color-bg-brand-soft; } &:focus-visible { @include focus-visible; }
+    }
+  }
+}
+.checkout-reminder { position: fixed; right: $space-5; bottom: $space-5; z-index: $z-sticky; width: min(360px, calc(100vw - 32px)); padding: $space-5; border: 1px solid $color-border-strong; background: $color-bg-card; border-radius: $radius-lg; box-shadow: $shadow-floating; color: $color-text-heading; font: $font-size-sm $font-primary;
+  p { margin: 0 0 $space-4; line-height: $line-height-relaxed; }
+  div { display: flex; flex-wrap: wrap; gap: $space-4; align-items: center; }
+  a, button { min-height: $control-size-md; display: inline-flex; align-items: center; color: $color-action-active; font: inherit; }
+  button { border: 0; background: transparent; cursor: pointer; }
+}
+@media (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop - 1px}) {
+  .header .desktop-nav-list { gap: $space-4; }
+  .header .header-actions { gap: $space-3; }
+}
+@media (max-width: $breakpoint-mobile) {
+  .header-container { padding-inline: $space-4; gap: $space-2; }
+  .header-actions { gap: 0; }
+  .header-logo-text { font-size: $font-size-xl; }
+  .header--scrolled .header-logo-text { font-size: $font-size-lg; }
+  .header-actions .header-icon-btn, .header-actions .header-menu-toggle { width: $control-size-md; height: $control-size-md; }
+  .checkout-reminder { right: $space-4; bottom: $space-4; }
+}

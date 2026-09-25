@@ -1,0 +1,169 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { createServer } from 'vite';
+import { AxiosError } from 'axios';
+
+process.env.VITE_API_URL = 'https://furniture.example.test/api';
+process.env.VITE_NEON_AUTH_URL = 'https://auth.example.test/neondb/auth';
+const server = await createServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom', logLevel: 'error' });
+const load = (path) => server.ssrLoadModule(`/src/${path}`);
+const auth = await load('auth/auth.api.js');
+const { getPasswordPolicyError, getPasswordStrength } = await load('auth/password.policy.js');
+const {
+  getVerificationResendState,
+  noteInitialVerificationCode,
+  recordVerificationResend,
+} = await load('auth/verification-resend.policy.js');
+const { validateLogin, validateRegistration } = await load('auth/auth.validation.js');
+const { authResult, getAccessToken, invalidateAuthRequests } = await load('auth/auth.client.js');
+const { default: api } = await load('api/client.js');
+const realFetch = globalThis.fetch;
+const calls = [];
+const apiCalls = [];
+const jwt = `${Buffer.from('{"alg":"EdDSA"}').toString('base64url')}.${Buffer.from(JSON.stringify({ sub: 'neon-user', exp: Math.floor(Date.now() / 1000) + 900 })).toString('base64url')}.signature`;
+const user = { id: 'neon-user', email: 'ada@example.test', emailVerified: true, name: 'Ada Test', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+const profile = { id: 'app-user', email: user.email, firstName: 'Ada', role: 'USER', emailVerified: true };
+const session = { user, session: { id: 'session', userId: user.id, token: jwt, expiresAt: new Date(Date.now() + 3600_000).toISOString(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } };
+let signedIn = false;
+let loginFailure = null;
+globalThis.fetch = async (url, init) => {
+  calls.push({ path: new URL(url).pathname, init });
+  const path = new URL(url).pathname;
+  if (path.endsWith('/sign-up/email')) return Response.json({ user: { ...user, emailVerified: false }, token: null });
+  if (path.endsWith('/sign-in/email')) {
+    if (loginFailure) return Response.json(loginFailure, { status: loginFailure.status });
+    signedIn = true;
+    return Response.json(session);
+  }
+  if (path.endsWith('/email-otp/verify-email')) { signedIn = true; return Response.json({ status: true, ...session }); }
+  if (path.endsWith('/email-otp/send-verification-otp')) return Response.json({ success: true });
+  if (path.endsWith('/email-otp/request-password-reset')) return Response.json({ success: true });
+  if (path.endsWith('/email-otp/reset-password')) return Response.json({ success: true });
+  if (path.endsWith('/get-session')) return Response.json(signedIn ? session : null);
+  if (path.endsWith('/sign-out')) { signedIn = false; return Response.json({ success: true }); }
+  throw new Error(`Unexpected auth request: ${path}`);
+};
+api.defaults.adapter = async (config) => {
+  apiCalls.push(config);
+  return { status: 200, headers: {}, config, data: { success: true, data: { user: profile } } };
+};
+try {
+  await test('registration password policy requires length, letters, numbers, and special characters', () => {
+    assert.equal(getPasswordPolicyError('Ab1!cdef'), null);
+    assert.match(getPasswordPolicyError('Ab1!'), /8–128/);
+    assert.match(getPasswordPolicyError('Abcdef12'), /special character/);
+    assert.equal(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Ab1!cdef', acceptedTerms: true }).password, undefined);
+    assert.ok(validateRegistration({ fullName: 'Ada Test', email: user.email, password: 'Abcdef12', acceptedTerms: true }).password);
+    assert.deepEqual(validateLogin({ email: user.email, password: 'old' }), {});
+    assert.match(
+      validateRegistration({ fullName: 'Ada Test', email: 'not-an-email', password: 'Ab1!cdef', acceptedTerms: true }).email,
+      /verification code/,
+    );
+  });
+  await test('password strength progresses without replacing the policy checks', () => {
+    assert.equal(getPasswordStrength('').level, 0);
+    assert.equal(getPasswordStrength('Pass1!').label, 'Weak');
+    assert.equal(getPasswordStrength('Maple!92').label, 'Meets requirements');
+    assert.equal(getPasswordStrength('cedar1!x').label, 'Meets requirements');
+    assert.equal(getPasswordStrength('Maple!River92').label, 'Strong');
+    assert.equal(getPasswordStrength('Maple!River92#Cedar').label, 'Very strong');
+  });
+  await test('verification resends enforce cooldown and a rolling three-request limit', () => {
+    const values = new Map();
+    const storage = {
+      getItem: (key) => values.get(key) ?? null,
+      setItem: (key, value) => values.set(key, value),
+      removeItem: (key) => values.delete(key),
+    };
+    const email = ' ADA@EXAMPLE.TEST ';
+    const start = 1_000_000;
+
+    noteInitialVerificationCode(email, { sentAt: start, storage });
+    assert.equal(getVerificationResendState(email, { now: start, storage }).remaining, 3);
+    assert.equal(getVerificationResendState(email, { now: start, storage }).canResend, false);
+
+    for (const offset of [61_000, 122_000, 183_000]) {
+      const before = getVerificationResendState(email, { now: start + offset, storage });
+      assert.equal(before.canResend, true);
+      recordVerificationResend(email, { now: start + offset, storage });
+    }
+
+    const limited = getVerificationResendState(email, { now: start + 244_000, storage });
+    assert.equal(limited.canResend, false);
+    assert.equal(limited.remaining, 0);
+    assert.ok(limited.retryAfterSeconds > 0);
+
+    const reopened = getVerificationResendState(email, { now: start + 362_000, storage });
+    assert.equal(reopened.canResend, true);
+    assert.equal(reopened.remaining, 1);
+  });
+  await test('guests and public catalogue requests do not need bearer credentials', async () => {
+    assert.equal(await auth.getCurrentUser(), null);
+    const before = calls.length;
+    await api.get('/products');
+    assert.equal(calls.length, before);
+    assert.equal(apiCalls.at(-1).headers.get('Authorization'), undefined);
+  });
+  await test('sign-up normalizes email, preserves password, and requests Neon registration', async () => {
+    const result = await auth.registerUser({ email: ' ADA@EXAMPLE.TEST ', password: 'Long test password 123', firstName: 'Ada', lastName: 'Test' });
+    assert.equal(result.emailVerified, false);
+    const call = calls.find((entry) => entry.path.endsWith('/sign-up/email'));
+    assert.equal(call.init.credentials, 'include');
+    assert.deepEqual(JSON.parse(call.init.body), { email: user.email, password: 'Long test password 123', name: 'Ada Test' });
+    assert.equal(apiCalls.some((call) => call.url === '/auth/register'), false);
+  });
+  await test('real SDK thrown errors retain invalid credentials and verification requirements', async () => {
+    loginFailure = { status: 401, code: 'INVALID_EMAIL_OR_PASSWORD', message: 'Invalid email or password' };
+    await assert.rejects(auth.loginUser({ email: user.email, password: 'wrong' }), (error) => error.status === 401 && error.type !== 'network');
+    loginFailure = { status: 403, code: 'EMAIL_NOT_VERIFIED', message: 'Email not verified' };
+    await assert.rejects(auth.loginUser({ email: user.email, password: 'correct' }), (error) => error.code === 'EMAIL_NOT_VERIFIED');
+    loginFailure = null;
+  });
+  await test('verification and resend use OTP methods and synchronize the application profile', async () => {
+    await auth.resendVerification({ email: user.email });
+    assert.deepEqual(JSON.parse(calls.at(-1).init.body), { email: user.email, type: 'email-verification' });
+    assert.deepEqual(await auth.verifyEmail({ email: user.email, otp: '123456' }), profile);
+  });
+  await test('password recovery requests and completes the Neon email OTP flow', async () => {
+    await auth.requestPasswordReset({ email: ' ADA@EXAMPLE.TEST ' });
+    assert.equal(calls.at(-1).path.endsWith('/email-otp/request-password-reset'), true);
+    assert.deepEqual(JSON.parse(calls.at(-1).init.body), { email: user.email });
+
+    await auth.resetPassword({ email: ' ADA@EXAMPLE.TEST ', otp: ' 654321 ', password: 'Maple!River92' });
+    assert.equal(calls.at(-1).path.endsWith('/email-otp/reset-password'), true);
+    assert.deepEqual(JSON.parse(calls.at(-1).init.body), {
+      email: user.email,
+      otp: '654321',
+      password: 'Maple!River92',
+    });
+  });
+  await test('login and concurrent protected requests use the Neon JWT without legacy refresh', async () => {
+    assert.deepEqual(await auth.loginUser({ email: user.email, password: 'Long test password 123' }), profile);
+    await Promise.all(Array.from({ length: 10 }, () => api.get('/cart', { requiresAuth: true })));
+    for (const call of apiCalls.filter((call) => call.requiresAuth)) assert.equal(call.headers.get('Authorization'), `Bearer ${jwt}`);
+    assert.equal(apiCalls.some((call) => call.url === '/auth/refresh' || call.url === '/auth/login'), false);
+    const first = getAccessToken();
+    assert.equal(getAccessToken(), first);
+    await first;
+    await assert.rejects(api.get('https://unrelated.example/cart', { requiresAuth: true }));
+  });
+  await test('API failures stay visible and do not replay writes or misreport a successful login', async () => {
+    api.defaults.adapter = async (config) => { throw new AxiosError('unavailable', 'ERR_BAD_RESPONSE', config, {}, { status: 503, data: {} }); };
+    await assert.rejects(auth.loginUser({ email: user.email, password: 'Long test password 123' }), (error) => error.status === 503 && error.type === 'server');
+  });
+  await test('logout invalidates pending credentials and protected requests require a new session', async () => {
+    const pending = getAccessToken();
+    invalidateAuthRequests();
+    await assert.rejects(pending, (error) => error.status === 401);
+    await auth.logoutUser();
+    assert.equal(await auth.getCurrentUser(), null);
+    await assert.rejects(getAccessToken(), (error) => error.status === 401);
+  });
+  await test('transport failure remains distinct from invalid credentials', async () => {
+    await assert.rejects(authResult(Promise.reject(new TypeError('fetch failed'))), (error) => error.type === 'network' && error.status === null);
+    await assert.rejects(authResult(Promise.resolve({ error: { status: 429 } })), (error) => error.status === 429);
+  });
+} finally {
+  globalThis.fetch = realFetch;
+  await server.close();
+}

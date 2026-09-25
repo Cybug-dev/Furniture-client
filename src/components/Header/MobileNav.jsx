@@ -1,200 +1,74 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router';
-import { NAV_LINKS, ChevronIcon } from './DesktopNav';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Bell, ChevronDown, Home, Leaf, LogOut, Mail, Package, ShoppingBag, UserRound, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { useCurrentUser, useLogout } from '../../auth/auth.hooks.js';
+import { NAV_LINKS } from './navLinks.js';
 import './MobileNav.scss';
 
-/* Local icons (no style leakage from DesktopNav) */
-function UserIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8c0-3.314 3.134-6 7-6s7 2.686 7 6"
-      />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        d="M5 5l14 14M19 5 5 19"
-      />
-    </svg>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        d="M12 20s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.65-9.5 9-9.5 9Z"
-      />
-    </svg>
-  );
-}
+const primaryIcons = { Home, Shop: ShoppingBag, About: Leaf, Contact: Mail };
 
 const drawerVariants = {
-  closed: {
-    x: '105%',
-    transition: { duration: 0.34, ease: [0.22, 1, 0.36, 1] },
-  },
-  open: {
-    x: 0,
-    transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
-  },
+  closed: { x: '-100%', transition: { duration: 0.16, ease: [0.4, 0, 1, 1] } },
+  open: { x: 0, transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const overlayVariants = {
-  closed: { opacity: 0, transition: { duration: 0.28 } },
-  open: { opacity: 1, transition: { duration: 0.32 } },
+  closed: { opacity: 0, transition: { duration: 0.12 } },
+  open: { opacity: 1, transition: { duration: 0.16 } },
 };
 
-/**
- * Completely independent fixed drawer + overlay.
- * Never participates in header layout → header height is unaffected.
- */
-export default function MobileNav({
-  isOpen,
-  showAccountAttention,
-  onClose,
-  openDropdown,
-  onToggleDropdown,
-  onCloseDropdown,
-}) {
+function userName(user) {
+  if (!user) return 'Sign in or create account';
+  return [user.firstName, user.lastName].filter(Boolean).join(' ').trim()
+    || user.name
+    || user.email?.split('@')[0]
+    || 'Your account';
+}
+
+export default function MobileNav({ isOpen, showAccountAttention, onClose, openDropdown, onToggleDropdown, onCloseDropdown }) {
+  const { data: user } = useCurrentUser();
+  const logout = useLogout();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const closeAfterNavigation = () => { onCloseDropdown(); onClose(); };
+
   return (
     <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Dark overlay – click closes */}
-          <motion.div
-            className="mobile-nav-overlay"
-            variants={overlayVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            onClick={onClose}
-            aria-hidden="true"
-          />
+      {isOpen && <>
+        <motion.button type="button" className="mobile-nav-overlay" variants={overlayVariants} initial="closed" animate="open" exit="closed" onClick={onClose} aria-label="Close navigation menu" />
+        <motion.nav id="primary-navigation" className="mobile-nav" aria-label="Main navigation" variants={drawerVariants} initial="closed" animate="open" exit="closed">
+          <div className="mobile-nav-top">
+            <div className={`mobile-nav-avatar${showAccountAttention ? ' mobile-nav-avatar--attention' : ''}`}><UserRound size={24} aria-hidden="true" /></div>
+            <Link to={user ? '/profile' : '/auth'} className="mobile-nav-signin" onClick={closeAfterNavigation}>{userName(user)}</Link>
+            <button type="button" className="mobile-nav-close" aria-label="Close navigation menu" onClick={onClose}><X size={24} aria-hidden="true" /></button>
+          </div>
 
-          <motion.nav
-            id="primary-navigation"
-            className="mobile-nav"
-            aria-label="Main navigation"
-            variants={drawerVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-          >
-            {/* 1. Avatar + Sign In + close */}
-            <div className="mobile-nav-top">
-              <div className={`mobile-nav-avatar${showAccountAttention ? ' mobile-nav-avatar--attention' : ''}`}>
-                <UserIcon />
-              </div>
-              <Link
-                to="/auth"
-                className="mobile-nav-signin"
-                onClick={onClose}
-                aria-label={showAccountAttention ? 'Sign in or create an account' : 'Your account'}
-              >
-                {showAccountAttention ? 'Sign in' : 'Your account'}
-              </Link>
-              <button
-                type="button"
-                className="mobile-nav-close"
-                aria-label="Close navigation menu"
-                onClick={onClose}
-              >
-                <CloseIcon />
-              </button>
-            </div>
+          <ul className="mobile-nav-list mobile-nav-list--primary">
+            {NAV_LINKS.map((link) => {
+              const Icon = primaryIcons[link.label];
+              const active = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+              return <li key={link.href} className="mobile-nav-item">
+                {link.hasDropdown ? <>
+                  <button type="button" className={`mobile-nav-link has-dropdown${active ? ' is-active' : ''}${openDropdown === link.label ? ' is-open' : ''}`} aria-expanded={openDropdown === link.label} onClick={() => onToggleDropdown(link.label)}>
+                    <span className="mobile-nav-link__label"><Icon size={23} aria-hidden="true" />{link.label}</span><ChevronDown className="mobile-nav-chevron" size={18} aria-hidden="true" />
+                  </button>
+                  <AnimatePresence initial={false}>{openDropdown === link.label && <motion.ul className="mobile-nav-submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}>
+                    {link.submenu.map((item) => <li key={item.href}><Link to={item.href} className="mobile-nav-sublink" onClick={closeAfterNavigation}>{item.label}</Link></li>)}
+                  </motion.ul>}</AnimatePresence>
+                </> : <Link to={link.href} className={`mobile-nav-link${active ? ' is-active' : ''}`} onClick={closeAfterNavigation}><span className="mobile-nav-link__label"><Icon size={23} aria-hidden="true" />{link.label}</span></Link>}
+              </li>;
+            })}
+          </ul>
 
-            {/* 2. Navigation links */}
-            <ul className="mobile-nav-list">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href} className="mobile-nav-item">
-                  {link.hasDropdown ? (
-                    <>
-                      <button
-                        type="button"
-                        className={`mobile-nav-link has-dropdown ${
-                          openDropdown === link.label ? 'is-open' : ''
-                        }`}
-                        aria-expanded={openDropdown === link.label}
-                        aria-haspopup="true"
-                        onClick={() => onToggleDropdown(link.label)}
-                      >
-                        <span>{link.label}</span>
-                        <ChevronIcon />
-                      </button>
+          {user && <ul className="mobile-nav-list mobile-nav-list--account">
+            <li><Link className="mobile-nav-link" to="/profile" onClick={closeAfterNavigation}><span className="mobile-nav-link__label"><UserRound size={23} />Profile</span></Link></li>
+            <li><Link className="mobile-nav-link" to="/orders" onClick={closeAfterNavigation}><span className="mobile-nav-link__label"><Package size={23} />My orders</span></Link></li>
+            <li><Link className="mobile-nav-link" to="/notifications" onClick={closeAfterNavigation}><span className="mobile-nav-link__label"><Bell size={23} />Notifications</span></Link></li>
+          </ul>}
 
-                      <AnimatePresence>
-                        {openDropdown === link.label && (
-                          <motion.ul
-                            className="mobile-nav-submenu"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                            role="menu"
-                          >
-                            {link.submenu.map((item) => (
-                              <li key={item.href} role="none">
-                                <a
-                                  href={item.href}
-                                  className="mobile-nav-sublink"
-                                  role="menuitem"
-                                  onClick={() => {
-                                    onCloseDropdown();
-                                    onClose();
-                                  }}
-                                >
-                                  {item.label}
-                                </a>
-                              </li>
-                            ))}
-                          </motion.ul>
-                        )}
-                      </AnimatePresence>
-                    </>
-                  ) : (
-                    <a
-                      href={link.href}
-                      className="mobile-nav-link"
-                      onClick={onClose}
-                    >
-                      {link.label}
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* 3. Favourites (bottom) */}
-            <div className="mobile-nav-footer">
-              <a
-                href="/wishlist"
-                className="mobile-nav-link mobile-nav-fav"
-                onClick={onClose}
-              >
-                <HeartIcon />
-                <span>Favourites</span>
-              </a>
-            </div>
-          </motion.nav>
-        </>
-      )}
+          {user && <div className="mobile-nav-footer"><button className="mobile-nav-link" type="button" disabled={logout.isPending} onClick={async () => { try { await logout.mutateAsync(); } finally { closeAfterNavigation(); navigate('/auth'); } }}><span className="mobile-nav-link__label"><LogOut size={23} />{logout.isPending ? 'Signing out…' : 'Logout'}</span></button></div>}
+        </motion.nav>
+      </>}
     </AnimatePresence>
   );
 }

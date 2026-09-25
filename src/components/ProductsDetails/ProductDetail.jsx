@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { useProduct, useProducts } from '../../hooks/apiHooks';
 import './ProductDetail.scss';
+import { useAddToCart } from '../../commerce/commerce.hooks.js';
+import { money } from '../../commerce/commerce.utils.js';
+import ProductCard from '../Products/ProductCard.jsx';
+import ProductNotice from '../Products/ProductNotice.jsx';
 
 function unwrap(payload) {
   if (!payload) return null;
@@ -29,14 +33,12 @@ function formatMoney(value) {
   if (value === null || value === undefined || value === '') return '';
   const amount = Number(value);
   if (Number.isNaN(amount)) return String(value);
-  return `$ ${amount.toLocaleString('en-IN', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  return money(amount, 'NGN');
 }
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const cart = useAddToCart();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -69,14 +71,19 @@ export default function ProductDetail() {
   const reviews = Array.isArray(product?.reviews) ? product.reviews : [];
   const brandName = product?.brand?.name || product?.brandName || product?.manufacturer || '—';
   const categoryName = product?.category?.name || product?.category || '—';
-  const sku = product?.sku || product?.slug || product?.id || '—';
-  const stockQuantity = Number(product?.stockQuantity ?? product?.stock ?? product?.inventory ?? 0);
+  const rawStock = product?.stockQuantity ?? product?.stock ?? product?.inventory;
+  const hasKnownStock = rawStock !== undefined && rawStock !== null && Number.isFinite(Number(rawStock));
+  const stockQuantity = hasKnownStock ? Number(rawStock) : null;
+  const maximumQuantity = hasKnownStock ? Math.max(1, Math.min(99, stockQuantity)) : 99;
 
   const [activeImage, setActiveImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [tab, setTab] = useState('description');
+  const [productNotice, setProductNotice] = useState(null);
+  const showProductNotice = useCallback((notice) => setProductNotice({ ...notice, id: Date.now() }), []);
+  const closeProductNotice = useCallback(() => setProductNotice(null), []);
 
   if (!id) {
     return (
@@ -127,7 +134,7 @@ export default function ProductDetail() {
   const showRating = rating > 0 || reviewCount > 0;
 
   function handleAddToCart() {
-    console.log('add-to-cart', { id: product.id, qty, size: selectedSize, color: selectedColor });
+    cart.add(product.id, qty);
   }
 
   return (
@@ -230,19 +237,22 @@ export default function ProductDetail() {
 
           <div className="product-detail__buy">
             <div className="product-detail__qty">
-              <button type="button" onClick={() => setQty(Math.max(1, qty - 1))}>-</button>
+              <button type="button" aria-label="Decrease quantity" disabled={qty <= 1 || cart.isPending} onClick={() => setQty(Math.max(1, qty - 1))}>-</button>
               <span>{qty}</span>
-              <button type="button" onClick={() => setQty(qty + 1)}>+</button>
+              <button type="button" aria-label="Increase quantity" disabled={cart.isPending || qty >= maximumQuantity} onClick={() => setQty((current) => Math.min(maximumQuantity, current + 1))}>+</button>
             </div>
-            <button type="button" className="product-detail__cart" onClick={handleAddToCart}>
-              Add To Cart
+            <button type="button" className="product-detail__cart" disabled={cart.isPending || (hasKnownStock && stockQuantity < 1) || qty > maximumQuantity} onClick={handleAddToCart}>
+              {cart.isPending ? 'Adding…' : 'Add To Cart'}
             </button>
           </div>
 
+          {cart.error && <p role="alert">{cart.error.message}</p>}
+          {cart.isSuccess && <p role="status">Added to your cart. <Link to="/cart">View cart →</Link></p>}
+          {(sizes.length > 0 || colors.length > 0) && <p>Size and colour selections are previews only; this checkout saves the listed product.</p>}
           <dl className="product-detail__meta">
             <div><dt>Brand</dt><dd>: {brandName}</dd></div>
             <div><dt>Category</dt><dd>: {categoryName}</dd></div>
-            <div><dt>Stock</dt><dd>: {stockQuantity > 0 ? 'In stock' : 'Out of stock'}</dd></div>
+            <div><dt>Stock</dt><dd>: {hasKnownStock ? (stockQuantity > 0 ? `${stockQuantity} available` : 'Out of stock') : 'Confirmed when added to cart'}</dd></div>
             {tags.length > 0 && <div><dt>Tags</dt><dd>: {tags.join(', ')}</dd></div>}
           </dl>
         </div>
@@ -320,27 +330,15 @@ export default function ProductDetail() {
           </div>
         ) : (
           <>
-            <div className="product-detail__grid">
-              {related.map((item) => {
-                const src = imageUrl(item.primaryImage || item.image || item.images?.[0]);
-                return (
-                  <Link key={item.id} to={`/products/${item.id}`} className="product-detail__card">
-                    <div className="product-detail__card-media">
-                      {src ? <img src={src} alt={item.name} /> : null}
-                    </div>
-                    <div className="product-detail__card-body">
-                      <h3>{item.name}</h3>
-                      <p>{item.category?.name || ''}</p>
-                      <strong>{formatMoney(item.price)}</strong>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="products__grid products__grid--recommendations">
+              {related.map((item) => <ProductCard key={item.id} product={item} onNotice={showProductNotice} />)}
             </div>
-            <Link to="/shop" className="product-detail__more">Show More</Link>
+            <Link to="/shop" className="products__show-more">Show More</Link>
           </>
         )}
       </section>
+
+      <ProductNotice notice={productNotice} onClose={closeProductNotice} />
 
       <Footer />
     </div>

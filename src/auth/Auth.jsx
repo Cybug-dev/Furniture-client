@@ -14,6 +14,9 @@ import {
   validateRegistration,
 } from './auth.validation.js';
 import './Auth.scss';
+import { VerifyEmailForm } from './VerifyEmailForm.jsx';
+import { PasswordResetForm } from './PasswordResetForm.jsx';
+import { getPasswordStrength, PASSWORD_POLICY } from './password.policy.js';
 
 const getSafeReturnPath = (state) => {
   const requestedPath =
@@ -21,11 +24,14 @@ const getSafeReturnPath = (state) => {
 
   return requestedPath?.startsWith('/') && !requestedPath.startsWith('//')
     ? requestedPath
-    : '/';
+    : null;
 };
 
 export function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
+  const [verificationCodeSentAt, setVerificationCodeSentAt] = useState(null);
   const [loginFields, setLoginFields] = useState({ email: '', password: '' });
   const [registrationFields, setRegistrationFields] = useState({
     fullName: '',
@@ -45,8 +51,12 @@ export function AuthPage() {
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
   const currentUser = currentUserQuery.data;
+  const passwordStrength = getPasswordStrength(registrationFields.password);
 
   const selectMode = (nextIsSignIn) => {
+    setVerificationEmail('');
+    setVerificationCodeSentAt(null);
+    setIsResettingPassword(false);
     setIsSignIn(nextIsSignIn);
     setLoginErrors({});
     setRegistrationErrors({});
@@ -84,10 +94,21 @@ export function AuthPage() {
         email: loginFields.email.trim().toLowerCase(),
         password: loginFields.password,
       });
-      navigate(getSafeReturnPath(location.state), { replace: true });
+      const returnPath = getSafeReturnPath(location.state);
+      navigate(returnPath || '/shop', { replace: true });
     } catch (error) {
+      if (error.code === 'EMAIL_NOT_VERIFIED') {
+        setVerificationEmail(loginFields.email.trim().toLowerCase());
+        setVerificationCodeSentAt(null);
+        setLoginFields((current) => ({ ...current, password: '' }));
+      }
       setLoginErrors(getServerFieldErrors(error));
-      setFormMessage({ type: 'error', text: error.message });
+      setFormMessage({
+        type: 'error',
+        text: error.code === 'INVALID_EMAIL_OR_PASSWORD'
+          ? 'Email or password is incorrect. Reset your password, or create an account if you have not registered.'
+          : error.message,
+      });
     }
   };
 
@@ -117,9 +138,11 @@ export function AuthPage() {
       });
       setRegistrationFields((current) => ({ ...current, password: '' }));
       setIsSignIn(true);
+      setVerificationEmail(registrationFields.email.trim().toLowerCase());
+      setVerificationCodeSentAt(Date.now());
       setFormMessage({
         type: 'success',
-        text: 'Account created. Sign in to continue.',
+        text: 'Account created. Verify your email to continue.',
       });
     } catch (error) {
       setRegistrationErrors(getServerFieldErrors(error));
@@ -181,7 +204,7 @@ export function AuthPage() {
                 <p className="auth__sub">
                   You are signed in as <strong>{currentUser.email}</strong>.
                 </p>
-                <button className="auth__btn" type="button" onClick={() => navigate('/')}>
+                <button className="auth__btn" type="button" onClick={() => navigate('/shop')}>
                   Continue shopping
                 </button>
                 <button
@@ -226,7 +249,34 @@ export function AuthPage() {
                   </div>
                 )}
 
-                {isSignIn ? (
+                {verificationEmail ? (
+                  <VerifyEmailForm
+                    email={verificationEmail}
+                    codeSentAt={verificationCodeSentAt}
+                    onBack={() => selectMode(true)}
+                    onVerified={(user) => {
+                      setVerificationEmail('');
+                      setVerificationCodeSentAt(null);
+                      const returnPath = getSafeReturnPath(location.state);
+                      if (user) navigate(returnPath || '/shop', { replace: true });
+                      else if (!user) {
+                        setIsSignIn(true);
+                        setFormMessage({ type: 'success', text: 'Email verified. Sign in to continue.' });
+                      }
+                    }}
+                  />
+                ) : isResettingPassword ? (
+                  <PasswordResetForm
+                    initialEmail={loginFields.email}
+                    onBack={() => selectMode(true)}
+                    onComplete={(email) => {
+                      setLoginFields({ email, password: '' });
+                      setIsResettingPassword(false);
+                      setIsSignIn(true);
+                      setFormMessage({ type: 'success', text: 'Password reset. Sign in with your new password.' });
+                    }}
+                  />
+                ) : isSignIn ? (
                   <>
                     <h1 className="auth__title">Welcome back</h1>
                     <p className="auth__sub">
@@ -292,9 +342,17 @@ export function AuthPage() {
                         )}
                       </div>
 
-                      <p className="auth__unavailable">
-                        Password recovery is not available yet.
-                      </p>
+                      <button
+                        className="auth__guest auth__guest--inline"
+                        type="button"
+                        onClick={() => {
+                          setFormMessage(null);
+                          setLoginErrors({});
+                          setIsResettingPassword(true);
+                        }}
+                      >
+                        Forgot your password?
+                      </button>
 
                       <button
                         className="auth__btn"
@@ -303,13 +361,27 @@ export function AuthPage() {
                       >
                         {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
                       </button>
+                      <button
+                        className="auth__guest auth__guest--inline"
+                        type="button"
+                        onClick={() => {
+                          setRegistrationFields((current) => ({
+                            ...current,
+                            email: loginFields.email.trim().toLowerCase(),
+                            password: '',
+                          }));
+                          selectMode(false);
+                        }}
+                      >
+                        Email not registered? Create an account
+                      </button>
                     </form>
                   </>
                 ) : (
                   <>
                     <h1 className="auth__title">Create your account</h1>
                     <p className="auth__sub">
-                      Join Furniture to save inspiration and shop your favorite rooms.
+                      Enter an email address you can access. We will send a six-digit verification code to complete your account.
                     </p>
 
                     <form
@@ -353,6 +425,7 @@ export function AuthPage() {
                           type="email"
                           inputMode="email"
                           autoComplete="email"
+                          maxLength={254}
                           placeholder="you@example.com"
                           value={registrationFields.email}
                           onChange={(event) =>
@@ -379,9 +452,9 @@ export function AuthPage() {
                             name="password"
                             type={showRegistrationPassword ? 'text' : 'password'}
                             autoComplete="new-password"
-                            minLength={12}
-                            maxLength={128}
-                            placeholder="12–128 characters"
+                            minLength={PASSWORD_POLICY.minLength}
+                            maxLength={PASSWORD_POLICY.maxLength}
+                            placeholder={`${PASSWORD_POLICY.minLength}–${PASSWORD_POLICY.maxLength} characters`}
                             value={registrationFields.password}
                             onChange={(event) =>
                               updateRegistrationField('password', event.target.value)
@@ -390,7 +463,7 @@ export function AuthPage() {
                             aria-describedby={
                               registrationErrors.password
                                 ? 'register-password-error'
-                                : 'register-password-hint'
+                                : 'register-password-strength register-password-requirements'
                             }
                           />
                           <button
@@ -404,15 +477,32 @@ export function AuthPage() {
                             {showRegistrationPassword ? 'Hide' : 'Show'}
                           </button>
                         </div>
-                        {registrationErrors.password ? (
+                        {registrationErrors.password && (
                           <p className="auth__field-error" id="register-password-error">
                             {registrationErrors.password}
                           </p>
-                        ) : (
-                          <p className="auth__field-hint" id="register-password-hint">
-                            Use 12–128 characters with a letter and a number.
-                          </p>
                         )}
+                        <div
+                          className={`auth__password-strength auth__password-strength--${passwordStrength.level}`}
+                          id="register-password-strength"
+                          aria-live="polite"
+                        >
+                          <div className="auth__strength-heading">
+                            <span>Password strength</span>
+                            <strong>{passwordStrength.label}</strong>
+                          </div>
+                          <div className="auth__strength-bars" aria-hidden="true">
+                            {[1, 2, 3, 4].map((level) => (
+                              <span key={level} className={level <= passwordStrength.level ? 'is-active' : ''} />
+                            ))}
+                          </div>
+                        </div>
+                        <ul className="auth__password-requirements" id="register-password-requirements">
+                          <li className={passwordStrength.checks.length ? 'is-met' : ''}>At least {PASSWORD_POLICY.minLength} characters</li>
+                          <li className={passwordStrength.checks.letter ? 'is-met' : ''}>One letter</li>
+                          <li className={passwordStrength.checks.number ? 'is-met' : ''}>One number</li>
+                          <li className={passwordStrength.checks.special ? 'is-met' : ''}>One special character</li>
+                        </ul>
                       </div>
 
                       <div className="auth__row">
@@ -444,7 +534,7 @@ export function AuthPage() {
                         type="submit"
                         disabled={registerMutation.isPending}
                       >
-                        {registerMutation.isPending ? 'Creating account…' : 'Create account'}
+                        {registerMutation.isPending ? 'Sending verification code…' : 'Create account'}
                       </button>
                     </form>
                   </>
@@ -460,7 +550,7 @@ export function AuthPage() {
                   </button>
                 </div>
 
-                <button type="button" className="auth__guest" onClick={() => navigate('/')}>
+                <button type="button" className="auth__guest" onClick={() => navigate('/shop')}>
                   Continue as guest
                 </button>
               </>
