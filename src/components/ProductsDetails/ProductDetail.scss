@@ -437,10 +437,11 @@
   }
 
   .product-detail__gallery,
-  .product-detail__scenes,
-  .product-detail__grid {
+  .product-detail__scenes {
     grid-template-columns: 1fr;
   }
+
+  .product-detail__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
   .product-detail__thumbs { flex-direction: row; }
   .product-detail__crumb { margin-top: $header-height-mobile; }

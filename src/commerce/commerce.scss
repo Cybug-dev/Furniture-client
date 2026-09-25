@@ -172,9 +172,6 @@
 .cart-suggestions { padding-top: $space-2;
   > h2 { margin-bottom: $space-4; font-size: $font-size-lg; }
   > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: $space-4; }
-  a { display: grid; gap: $space-2; color: $color-text-heading; text-decoration: none; }
-  .commerce-product-image { width: 100%; height: auto; aspect-ratio: 1 / .9; border-radius: $radius-md; }
-  span { color: $color-text-heading; font-weight: $font-weight-bold; }
 }
 
 .commerce-address { display: grid; gap: $space-1; color: $color-text-body; font-style: normal; }
@@ -304,8 +301,6 @@
   .profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .profile-account__identity { align-items: flex-start; }
   .cart-suggestions > div { gap: $space-2; }
-  .cart-suggestions a { font-size: .68rem; }
-  .cart-suggestions .commerce-product-image { padding: 0; }
   .commerce-pagination .commerce-button { min-width: 0; padding-inline: $space-3; }
   .commerce-totals div { align-items: flex-start; }
   .commerce-totals dd { max-width: 58%; }

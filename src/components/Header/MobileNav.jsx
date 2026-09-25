@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router';
 import { useCurrentUser, useLogout } from '../../auth/auth.hooks.js';
-import { NAV_LINKS, ChevronIcon } from './DesktopNav';
+import { ChevronIcon } from './DesktopNav';
+import { NAV_LINKS } from './navLinks.js';
 import './MobileNav.scss';
 
 /* Local icons (no style leakage from DesktopNav) */
@@ -155,8 +156,8 @@ export default function MobileNav({
                           >
                             {link.submenu.map((item) => (
                               <li key={item.href} role="none">
-                                <a
-                                  href={item.href}
+                                <Link
+                                  to={item.href}
                                   className="mobile-nav-sublink"
                                   role="menuitem"
                                   onClick={() => {
@@ -165,7 +166,7 @@ export default function MobileNav({
                                   }}
                                 >
                                   {item.label}
-                                </a>
+                                </Link>
                               </li>
                             ))}
                           </motion.ul>
@@ -173,13 +174,13 @@ export default function MobileNav({
                       </AnimatePresence>
                     </>
                   ) : (
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="mobile-nav-link"
                       onClick={onClose}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   )}
                 </li>
               ))}

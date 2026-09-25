@@ -1,5 +1,5 @@
 import api from '../api/client.js';
-import { authResult, getAuthClient, invalidateAuthRequests } from './auth.client.js';
+import { authResult, getAccessToken, getAuthClient, invalidateAuthRequests } from './auth.client.js';
 
 const readUser = (response) => {
   const user = response.data?.data?.user;
@@ -30,8 +30,7 @@ export const loginUser = async ({ email, password }) => {
 
 export const getCurrentUser = async () => {
   try {
-    const session = await authResult(getAuthClient().getSession());
-    if (!session?.user) return null;
+    await getAccessToken();
     const response = await api.get('/auth/me', { requiresAuth: true });
 
     return readUser(response);

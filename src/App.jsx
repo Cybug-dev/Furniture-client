@@ -6,10 +6,10 @@ import FeatureBanner from "./components/FeatureBanner/FeatureBanner"
 import FlashSale from './components/FlashSale'
 import Carousel from './components/Carousel/Carousel'
 import Products from './components/Products/Products'
+import ShopPage from './components/Shop/ShopPage'
 import ProductDetail from './components/ProductsDetails/ProductDetail'
 import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
-import { AuthSessionGate } from './auth/AuthSessionGate'
 import FirstVisitExperience from './components/FirstVisit/FirstVisitExperience'
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router'
@@ -28,7 +28,7 @@ const ProfilePage = lazy(() => import('./commerce/pages/ProfilePage'))
 
 function App() {
   return (
-    <AuthSessionGate>
+    <>
       <Suspense fallback={<Loading />}>
       <Routes>
         <Route element={<AccountLayout />}>
@@ -44,18 +44,7 @@ function App() {
         </Route>
         <Route path="/auth" element={<AuthPage />} />
 
-        <Route
-          path="/shop"
-          element={
-            <div className="app-shell">
-              <Header />
-              <main className="main-content">
-                <Products />
-              </main>
-              <Footer />
-            </div>
-          }
-        />
+        <Route path="/shop" element={<ShopPage />} />
 
         <Route path="/products/:id" element={<ProductDetail />} />
 
@@ -81,7 +70,7 @@ function App() {
       </Suspense>
       <FirstVisitExperience />
       <CheckoutReminder />
-    </AuthSessionGate>
+    </>
   )
 }
 
