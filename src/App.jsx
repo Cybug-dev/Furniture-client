@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import { AuthSessionGate } from './auth/AuthSessionGate'
 import FirstVisitExperience from './components/FirstVisit/FirstVisitExperience'
+import Contact from './Contact/Contact'
 import { Routes, Route } from 'react-router'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         />
 
         <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/"
