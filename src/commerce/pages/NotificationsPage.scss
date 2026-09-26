@@ -1,0 +1,71 @@
+@use '../../styles/variables' as *;
+
+$notification-blue-bg: #e7f3ff;
+$notification-blue-text: #2369a0;
+$notification-pink-bg: #ffe7e9;
+
+.notification-inbox { padding: $space-5 0 $space-8; }
+.notification-inbox__heading { display: flex; align-items: center; justify-content: space-between; gap: $space-5; }
+.notification-inbox__heading h1 { margin: 0; color: $color-text-heading; font-size: $font-size-2xl; }
+.notification-inbox__heading p { margin-top: $space-2; color: $color-text-muted; font-size: $font-size-base; }
+.notification-inbox__mark-all { display: inline-flex; align-items: center; gap: $space-2; border: 0; background: transparent; color: $color-action-active; font: inherit; cursor: pointer; white-space: nowrap; }
+.notification-inbox__mark-all:disabled { color: $color-text-subtle; cursor: default; }
+.notification-inbox__tabs { display: flex; gap: $space-6; margin: $space-6 0 $space-5; border-bottom: 1px solid $color-border-default; }
+.notification-inbox__tabs button { min-height: $control-size-md; padding: 0 0 $space-3; border: 0; border-bottom: 2px solid transparent; background: transparent; color: $color-text-muted; font: inherit; cursor: pointer; }
+.notification-inbox__tabs button.is-active { border-bottom-color: $color-action-primary; color: $color-action-active; font-weight: $font-weight-bold; }
+.notification-inbox__list { display: grid; gap: $space-4; }
+
+.inbox-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: $space-3 minmax(0, 1fr) 150px;
+  align-items: center;
+  gap: $space-3;
+  min-height: 132px;
+  padding: $space-4;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: $shadow-card;
+}
+.inbox-card__dot { width: 10px; height: 10px; border-radius: $radius-round; }
+.inbox-card.is-unread .inbox-card__dot { background: $color-action-primary; }
+.inbox-card__body { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: $space-5; min-width: 0; padding: 0; border: 0; background: transparent; color: $color-text-heading; font: inherit; text-align: left; cursor: pointer; }
+.inbox-card__body > img, .inbox-card__icon { width: 120px; height: 96px; border-radius: $radius-md; }
+.inbox-card__body > img { object-fit: cover; }
+.inbox-card__icon { display: grid; place-items: center; background: $color-bg-brand-soft; color: $color-action-active; }
+.inbox-card__copy { display: grid; justify-items: start; gap: $space-1; min-width: 0; }
+.inbox-card__copy strong { display: -webkit-box; overflow: hidden; color: $color-text-heading; font-size: $font-size-base; font-weight: $font-weight-bold; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.inbox-card__copy > span:last-child { display: -webkit-box; overflow: hidden; color: $color-text-muted; font-size: $font-size-sm; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.inbox-card__tag { padding: $space-1 $space-3; border-radius: $radius-round; background: $color-bg-brand-soft; color: $color-action-active; font-size: $font-size-xs; font-weight: $font-weight-semibold; }
+.inbox-card__tag--new { background: $notification-pink-bg; color: $color-status-error; }
+.inbox-card__tag--deal { background: rgba($color-status-warning, 0.14); color: $color-status-warning; }
+.inbox-card__tag--trending { background: $notification-blue-bg; color: $notification-blue-text; }
+.inbox-card__chevron { display: none; }
+.inbox-card__meta { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: $space-2; align-self: stretch; }
+.inbox-card__meta time { color: $color-text-muted; font-size: $font-size-xs; white-space: nowrap; }
+.inbox-card__more { display: grid; width: 28px; height: 28px; padding: 0; place-items: center; border: 0; background: transparent; color: $color-text-muted; cursor: pointer; }
+.inbox-card__more:disabled { opacity: 0.35; cursor: default; }
+.inbox-card__action { grid-column: 1 / -1; display: inline-flex; align-items: center; justify-content: center; gap: $space-2; justify-self: start; align-self: end; min-height: $control-size-md; padding: 0 $space-4; border: 1px solid $color-border-brand; border-radius: $radius-sm; background: $color-bg-card; color: $color-action-active; font: inherit; font-size: $font-size-sm; font-weight: $font-weight-semibold; cursor: pointer; white-space: nowrap; }
+.inbox-card:first-child .inbox-card__action { background: $color-action-primary; color: $color-action-primary-text; }
+.notification-inbox__mobile-mark { display: none; }
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .notification-inbox { padding-bottom: calc(#{$space-9} + #{$control-size-lg}); }
+  .notification-inbox__heading { display: block; }
+  .notification-inbox__heading p { font-size: $font-size-sm; }
+  .notification-inbox__mark-all { display: none; }
+  .notification-inbox__tabs { margin-top: $space-5; }
+  .inbox-card { grid-template-columns: $space-2 minmax(0, 1fr); gap: $space-2; min-height: 110px; padding: $space-3; }
+  .inbox-card__dot { width: 8px; height: 8px; }
+  .inbox-card__body { grid-template-columns: 76px minmax(0, 1fr) 16px; gap: $space-3; }
+  .inbox-card__body > img, .inbox-card__icon { width: 76px; height: 76px; }
+  .inbox-card__copy { padding-top: $space-4; }
+  .inbox-card__copy strong { font-size: $font-size-sm; }
+  .inbox-card__copy > span:last-child { font-size: $font-size-xs; }
+  .inbox-card__chevron { display: block; color: $color-text-muted; }
+  .inbox-card__meta { position: absolute; top: $space-3; right: $space-4; display: block; }
+  .inbox-card__more, .inbox-card__action { display: none; }
+  .notification-inbox__mobile-mark { position: fixed; z-index: $z-sticky; right: $space-4; bottom: $space-4; left: $space-4; display: flex; align-items: center; justify-content: center; gap: $space-2; min-height: $control-size-lg; border: 0; border-radius: $radius-lg; background: $color-action-primary; box-shadow: $shadow-floating; color: $color-action-primary-text; font: inherit; font-weight: $font-weight-semibold; cursor: pointer; }
+  .notification-inbox__mobile-mark:disabled { background: $color-action-disabled-bg; color: $color-action-disabled-text; }
+}

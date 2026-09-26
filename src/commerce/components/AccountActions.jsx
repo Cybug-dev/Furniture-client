@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router';
 import { Bell, UserRound } from 'lucide-react';
 import { useCurrentUser, useLogout } from '../../auth/auth.hooks.js';
 import { useNotifications } from '../commerce.hooks.js';
+import { useSimulatedNotifications } from '../notifications/notificationsContext.js';
 import './AccountActions.scss';
 
 export default function AccountActions() {
   const { data: user } = useCurrentUser();
   const notifications = useNotifications();
+  const simulated = useSimulatedNotifications();
   const logout = useLogout();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -27,7 +29,7 @@ export default function AccountActions() {
     <Link to="/auth" className="header-icon-btn header-desktop-only header-account header-account--attention" aria-label="Sign in or create an account"><UserRound size={20} /></Link>
     <Link to="/notifications" className="header-icon-btn" aria-label="Notifications"><Bell size={20} /></Link>
   </>;
-  const count = notifications.data?.unreadCount || 0;
+  const count = (notifications.data?.unreadCount || 0) + simulated.unreadCount;
   return <>
     <div className="account-actions header-desktop-only" ref={container} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }}>
       <button ref={trigger} type="button" className="header-icon-btn" aria-label="Your account" aria-expanded={open} aria-controls="account-links" onClick={() => setOpen(!open)}><UserRound size={20} /></button>

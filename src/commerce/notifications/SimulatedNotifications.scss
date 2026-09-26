@@ -1,0 +1,40 @@
+@use '../../styles/variables' as *;
+
+.simulated-toast {
+  position: fixed;
+  z-index: $z-toast;
+  top: calc(#{$header-height} + #{$space-7});
+  right: $space-5;
+  width: min(380px, calc(100vw - #{$space-6}));
+  padding: $space-2;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  background: $color-bg-card;
+  box-shadow: $shadow-floating;
+}
+
+.simulated-toast__link {
+  display: grid;
+  grid-template-columns: clamp(64px, 22vw, 76px) minmax(0, 1fr);
+  gap: $space-3;
+  color: $color-text-heading;
+  text-decoration: none;
+}
+.simulated-toast__link img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: $radius-sm;
+  object-fit: cover;
+}
+.simulated-toast__icon { display: grid; width: 100%; aspect-ratio: 1; place-items: center; border-radius: $radius-sm; background: $color-bg-brand-soft; color: $color-action-active; }
+.simulated-toast__copy { display: grid; min-width: 0; align-content: center; gap: $space-1; padding-right: $space-5; }
+.simulated-toast__copy strong, .simulated-toast__copy small { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.simulated-toast__copy strong { font-size: $font-size-sm; }
+.simulated-toast__copy small { color: $color-text-muted; font-size: $font-size-xs; line-height: $line-height-normal; overflow-wrap: anywhere; }
+.simulated-toast__copy b { width: fit-content; padding: $space-1 $space-3; border-radius: $radius-sm; background: $color-action-active; color: $color-action-primary-text; font-size: $font-size-xs; }
+.simulated-toast__close { position: absolute; top: $space-2; right: $space-2; display: grid; width: $control-size-sm; height: $control-size-sm; place-items: center; border: 0; background: transparent; color: $color-text-muted; cursor: pointer; }
+
+@media (max-width: #{$breakpoint-mobile}) {
+  .simulated-toast { top: calc(#{$header-height-mobile} + #{$space-5}); right: $space-3; left: $space-3; width: auto; }
+}

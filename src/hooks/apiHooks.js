@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getCategories, getProductById, getProducts } from "../api/api.js";
 
-export const useProducts = (params = {}) => {
+export const useProducts = (params = {}, options = {}) => {
   return useQuery({
     queryKey: ["products", "list", params],
     queryFn: ({ queryKey }) => getProducts(queryKey[2]),
@@ -9,6 +9,7 @@ export const useProducts = (params = {}) => {
     staleTime: 30 * 60 * 1000,
     gcTime: 60 * 60 * 1000,
     refetchInterval: 30 * 60 * 1000,
+    ...options,
   });
 };
 
