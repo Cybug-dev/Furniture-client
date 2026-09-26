@@ -7,7 +7,7 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import './Header.scss';
 import logoImg from '../../assets/images/armchair-fill.png';
-import menuIconImg from '../../assets/images/menu-icon.png';
+import menuIconImg from '../../assets/images/menu_icon.png';
 import { useCurrentUser } from '../../auth/auth.hooks.js';
 import AccountActions from '../../commerce/components/AccountActions';
 import { useCart } from '../../commerce/commerce.hooks.js';

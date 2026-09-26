@@ -11,6 +11,7 @@ import ProductDetail from './components/ProductsDetails/ProductDetail'
 import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import FirstVisitExperience from './components/FirstVisit/FirstVisitExperience'
+import Contact from './Contact/Contact'
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router'
 import { AccountLayout, Loading } from './commerce/components/CommerceUI'
@@ -47,6 +48,7 @@ function App() {
         <Route path="/shop" element={<ShopPage />} />
 
         <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/"
