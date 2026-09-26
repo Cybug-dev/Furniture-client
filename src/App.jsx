@@ -13,6 +13,7 @@ import Footer from './components/Footer/Footer'
 import { AuthPage } from './auth/Auth'
 import FirstVisitExperience from './components/FirstVisit/FirstVisitExperience'
 import Contact from './Contact/Contact'
+import AboutPage from './components/About/AboutPage'
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router'
 import { AccountLayout, Loading } from './commerce/components/CommerceUI'
@@ -53,6 +54,7 @@ function App() {
 
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<AboutPage />} />
 
         <Route
           path="/"

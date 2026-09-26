@@ -1,0 +1,307 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.about-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: $color-bg-page;
+}
+
+.about-main {
+  padding-top: calc(#{$header-height} + 2rem);
+}
+
+.about-hero {
+  display: flex;
+  min-height: 325px;
+  align-items: center;
+  background:
+    linear-gradient(
+      90deg,
+      rgba($primitive-white, 0.98) 0%,
+      rgba($primitive-white, 0.94) 34%,
+      rgba($primitive-white, 0.58) 53%,
+      rgba($primitive-white, 0.08) 76%
+    ),
+    url('/hero-living-room.png') center 56% / cover no-repeat;
+}
+
+.about-hero__content {
+  display: flex;
+  width: min(calc(100% - (2 * #{$space-page-gutter})), $content-width);
+  margin-inline: auto;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: $space-6;
+}
+
+.about-hero h1 {
+  color: $color-text-heading;
+  font-size: $font-size-3xl;
+  line-height: $line-height-tight;
+  letter-spacing: -0.035em;
+}
+
+.about-hero__intro,
+.about-hero__copy {
+  max-width: 560px;
+  color: $color-text-muted;
+  line-height: $line-height-normal;
+}
+
+.about-hero__intro {
+  margin-top: $space-2;
+  font-size: $font-size-lg;
+}
+
+.about-hero__copy {
+  font-size: $font-size-sm;
+}
+
+.about-hero__accent {
+  width: 38px;
+  height: 3px;
+  margin-block: $space-5 $space-4;
+  border-radius: $radius-round;
+  background: $color-bg-brand;
+}
+
+.about-container {
+  @include page-container;
+  display: grid;
+  gap: $space-4;
+  padding-block: $space-4 $space-8;
+}
+
+.about-story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-4;
+}
+
+.about-card,
+.about-panel,
+.about-cta {
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-card;
+  box-shadow: 0 4px 18px rgba($primitive-ink-900, 0.035);
+}
+
+.about-card {
+  display: flex;
+  min-height: 132px;
+  align-items: flex-start;
+  gap: $space-5;
+  padding: $space-5;
+  transition: transform $transition-default, box-shadow $transition-default;
+}
+
+.about-card--tinted {
+  background: linear-gradient(110deg, $color-bg-brand-soft, $color-bg-card 90%);
+}
+
+.about-card h2,
+.about-section-heading h2,
+.about-cta h2 {
+  color: $color-text-heading;
+  font-size: $font-size-lg;
+  line-height: $line-height-tight;
+  letter-spacing: -0.02em;
+}
+
+.about-card p,
+.about-section-heading p,
+.about-cta p {
+  margin-top: $space-2;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+}
+
+.about-icon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  place-items: center;
+  border-radius: $radius-round;
+  background: $color-bg-brand-soft;
+  color: $color-action-hover;
+}
+
+.about-panel {
+  padding: $space-5;
+}
+
+.about-section-heading {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+}
+
+.about-tech-list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: $space-3;
+  margin: $space-4 0 0 calc(56px + #{$space-5});
+  padding: 0;
+  list-style: none;
+}
+
+.about-tech {
+  display: flex;
+  min-width: 0;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  background: $color-bg-card;
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+  transition: border-color $transition-default, transform $transition-default;
+}
+
+.about-tech img {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.about-service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: $space-3;
+  margin: $space-4 0 0 calc(56px + #{$space-5});
+}
+
+.about-service {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  background: $color-bg-card;
+  transition: border-color $transition-default, transform $transition-default;
+}
+
+.about-service .about-icon {
+  width: 44px;
+  height: 44px;
+  flex-basis: 44px;
+}
+
+.about-service h3 {
+  color: $color-text-heading;
+  font-size: $font-size-xs;
+  line-height: $line-height-tight;
+}
+
+.about-service p {
+  margin-top: $space-1;
+  color: $color-text-muted;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+
+.about-cta {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-5;
+  padding: $space-4 $space-5;
+  background: linear-gradient(105deg, $color-bg-brand-soft, $color-bg-card);
+}
+
+.about-cta__button {
+  @include button-general;
+  @include cta-velvet-reveal;
+  min-height: $control-size-md;
+}
+
+@media (hover: hover) {
+  .about-card:hover,
+  .about-tech:hover,
+  .about-service:hover {
+    border-color: rgba($color-border-brand, 0.45);
+    transform: translateY(-2px);
+  }
+
+  .about-card:hover { box-shadow: $shadow-card-hover; }
+}
+
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+  .about-tech-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .about-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .about-main { padding-top: calc(4.75rem + 2.25rem); }
+
+  .about-hero {
+    min-height: 320px;
+    background:
+      linear-gradient(
+        90deg,
+        rgba($primitive-white, 0.97) 0%,
+        rgba($primitive-white, 0.9) 52%,
+        rgba($primitive-white, 0.3) 100%
+      ),
+      url('/hero-living-room.png') 64% 55% / cover no-repeat;
+  }
+
+  .about-hero__content {
+    width: min(calc(100% - (2 * #{$space-page-gutter})), $content-width);
+    margin-inline: auto;
+    padding-block: $space-5;
+  }
+
+  .about-story-grid { grid-template-columns: 1fr; }
+  .about-tech-list,
+  .about-service-grid { margin-left: 0; }
+  .about-tech-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .about-cta {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .about-cta__button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .about-hero h1 { font-size: $font-size-2xl; }
+  .about-hero__intro { font-size: $font-size-sm; }
+  .about-container { gap: $space-3; padding-top: $space-3; padding-bottom: $space-7; }
+  .about-card,
+  .about-panel { padding: $space-4; }
+  .about-card { min-height: 0; gap: $space-3; }
+  .about-section-heading { align-items: flex-start; gap: $space-3; }
+  .about-icon { width: 48px; height: 48px; flex-basis: 48px; }
+  .about-card h2,
+  .about-section-heading h2,
+  .about-cta h2 { font-size: $font-size-base; }
+  .about-card p,
+  .about-section-heading p,
+  .about-cta p { font-size: $font-size-xs; }
+  .about-tech-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: $space-2; }
+  .about-tech { justify-content: flex-start; min-height: 48px; padding-inline: $space-2; }
+  .about-service-grid { grid-template-columns: 1fr; gap: $space-2; }
+  .about-cta { grid-template-columns: auto minmax(0, 1fr); gap: $space-3; padding: $space-4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-card,
+  .about-tech,
+  .about-service { transform: none !important; }
+}
