@@ -1,25 +1,70 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
-.shop-page { min-height: 100vh; background: $color-bg-page; }
-.shop-page main { padding-top: $header-height; }
+.shop-page {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+.shop-page main {
+  margin-top: 7rem;
+}
 .shop-page__hero {
   min-height: 210px;
   padding: $space-7 $space-page-gutter;
-  background: linear-gradient(90deg, rgba($primitive-white, .97) 0 36%, rgba($primitive-white, .5) 52%, rgba($primitive-white, .08)), url('../../assets/images/shop-hero.jpg') center 58% / cover;
+  background:
+    linear-gradient(
+      90deg,
+      rgba($primitive-white, 0.97) 0 36%,
+      rgba($primitive-white, 0.5) 52%,
+      rgba($primitive-white, 0.08)
+    ),
+    url("../../assets/images/shop-hero.jpg") center 58% / cover;
   display: flex;
   align-items: center;
 }
-.shop-page__hero > div { width: min(100%, $content-width); margin: 0 auto; }
-.shop-page__hero h1 { margin: 0; color: $color-text-heading; font-size: $font-size-3xl; }
-.shop-page__hero p { margin: $space-2 0 0; color: $color-text-muted; font-size: $font-size-sm; }
-.shop-page__crumb { display: flex; gap: $space-2; width: min(calc(100% - 2 * #{$space-page-gutter}), $content-width); margin: 0 auto; padding: $space-4 0; color: $color-text-muted; font-size: $font-size-xs; }
-.shop-page__crumb a { color: inherit; text-decoration: none; }
-.shop-page__crumb strong { color: $color-text-heading; }
+.shop-page__hero > div {
+  width: min(100%, $content-width);
+  margin: 0 auto;
+}
+.shop-page__hero h1 {
+  margin: 0;
+  color: $color-text-heading;
+  font-size: $font-size-3xl;
+}
+.shop-page__hero p {
+  margin: $space-2 0 0;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+}
+.shop-page__crumb {
+  display: flex;
+  gap: $space-2;
+  width: min(calc(100% - 2 * #{$space-page-gutter}), $content-width);
+  margin: 0 auto;
+  padding: $space-4 0;
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+}
+.shop-page__crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+.shop-page__crumb strong {
+  color: $color-text-heading;
+}
 
 @media (max-width: #{$breakpoint-tablet - 1px}) {
-  .shop-page main { padding-top: $header-height-mobile; }
-  .shop-page__hero { min-height: 150px; padding-block: $space-5; background-position: 62% center; }
-  .shop-page__hero h1 { max-width: 55%; font-size: $font-size-xl; }
-  .shop-page__hero p { max-width: 52%; font-size: $font-size-xs; }
+  .shop-page__hero {
+    min-height: 150px;
+    padding-block: $space-5;
+    background-position: 62% center;
+  }
+  .shop-page__hero h1 {
+    max-width: 55%;
+    font-size: $font-size-xl;
+  }
+  .shop-page__hero p {
+    max-width: 52%;
+    font-size: $font-size-xs;
+  }
 }

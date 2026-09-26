@@ -1,5 +1,5 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .hero {
   position: relative;
@@ -34,8 +34,13 @@
     z-index: 1;
     inset: 0 auto 0 0;
     width: min(58%, 54rem);
-    background: linear-gradient(90deg, rgba($primitive-white, .98) 0%, rgba($primitive-white, .9) 68%, rgba($primitive-white, 0) 100%);
-    content: '';
+    background: linear-gradient(
+      90deg,
+      rgba($primitive-white, 0.98) 0%,
+      rgba($primitive-white, 0.9) 68%,
+      rgba($primitive-white, 0) 100%
+    );
+    content: "";
     pointer-events: none;
   }
 }
@@ -84,7 +89,7 @@
   color: $color-text-heading;
   font-size: clamp(3rem, 4.4vw, 4.75rem);
   font-weight: $font-weight-bold;
-  letter-spacing: -.045em;
+  letter-spacing: -0.045em;
   line-height: 1.08;
 }
 
@@ -115,14 +120,19 @@
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
   text-decoration: none;
-  transition: background $transition-default, border-color $transition-default, transform $transition-default;
+  transition:
+    background $transition-default,
+    border-color $transition-default,
+    transform $transition-default;
 
-  &:focus-visible { @include focus-visible; }
+  &:focus-visible {
+    @include focus-visible;
+  }
 }
 
 .hero__cta--primary {
   background: $color-action-primary;
-  box-shadow: 0 $space-2 $space-5 rgba($color-action-active, .18);
+  box-shadow: 0 $space-2 $space-5 rgba($color-action-active, 0.18);
   color: $color-action-primary-text;
 
   &:hover {
@@ -152,8 +162,12 @@
   gap: $space-4;
 }
 
-.hero__services--desktop { margin-top: $space-7; }
-.hero__services--mobile { display: none; }
+.hero__services--desktop {
+  margin-top: $space-7;
+}
+.hero__services--mobile {
+  display: none;
+}
 
 .hero__service {
   display: flex;
@@ -175,7 +189,7 @@
 
   small {
     color: $color-text-body;
-    font-size: .66rem;
+    font-size: 0.66rem;
     line-height: $line-height-tight;
   }
 }
@@ -194,7 +208,7 @@
 .hero__controls {
   position: absolute;
   z-index: 5;
-  bottom: $space-6;
+  bottom: $space-5;
   left: clamp($space-5, 6.5vw, 7rem);
   display: flex;
   align-items: center;
@@ -209,10 +223,14 @@
   padding: 0;
   border: 1px solid $color-border-default;
   border-radius: $radius-round;
-  background: rgba($color-bg-card, .88);
+  background: rgba($color-bg-card, 0.88);
   color: $color-text-heading;
   cursor: pointer;
-  transition: background $transition-fast, border-color $transition-fast, color $transition-fast, transform $transition-fast;
+  transition:
+    background $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast,
+    transform $transition-fast;
 
   &:hover {
     border-color: $color-border-brand;
@@ -221,7 +239,9 @@
     transform: translateY(-1px);
   }
 
-  &:focus-visible { @include focus-visible(2px); }
+  &:focus-visible {
+    @include focus-visible(2px);
+  }
 }
 
 .hero__dots {
@@ -238,22 +258,34 @@
   border-radius: $radius-round;
   background: $color-border-strong;
   cursor: pointer;
-  transition: background $transition-fast, transform $transition-fast;
+  transition:
+    background $transition-fast,
+    transform $transition-fast;
 
   &.is-active {
     background: $color-action-primary;
     transform: scale(1.08);
   }
 
-  &:focus-visible { @include focus-visible(2px); }
+  &:focus-visible {
+    @include focus-visible(2px);
+  }
 }
 
-.hero__status { @include visually-hidden; }
+.hero__status {
+  @include visually-hidden;
+}
 
 @media (max-width: #{$breakpoint-desktop - 1px}) and (min-width: $breakpoint-tablet) {
-  .hero__slide::after { width: 64%; }
-  .hero__content { width: 52vw; }
-  .hero__heading { font-size: clamp(2.6rem, 5vw, 3.7rem); }
+  .hero__slide::after {
+    width: 64%;
+  }
+  .hero__content {
+    width: 52vw;
+  }
+  .hero__heading {
+    font-size: clamp(2.6rem, 5vw, 3.7rem);
+  }
 
   .hero__service {
     flex-direction: column;
@@ -274,7 +306,9 @@
     grid-template-rows: 38% 62%;
     background: $color-bg-card;
 
-    &::after { display: none; }
+    &::after {
+      display: none;
+    }
   }
 
   .hero__media {
@@ -282,7 +316,9 @@
     grid-row: 1;
   }
 
-  .hero__image { object-position: center center !important; }
+  .hero__image {
+    object-position: center center !important;
+  }
 
   .hero__content {
     position: relative;
@@ -299,7 +335,7 @@
 
   .hero__eyebrow {
     margin-bottom: $space-3;
-    font-size: .68rem;
+    font-size: 0.68rem;
   }
 
   .hero__heading {
@@ -329,7 +365,7 @@
 
   .hero__controls {
     right: 0;
-    bottom: 6.5rem;
+    bottom: 5.5rem;
     left: 0;
     justify-content: center;
     gap: $space-4;
@@ -341,12 +377,14 @@
     background: $color-bg-section-soft;
   }
 
-  .hero__services--desktop { display: none; }
+  .hero__services--desktop {
+    display: none;
+  }
   .hero__services--mobile {
     position: absolute;
     z-index: 5;
     right: $space-4;
-    bottom: $space-4;
+    bottom: 0;
     left: $space-4;
     display: grid;
     width: auto;
@@ -359,7 +397,9 @@
     gap: $space-1;
     text-align: center;
 
-    > span:last-child { gap: 2px; }
+    > span:last-child {
+      gap: 2px;
+    }
   }
 
   .hero__service-icon {
@@ -368,22 +408,35 @@
   }
 
   .hero__service strong,
-  .hero__service small { font-size: .58rem; }
+  .hero__service small {
+    font-size: 0.58rem;
+  }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 300px) {
   .hero {
     height: 64rem;
     min-height: 64rem;
     margin-top: 7rem;
   }
 
-  .hero__slide { grid-template-rows: 32% 68%; }
-  .hero__content { padding: $space-4 $space-4 18rem; }
-  .hero__heading { font-size: clamp(1.8rem, 9vw, 2.25rem); }
-  .hero__description { margin-bottom: $space-4; font-size: $font-size-xs; }
+  .hero__slide {
+    grid-template-rows: 32% 68%;
+  }
+  .hero__content {
+    padding: $space-4 $space-4 18rem;
+  }
+  .hero__heading {
+    font-size: clamp(1.8rem, 9vw, 2.25rem);
+  }
+  .hero__description {
+    margin-bottom: $space-4;
+    font-size: $font-size-xs;
+  }
 
-  .hero__controls { bottom: 14rem; }
+  .hero__controls {
+    bottom: 16rem;
+  }
 
   .hero__services--mobile {
     grid-template-columns: 1fr;
@@ -394,13 +447,19 @@
     width: 100%;
     padding: $space-1;
 
-    > span:last-child { justify-items: center; }
+    > span:last-child {
+      justify-items: center;
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__swiper { --swiper-wrapper-transition-timing-function: linear; }
+  .hero__swiper {
+    --swiper-wrapper-transition-timing-function: linear;
+  }
   .hero__cta,
   .hero__nav,
-  .hero__dot { transition: none; }
+  .hero__dot {
+    transition: none;
+  }
 }
