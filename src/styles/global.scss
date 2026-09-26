@@ -8,7 +8,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  min-width: 320px;
+  min-width: 0;
   margin: 0;
   background: $color-bg-page;
   color: $color-text-body;
@@ -54,6 +54,12 @@ textarea,
 select { font: inherit; }
 
 button { font-weight: $font-weight-semibold; }
+
+a,
+button,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
 
 @keyframes velvet-cta-sheen {
   from {

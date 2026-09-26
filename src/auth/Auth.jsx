@@ -95,7 +95,7 @@ export function AuthPage() {
         password: loginFields.password,
       });
       const returnPath = getSafeReturnPath(location.state);
-      if (returnPath) navigate(returnPath, { replace: true });
+      navigate(returnPath || '/shop', { replace: true });
     } catch (error) {
       if (error.code === 'EMAIL_NOT_VERIFIED') {
         setVerificationEmail(loginFields.email.trim().toLowerCase());
@@ -204,7 +204,7 @@ export function AuthPage() {
                 <p className="auth__sub">
                   You are signed in as <strong>{currentUser.email}</strong>.
                 </p>
-                <button className="auth__btn" type="button" onClick={() => navigate('/')}>
+                <button className="auth__btn" type="button" onClick={() => navigate('/shop')}>
                   Continue shopping
                 </button>
                 <button
@@ -258,7 +258,7 @@ export function AuthPage() {
                       setVerificationEmail('');
                       setVerificationCodeSentAt(null);
                       const returnPath = getSafeReturnPath(location.state);
-                      if (user && returnPath) navigate(returnPath, { replace: true });
+                      if (user) navigate(returnPath || '/shop', { replace: true });
                       else if (!user) {
                         setIsSignIn(true);
                         setFormMessage({ type: 'success', text: 'Email verified. Sign in to continue.' });
@@ -550,7 +550,7 @@ export function AuthPage() {
                   </button>
                 </div>
 
-                <button type="button" className="auth__guest" onClick={() => navigate('/')}>
+                <button type="button" className="auth__guest" onClick={() => navigate('/shop')}>
                   Continue as guest
                 </button>
               </>

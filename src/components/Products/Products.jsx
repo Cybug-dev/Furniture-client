@@ -104,7 +104,7 @@ export default function Products({ variant = 'section', initialCategory = '', on
         </div> : <><div className="products__result-row"><strong>{total ? `${total} products found` : 'Products'}</strong></div>{grid}</>}
       </div>
 
-      {filtersOpen && <div className="products-drawer" role="dialog" aria-modal="true" aria-label="Product filters"><button className="products-drawer__backdrop" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)} /><aside><header><h2>Filters</h2><button type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={20} /></button></header><FilterContent category={category} selectCategory={selectCategory} includeMocks={isShop} unavailable={unavailable} /></aside></div>}
+      <div className={`products-drawer${filtersOpen ? ' is-open' : ''}`} role="dialog" aria-modal={filtersOpen || undefined} aria-hidden={!filtersOpen} inert={!filtersOpen ? '' : undefined} aria-label="Product filters"><button className="products-drawer__backdrop" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)} /><aside><header><h2>Filters</h2><button type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={20} /></button></header><FilterContent category={category} selectCategory={selectCategory} includeMocks unavailable={unavailable} /></aside></div>
       <ProductNotice notice={notice} onClose={closeNotice} />
     </section>
   );

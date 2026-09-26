@@ -25,6 +25,3 @@
   .header-actions .header-icon-btn, .header-actions .header-menu-toggle { width: $control-size-md; height: $control-size-md; }
   .checkout-reminder { right: $space-4; bottom: $space-4; }
 }
-@media (max-width: 359px) {
-  .header--scrolled .header-logo-text { display: none; }
-}
