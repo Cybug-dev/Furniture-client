@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
+const SALE_CYCLE_MS = 86_400_000;
+
 function getTimeRemaining(targetEndDate) {
   const targetTime = new Date(targetEndDate).getTime();
-  const remaining = Number.isFinite(targetTime) ? Math.max(0, targetTime - Date.now()) : 0;
+  const now = Date.now();
+  const remaining = Number.isFinite(targetTime)
+    ? targetTime > now
+      ? targetTime - now
+      : SALE_CYCLE_MS - ((now - targetTime) % SALE_CYCLE_MS)
+    : 0;
 
   return {
     days: Math.floor(remaining / 86_400_000),
