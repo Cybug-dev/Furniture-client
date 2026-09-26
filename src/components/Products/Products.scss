@@ -4,6 +4,7 @@
 .products {
   padding: $space-7 $space-page-gutter $space-8;
   background: $color-bg-page;
+  scroll-margin-top: calc(#{$header-height} + #{$space-4});
 }
 
 .products__inner {
@@ -196,7 +197,16 @@
 }
 .products-card__media img {
   object-fit: cover;
-  transition: transform $transition-slow;
+  opacity: 0;
+  transition: transform $transition-slow, opacity $transition-default;
+}
+.products-card__media img.is-loaded { opacity: 1; }
+.products-card__image-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, $color-bg-section-soft, $color-bg-card, $color-bg-section-soft);
+  background-size: 220% 100%;
+  animation: products-skeleton 1.2s ease-in-out infinite;
 }
 .products-card__placeholder {
   background: linear-gradient(
@@ -617,6 +627,43 @@
 }
 
 @media (max-width: #{$breakpoint-tablet - 1px}) {
+  .products { scroll-margin-top: calc(#{$header-height-mobile} + #{$space-4}); }
+  .products__floating-filter {
+    position: fixed;
+    z-index: $z-sticky;
+    bottom: $space-5;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    min-height: $control-size-lg;
+    padding: 0 $space-5;
+    border: 1px solid $color-border-brand;
+    border-radius: $radius-round;
+    background: $color-action-primary;
+    box-shadow: $shadow-floating;
+    color: $color-action-primary-text;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, $space-5);
+    transition: opacity $transition-default, transform $transition-default;
+  }
+  .products__floating-filter.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+  .products-drawer > aside {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    border-radius: $radius-lg $radius-lg 0 0;
+    transform: translateY(100%);
+  }
+  .products-drawer.is-open > aside { transform: translateY(0); }
   .products {
     padding-top: $space-5;
   }
@@ -657,6 +704,10 @@
     width: auto;
     min-width: 145px;
   }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .products__floating-filter { display: none; }
 }
 
 @media (max-width: #{$breakpoint-mobile}) {

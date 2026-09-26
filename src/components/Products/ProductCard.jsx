@@ -28,6 +28,7 @@ function primaryImage(product) {
 export default function ProductCard({ product, onNotice }) {
   const cart = useAddToCart();
   const [imageFailed, setImageFailed] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [liked, setLiked] = useState(false);
   const src = useMemo(() => primaryImage(product), [product]);
   const currentPrice = Number(product.price);
@@ -85,12 +86,15 @@ export default function ProductCard({ product, onNotice }) {
       >
         <div className="products-card__media">
           {hasDiscount && <span className="products-card__badge">Sale</span>}
+          {src && !imageFailed && !imageLoaded && <span className="products-card__image-skeleton" aria-hidden="true" />}
           {src && !imageFailed ? (
             <img
+              className={imageLoaded ? 'is-loaded' : ''}
               src={src}
               alt={product.name}
               loading="lazy"
               decoding="async"
+              onLoad={() => setImageLoaded(true)}
               onError={() => setImageFailed(true)}
             />
           ) : (

@@ -9,7 +9,7 @@
 .commerce {
   min-height: 100vh;
   padding: calc(#{$header-height} + #{$space-5}) 0 $space-8;
-  padding-top: 6.5rem;
+  padding-top: 7.5rem;
   background:
     radial-gradient(
       circle at 10% 8%,
@@ -37,7 +37,8 @@
   }
   &__heading {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-end;  
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: $space-5;
     margin: $space-5 0;
@@ -65,7 +66,7 @@
     line-height: $line-height-normal;
   }
   p {
-    margin: $space-2 0 $space-4;
+    margin: $space-2 0 0;
     color: $color-text-body;
   }
   a {

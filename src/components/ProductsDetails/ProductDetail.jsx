@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -39,10 +39,6 @@ function formatMoney(value) {
 export default function ProductDetail() {
   const { id } = useParams();
   const cart = useAddToCart();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [id]);
 
   const productQuery = useProduct(id);
   const product = unwrap(productQuery.data);

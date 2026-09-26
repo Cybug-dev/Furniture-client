@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { getProducts } from '../../api/api.js';
 import ProductCard from './ProductCard.jsx';
@@ -32,17 +33,32 @@ function FilterContent({ category, selectCategory, includeMocks, unavailable }) 
 export default function Products({ variant = 'section', initialCategory = '', onCategoryChange }) {
   const isShop = variant === 'shop';
   const pageSize = isShop ? 16 : 15;
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [pages, setPages] = useState(1);
   const [category, setCategory] = useState(initialCategory);
   const [sort, setSort] = useState('featured');
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [error, setError] = useState('');
+  const [showFloatingFilter, setShowFloatingFilter] = useState(false);
   const [notice, setNotice] = useState(null);
+
+  const productsQuery = useInfiniteQuery({
+    queryKey: ['products', 'catalog', category, pageSize],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) => getProducts({ page: pageParam, limit: pageSize, ...(category ? { category } : {}) }),
+    getNextPageParam: (last, all) => {
+      const current = normalizeProductsResponse(last, all.length);
+      return current.page < current.pages ? current.page + 1 : undefined;
+    },
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchInterval: 30 * 60 * 1000,
+  });
+  const responses = productsQuery.data?.pages || [];
+  const items = responses.flatMap((response, index) => normalizeProductsResponse(response, index + 1).items);
+  const total = responses.length ? normalizeProductsResponse(responses[0], 1).total : 0;
+  const categoryLabel = PRODUCT_CATEGORIES.find((item) => item.value === category)?.label;
+  const resultLabel = `${total} products found${category ? ` in ${categoryLabel}` : ''}`;
+  const loading = productsQuery.isPending;
+  const loadingMore = productsQuery.isFetchingNextPage;
+  const error = productsQuery.error?.message;
 
   const showNotice = useCallback((nextNotice) => setNotice({ ...nextNotice, id: Date.now() }), []);
   const closeNotice = useCallback(() => setNotice(null), []);
@@ -50,46 +66,34 @@ export default function Products({ variant = 'section', initialCategory = '', on
 
   useEffect(() => { setCategory(initialCategory); }, [initialCategory]);
 
+  useEffect(() => {
+    const update = () => setShowFloatingFilter(window.scrollY > window.innerHeight);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+
   const selectCategory = useCallback((value) => {
     setCategory(value);
     setFiltersOpen(false);
     onCategoryChange?.(value);
+    document.getElementById('products')?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      block: 'start',
+    });
   }, [onCategoryChange]);
 
-  const loadProducts = useCallback(async ({ nextPage = 1, append = false } = {}) => {
-    if (append) setLoadingMore(true); else setLoading(true);
-    setError('');
-    try {
-      const response = await getProducts({ page: nextPage, limit: pageSize, ...(category ? { category } : {}) });
-      const payload = normalizeProductsResponse(response, nextPage);
-      setItems((current) => append ? [...current, ...payload.items] : payload.items);
-      setPage(payload.page);
-      setTotal(payload.total);
-      setPages(payload.pages);
-    } catch (requestError) {
-      setError(requestError?.message || 'Unable to load products. Please try again.');
-    } finally {
-      setLoading(false);
-      setLoadingMore(false);
-    }
-  }, [category, pageSize]);
-
-  useEffect(() => { loadProducts(); }, [loadProducts]);
-
-  const sortedItems = useMemo(() => {
-    const next = [...items];
-    if (sort === 'price-low') next.sort((a, b) => Number(a.price) - Number(b.price));
-    if (sort === 'price-high') next.sort((a, b) => Number(b.price) - Number(a.price));
-    if (sort === 'name') next.sort((a, b) => a.name.localeCompare(b.name));
-    return next;
-  }, [items, sort]);
+  const sortedItems = [...items];
+  if (sort === 'price-low') sortedItems.sort((a, b) => Number(a.price) - Number(b.price));
+  if (sort === 'price-high') sortedItems.sort((a, b) => Number(b.price) - Number(a.price));
+  if (sort === 'name') sortedItems.sort((a, b) => a.name.localeCompare(b.name));
 
   const sortControl = <label className="products__sort">Sort by:<select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Best selling</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name</option></select></label>;
   const grid = <>
     {loading && <div className="products__grid" aria-label="Loading products">{Array.from({ length: pageSize }).map((_, index) => <div className="products-card products-card--skeleton" key={index} />)}</div>}
-    {!loading && error && <div className="products__message products__message--error" role="alert"><span>{error}</span><button type="button" onClick={() => loadProducts()}>Retry</button></div>}
+    {!loading && error && items.length === 0 && <div className="products__message products__message--error" role="alert"><span>{error}</span><button type="button" onClick={() => productsQuery.refetch()}>Retry</button></div>}
     {!loading && !error && sortedItems.length === 0 && <p className="products__message">No products found in this category.</p>}
-    {!loading && sortedItems.length > 0 && <><div className="products__grid">{sortedItems.map((product) => <ProductCard key={product.id || product.slug} product={product} onNotice={showNotice} />)}</div>{page < pages && <button className="products__show-more" type="button" onClick={() => loadProducts({ nextPage: page + 1, append: true })} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Show More'}</button>}</>}
+    {!loading && sortedItems.length > 0 && <><div className="products__grid">{sortedItems.map((product) => <ProductCard key={product.id || product.slug} product={product} onNotice={showNotice} />)}</div>{productsQuery.hasNextPage && <button className="products__show-more" type="button" onClick={() => productsQuery.fetchNextPage()} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Show More'}</button>}</>}
   </>;
 
   return (
@@ -100,9 +104,11 @@ export default function Products({ variant = 'section', initialCategory = '', on
 
         {isShop ? <div className="products__shop-layout">
           <aside className="products__sidebar" aria-label="Product filters"><FilterContent category={category} selectCategory={selectCategory} includeMocks unavailable={unavailable} /></aside>
-          <div className="products__catalog"><div className="products__catalog-toolbar"><button className="products__filter products__filter--mobile" type="button" onClick={() => setFiltersOpen(true)}><SlidersHorizontal size={16} /> Filters</button><strong id="products-title">{total} products found</strong>{sortControl}</div>{grid}</div>
-        </div> : <><div className="products__result-row"><strong>{total ? `${total} products found` : 'Products'}</strong></div>{grid}</>}
+          <div className="products__catalog"><div className="products__catalog-toolbar"><button className="products__filter products__filter--mobile" type="button" onClick={() => setFiltersOpen(true)}><SlidersHorizontal size={16} /> Filters</button><strong id="products-title">{loading ? 'Products' : resultLabel}</strong>{sortControl}</div>{grid}</div>
+        </div> : <><div className="products__result-row"><strong>{loading ? 'Products' : resultLabel}</strong></div>{grid}</>}
       </div>
+
+      <button className={`products__floating-filter${showFloatingFilter ? ' is-visible' : ''}`} type="button" onClick={() => setFiltersOpen(true)} aria-label="Open product filters" tabIndex={showFloatingFilter ? 0 : -1}><SlidersHorizontal size={18} aria-hidden="true" /> Filters</button>
 
       <div className={`products-drawer${filtersOpen ? ' is-open' : ''}`} role="dialog" aria-modal={filtersOpen || undefined} aria-hidden={!filtersOpen} inert={!filtersOpen ? '' : undefined} aria-label="Product filters"><button className="products-drawer__backdrop" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)} /><aside><header><h2>Filters</h2><button type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X size={20} /></button></header><FilterContent category={category} selectCategory={selectCategory} includeMocks unavailable={unavailable} /></aside></div>
       <ProductNotice notice={notice} onClose={closeNotice} />

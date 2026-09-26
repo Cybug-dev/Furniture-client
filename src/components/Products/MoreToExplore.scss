@@ -1,0 +1,99 @@
+@use '../../styles/variables' as *;
+
+.more-to-explore {
+  padding: $space-8 $space-page-gutter;
+  background: $color-bg-page;
+}
+
+.more-to-explore__inner {
+  width: min(100%, $content-width);
+  margin: 0 auto;
+}
+
+.more-to-explore h2 {
+  margin: 0;
+  color: $color-text-heading;
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-tight;
+}
+
+.more-to-explore__inner > p {
+  margin: $space-2 0 $space-6;
+  color: $color-text-muted;
+  font-size: $font-size-lg;
+}
+
+.more-to-explore__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  margin-bottom: $space-5;
+}
+
+.more-to-explore__tabs,
+.more-to-explore__arrows {
+  display: flex;
+  gap: $space-2;
+}
+
+.more-to-explore__tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.more-to-explore__tabs::-webkit-scrollbar { display: none; }
+
+.more-to-explore__tabs button,
+.more-to-explore__arrows button {
+  flex: 0 0 auto;
+  min-height: $control-size-md;
+  padding: 0 $space-5;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  background: $color-bg-card;
+  color: $color-text-body;
+  font: inherit;
+  font-size: $font-size-sm;
+  cursor: pointer;
+}
+
+.more-to-explore__tabs button:hover,
+.more-to-explore__tabs button.is-active,
+.more-to-explore__arrows button:hover:not(:disabled) {
+  border-color: $color-action-primary;
+  background: $color-action-primary;
+  color: $color-action-primary-text;
+}
+
+.more-to-explore__arrows button {
+  display: grid;
+  width: $control-size-md;
+  padding: 0;
+  place-items: center;
+}
+
+.more-to-explore__arrows button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.more-to-explore__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+@media (max-width: #{$breakpoint-tablet - 1px}) {
+  .more-to-explore { padding: $space-7 $space-3; }
+  .more-to-explore__inner > p { font-size: $font-size-base; }
+  .more-to-explore__controls { align-items: stretch; }
+  .more-to-explore__tabs { flex: 1; }
+  .more-to-explore__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: $space-2; }
+}
+
+@media (max-width: #{$breakpoint-mobile}) {
+  .more-to-explore__tabs button { border-radius: $radius-round; }
+  .more-to-explore__arrows { display: none; }
+}
