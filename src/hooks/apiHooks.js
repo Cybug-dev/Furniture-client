@@ -6,6 +6,9 @@ export const useProducts = (params = {}) => {
     queryKey: ["products", "list", params],
     queryFn: ({ queryKey }) => getProducts(queryKey[2]),
     placeholderData: keepPreviousData,
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchInterval: 30 * 60 * 1000,
   });
 };
 

@@ -2,6 +2,7 @@ import { Link, useSearchParams } from 'react-router';
 import Header from '../Header/Header.jsx';
 import Footer from '../Footer/Footer.jsx';
 import Products from '../Products/Products.jsx';
+import MoreToExplore from '../Products/MoreToExplore.jsx';
 import { PRODUCT_CATEGORIES } from '../Products/product-categories.js';
 import './ShopPage.scss';
 
@@ -27,6 +28,7 @@ export default function ShopPage() {
         </section>
         <nav className="shop-page__crumb" aria-label="Breadcrumb"><Link to="/">Home</Link><span>/</span><strong>Shop</strong></nav>
         <Products variant="shop" initialCategory={category} onCategoryChange={updateCategory} />
+        <MoreToExplore />
       </main>
       <Footer />
     </div>

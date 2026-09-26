@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Bell, Check, Clock3, LockKeyhole, Package, ShoppingBag, Truck } from 'lucide-react';
@@ -11,7 +11,6 @@ export function AccountLayout() {
   const auth = useCurrentUser();
   const location = useLocation();
   const reduced = useReducedMotion();
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [location.pathname]);
   if (auth.isPending) return <Loading />;
   if (auth.isError) return <div className="commerce"><ErrorMessage error={auth.error} retry={auth.refetch} /></div>;
   if (!auth.data) return <Navigate to="/auth" state={{ from: location.pathname + location.search }} replace />;

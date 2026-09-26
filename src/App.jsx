@@ -6,6 +6,7 @@ import FeatureBanner from "./components/FeatureBanner/FeatureBanner"
 import FlashSale from './components/FlashSale'
 import Carousel from './components/Carousel/Carousel'
 import Products from './components/Products/Products'
+import MoreToExplore from './components/Products/MoreToExplore'
 import ShopPage from './components/Shop/ShopPage'
 import ProductDetail from './components/ProductsDetails/ProductDetail'
 import Footer from './components/Footer/Footer'
@@ -16,6 +17,8 @@ import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router'
 import { AccountLayout, Loading } from './commerce/components/CommerceUI'
 import CheckoutReminder from './commerce/components/CheckoutReminder'
+import BackToTop from './components/BackToTop/BackToTop'
+import ScrollManager from './components/ScrollManager'
 
 const CartPage = lazy(() => import('./commerce/pages/CartPage'))
 const DeliveryPage = lazy(() => import('./commerce/pages/CheckoutPage').then(m => ({ default: m.DeliveryPage })))
@@ -30,6 +33,7 @@ const ProfilePage = lazy(() => import('./commerce/pages/ProfilePage'))
 function App() {
   return (
     <>
+      <ScrollManager />
       <Suspense fallback={<Loading />}>
       <Routes>
         <Route element={<AccountLayout />}>
@@ -62,6 +66,7 @@ function App() {
                 <Products />
                 <FeatureBanner />
                 <ShareSetup />
+                <MoreToExplore />
                 <FlashSale />
                 <Footer />
               </main>
@@ -72,6 +77,7 @@ function App() {
       </Suspense>
       <FirstVisitExperience />
       <CheckoutReminder />
+      <BackToTop />
     </>
   )
 }
