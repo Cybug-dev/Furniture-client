@@ -26,15 +26,15 @@ const supportCards = [
     description: "For general questions, orders, or support.",
     value: "support@furniture.com",
     type: "email",
-    href: "mailto:support@furniture.com",
+    href: "mailto:lordrageagu@gmail.com",
   },
   {
     icon: MessageCircle,
     title: "Chat on WhatsApp",
     description: "Get faster help on WhatsApp.",
-    value: "+2349137538050",
+    value: "+2347074474312",
     type: "whatsapp",
-    href: "https://wa.me/23491375038050",
+    href: "https://wa.me/2347074474312",
   },
 ];
 

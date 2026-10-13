@@ -56,6 +56,7 @@ export function SimulatedNotificationsProvider({ children }) {
   const initializedUser = useRef(null);
   const [store, setStore] = useState({ owner: null, items: [] });
   const [toast, setToast] = useState(null);
+  const trackpadSwipe = useRef(0);
   const reducedMotion = useReducedMotion();
   const items = store.owner === user?.id ? store.items : [];
 
@@ -104,6 +105,7 @@ export function SimulatedNotificationsProvider({ children }) {
     if (!user?.id) return undefined;
     let seconds = 0;
     let nextAt = 15;
+    let interval = 15;
     const timer = window.setInterval(() => {
       if (document.hidden) return;
       seconds += 1;
@@ -124,7 +126,8 @@ export function SimulatedNotificationsProvider({ children }) {
       const product = (pool.length ? pool : available)[Math.floor(Math.random() * (pool.length || available.length))];
       const notification = createNotification(product, type);
       sequence.current += 1;
-      nextAt = seconds + 15;
+      nextAt = seconds + interval;
+      interval += 20;
       setStore((current) => {
         const existing = current.owner === user.id ? current.items : [];
         const welcome = existing.find((item) => item.type === 'welcome');
@@ -145,11 +148,20 @@ export function SimulatedNotificationsProvider({ children }) {
   const markRead = (id) => setStore((current) => ({ ...current, items: current.items.map((item) => item.id === id ? { ...item, readAt: item.readAt || new Date().toISOString() } : item) }));
   const markAllRead = () => setStore((current) => ({ ...current, items: current.items.map((item) => ({ ...item, readAt: item.readAt || new Date().toISOString() })) }));
   const openToast = () => { markRead(toast.id); setToast(null); };
+  const handleToastWheel = (event) => {
+    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+    event.preventDefault();
+    trackpadSwipe.current += event.deltaX;
+    if (Math.abs(trackpadSwipe.current) >= 70) {
+      trackpadSwipe.current = 0;
+      setToast(null);
+    }
+  };
 
   return <NotificationsContext.Provider value={{ items, unreadCount: items.filter((item) => !item.readAt).length, markRead, markAllRead }}>
     {children}
     <AnimatePresence>
-      {toast && user?.id && <motion.aside key={toast.id} className="simulated-toast" role="status" initial={reducedMotion ? false : { opacity: 0, x: 72 }} animate={{ opacity: 1, x: 0 }} exit={reducedMotion ? { opacity: 0 } : { opacity: 0, x: 72 }} transition={{ duration: reducedMotion ? 0 : 0.28 }}>
+      {toast && user?.id && <motion.aside key={toast.id} className="simulated-toast" role="status" onWheel={handleToastWheel} initial={reducedMotion ? false : { opacity: 0, x: 72 }} animate={{ opacity: 1, x: 0 }} exit={reducedMotion ? { opacity: 0 } : { opacity: 0, x: 72 }} transition={{ duration: reducedMotion ? 0 : 0.28 }} drag="x" dragMomentum={false} dragElastic={0.18} onDragEnd={(_, info) => { if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 500) setToast(null); }}>
         <Link to={toast.href} className="simulated-toast__link" onClick={openToast}>
           {toast.image ? <img src={toast.image} alt="" /> : <span className="simulated-toast__icon"><Star size={28} aria-hidden="true" /></span>}
           <span className="simulated-toast__copy"><strong>{toast.toastTitle || toast.title}</strong><small>{toast.toastMessage || toast.message}</small><b>{toast.toastAction || toast.action} →</b></span>
